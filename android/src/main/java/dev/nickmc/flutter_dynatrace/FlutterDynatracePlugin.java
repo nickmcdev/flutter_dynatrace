@@ -97,6 +97,8 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
     this.activity = activity;
   }
 
+
+  // TODO: Find a better system to handle and store actions - Tried a map/dictionary and array/list but for some reason UA reponse time was between 6 seconds and 20 seconds for a simple enter/leaveAction :(
   @Override
   public void onMethodCall(MethodCall call, Result result) {
     switch (call.method) {
@@ -447,6 +449,7 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       boolean optIn = Boolean.valueOf(startupAgentParams.get(5));
       startAndroidAgent(startupAgentParams.get(0), startupAgentParams.get(1), withDebugLogging, certValidation, crashReporting, optIn);
       break;
+
 
     // case "batteryLevel":
     //   int batteryLevel = getBatteryLevel();

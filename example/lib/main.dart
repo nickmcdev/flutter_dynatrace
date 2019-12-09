@@ -89,18 +89,23 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   example() {
     switch(dropdownValue) {
       case 'Start Agent': {
-        String appId = "daf8fa7f-899a-41bd-8d5f-7a414010dea6";
-        String beaconUrl = "https://bf96722syz.bf.dynatrace.com/mbeacon";
-        Dynatrace.startup(appId, beaconUrl, true, false, false, false);
+        if (Theme.of(context).platform == TargetPlatform.iOS) {
+          Dynatrace.startupWithInfoPlistSettings();
+        } else if (Theme.of(context).platform == TargetPlatform.android) {
+          String appId = "daf8fa7f-899a-41bd-8d5f-7a414010dea6";
+          String beaconUrl = "https://bf96722syz.bf.dynatrace.com/mbeacon";
+          Dynatrace.startup(appId, beaconUrl, true, false, false, false);
+        }
       }
       break;
       case 'Single Action': {
         var now = new DateTime.now();
-        Dynatrace.enterAction(actions[0], options[1]);
-        Dynatrace.enterSubAction("currentTime0", "sub0", "Test Sub Action 0!");
-        Dynatrace.leaveSubAction("currentTime0", "sub0");
-        Dynatrace.enterSubAction("currentTime0", "sub1", "Test Sub Action 1!");
-        Dynatrace.leaveSubAction("currentTime0", "sub1");
+        //Dynatrace.enterAction(actions[0], options[1]);
+        Dynatrace.enterAction("currentTime0", "Single Action");
+//        Dynatrace.enterSubAction("currentTime0", "sub0", "Test Sub Action 0!");
+//        Dynatrace.leaveSubAction("currentTime0", "sub0");
+//        Dynatrace.enterSubAction("currentTime0", "sub1", "Test Sub Action 1!");
+//        Dynatrace.leaveSubAction("currentTime0", "sub1");
         Dynatrace.leaveAction("currentTime0");
         Dynatrace.enterAction("currentTime1", "Test 1 - Current time: $now");
         // Dynatrace.enterSubAction("currentTime1", "sub0", "Test Sub Action 0!");
@@ -114,6 +119,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         // Dynatrace.enterSubAction("currentTime2", "sub1", "Test Sub Action 1!");
         // Dynatrace.leaveSubAction("currentTime2", "sub1");
         Dynatrace.leaveAction("currentTime2");
+        Dynatrace.enterAction("currentTime3", "4th!");
+        Dynatrace.leaveAction("currentTime3");
       }
       break;
       case 'Sub Action': {
@@ -261,7 +268,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       }
       break;
       case 'isCrashReportingOptedIn': {
-        Dynatrace.isCrashReportingOptedIn();
+        String crashReport = Dynatrace.isCrashReportingOptedIn().toString();
+        print(crashReport);
+
       }
       break;
       default: {

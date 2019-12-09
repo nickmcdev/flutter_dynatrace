@@ -26,6 +26,18 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>DTXApplicationID</key>
+	<string>daf8fa7f-899a-41bd-8d5f-7a414010dea6</string>
+	<key>DTXBeaconURL</key>
+	<string>https://bf96722syz.bf.dynatrace.com/mbeacon</string>
+	<key>DTXLogLevel</key>
+	<string>ALL</string>
+	<key>DTXDisableAutoInstrumentation</key>
+	<true/>
+	<key>DTXAutoStart</key>
+	<false/>
+	<key>DTXUserOptIn</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

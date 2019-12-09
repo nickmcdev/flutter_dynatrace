@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+import 'dart:io' show Platform;
 
 class Dynatrace {
   // Event type calls
@@ -15,12 +16,14 @@ class Dynatrace {
   static List<String> _subActions1 = new List();
   static List<String> _subActions2 = new List();
 
+  // TODO: Find a better system to handle and store actions - Tried a map/dictionary and array/list but for some reason UA reponse time was between 6 seconds and 20 seconds for a simple enter/leaveAction :(
   static Future enterAction(String parentAction, String parentActionName) async {
     _parentActions = ["", "", ""];
     try {
       switch(_parentActionCounter) {
         case 0: {
           _parentActions[0] = parentAction;
+          //await _platform.invokeMethod('enterAction0');
           await _platform.invokeMethod('enterAction0', {"enterActionValues0": parentActionName});
           debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
           _parentActionCounter++;
@@ -30,6 +33,7 @@ class Dynatrace {
         case 1: {
           _parentActions[1] = parentAction;
           await _platform.invokeMethod('enterAction1', {"enterActionValues1": parentActionName});
+          //await _platform.invokeMethod('enterAction1');
           debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
           _parentActionCounter++;
         }
@@ -38,6 +42,7 @@ class Dynatrace {
         case 2: {
           _parentActions[2] = parentAction;
           await _platform.invokeMethod('enterAction2', {"enterActionValues2": parentActionName});
+          //await _platform.invokeMethod('enterAction2');
           debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
           _parentActionCounter = 0;
         }
@@ -54,17 +59,62 @@ class Dynatrace {
   }
 
   static Future leaveAction(String parentAction) async {
+
+  //Android
     int parentActionId;
-    final List<String> platformUA = ["leaveAction0", "leaveAction1", "leaveAction2"];
+    final List<String> platformUA = ['leaveAction0', 'leaveAction1', 'leaveAction2'];
     if (_parentActions.indexOf(parentAction) != -1) {
       parentActionId = _parentActions.indexOf(parentAction);
+    } else {
+      parentActionId = -100;
+      debugPrint(parentActionId.toString());
+      debugPrint("There are no active parent actions with that name!");
     }
     try {
       await _platform.invokeMethod(platformUA[parentActionId]);
+      debugPrint(parentActionId.toString());
+      debugPrint("Attempting invoke of leaveAction on Native-side!");
     } on PlatformException catch (e) {
       debugPrint("Failed to leave User Action: '${e.message}'.");
     }
   }
+  //iOS
+//    int parentActionId;
+//
+//    if (_parentActions.indexOf(parentAction) != -1) {
+//      parentActionId = _parentActions.indexOf(parentAction);
+//    } else {
+//      parentActionId = -100;
+//      debugPrint(parentActionId.toString());
+//      debugPrint("There are no active parent actions with that name!");
+//    }
+//    try {
+//      switch(parentActionId) {
+//        case 0: {
+//          await _platform.invokeMethod('leaveAction0');
+//        }
+//        break;
+//
+//        case 1: {
+//          await _platform.invokeMethod('leaveAction1');
+//        }
+//        break;
+//
+//        case 2: {
+//          await _platform.invokeMethod('leaveAction2');
+//        }
+//        break;
+//
+//        default: {
+//          debugPrint("parentActionCounter is 3 or greater");
+//        }
+//        break;
+//
+//      }
+//    } on PlatformException catch (e) {
+//      debugPrint("Failed to leave parent User Action: '${e.message}'.");
+//    }
+//  }
 
   static Future enterSubAction(String parentAction, String subAction, String subActionName) async {
     int parentActionId;
@@ -504,10 +554,14 @@ class Dynatrace {
 
   static Future<bool> getCaptureStatus() async {
     bool result;
-    try {
-      result = await _platform.invokeMethod('getCaptureStatus');
-    } on PlatformException catch (e) {
-      debugPrint("Failed to get capture status: '${e.message}'.");
+    if (Platform.isAndroid) {
+      try {
+        result = await _platform.invokeMethod('getCaptureStatus');
+      } on PlatformException catch (e) {
+        debugPrint("Failed to get capture status: '${e.message}'.");
+      }
+    } else {
+      debugPrint("This platform does not allow an Android agent only SDK call");
     }
     return result;
   }
@@ -527,6 +581,14 @@ class Dynatrace {
       await _platform.invokeMethod('startAndroidAgent', {"startupAgentParams": [appId, beaconUrl, withDebugLogging.toString(), certValidation.toString(), crashReporting.toString(), optIn.toString()]});
     } on PlatformException catch (e) {
       debugPrint("Failed to start Android Agent: '${e.message}'.");
+    }
+  }
+
+  static Future startupWithInfoPlistSettings() async {
+    try {
+      await _platform.invokeMethod('startupWithInfoPlistSettings');
+    } on PlatformException catch (e) {
+      debugPrint("Failed to start iOS Agent: '${e.message}'.");
     }
   }
 

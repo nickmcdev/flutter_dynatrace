@@ -38,6 +38,8 @@
 	<false/>
 	<key>DTXUserOptIn</key>
 	<true/>
+	<key>DTXInstrumentWebRequestTiming</key>
+	<false/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

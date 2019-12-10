@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_dynatrace/flutter_dynatrace.dart';
+import 'dart:io' show Platform;
 
 void main() => runApp(MyApp());
 
@@ -89,12 +90,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   example() {
     switch(dropdownValue) {
       case 'Start Agent': {
-        if (Theme.of(context).platform == TargetPlatform.iOS) {
+        if (Platform.isIOS == true) {
           Dynatrace.startupWithInfoPlistSettings();
-        } else if (Theme.of(context).platform == TargetPlatform.android) {
+        } else if (Platform.isAndroid == true) {
           String appId = "daf8fa7f-899a-41bd-8d5f-7a414010dea6";
           String beaconUrl = "https://bf96722syz.bf.dynatrace.com/mbeacon";
-          Dynatrace.startup(appId, beaconUrl, true, false, false, false);
+          Dynatrace.startup(appId, beaconUrl, true, false, false, true);
         }
       }
       break;
@@ -264,6 +265,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       }
       break;
       case 'getCaptureStatus': {
+        // Android only
         Dynatrace.getCaptureStatus();
       }
       break;

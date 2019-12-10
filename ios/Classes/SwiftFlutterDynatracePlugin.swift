@@ -49,6 +49,11 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     var action1: DTXAction?
     var action2: DTXAction?
     
+    var parentActions = [Int: DTXAction?]()
+    var parentActionCounter: Int = 0;
+    var subActions = [Int: [Int: DTXAction?]]()
+    var subActionCounter: Int = 0;
+    
     switch call.method {
         // TODO: Find a better system to handle and store actions - Tried a map/dictionary and array/list but for some reason UA reponse time was between 6 seconds and 20 seconds for a simple enter/leaveAction :(
     case "enterAction0":
@@ -56,6 +61,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let actionName0 = argsEnterAction0["enterActionValues0"]  as! String
         action0 = DTXAction.enter(withName: actionName0)
         action0?.leave()
+        parentActionCounter += 1
     case "enterAction1":
         let argsEnterAction1 = call.arguments as! [String: Any]
         let actionName1 = argsEnterAction1["enterActionValues1"]  as! String
@@ -88,12 +94,12 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         // TODO: Add note in doc that if you set the data collection level to OFF or do not start the agent and trigger an enterAction via platform channel (Dynatrace.enterAction) the app will crash unless you use an optional and ensure you properly call the action and handle
     case "setDataCollectionLevel":
         let argsSetDataCollectionLevel = call.arguments as! [String: Any]
-        let setDataCollectionLevel = argsSetDataCollectionLevel["dataCollectionLevel"] as! String
-        if (setDataCollectionLevel == "OFF") {
+        let setDataCollectionLevel = argsSetDataCollectionLevel["dataCollectionLevel"] as! Int
+        if (setDataCollectionLevel == 0) {
             Dynatrace.setDataCollectionLevel(DTX_DataCollectionLevel.off)
-        } else if (setDataCollectionLevel == "PERFORMANCE") {
+        } else if (setDataCollectionLevel == 1) {
             Dynatrace.setDataCollectionLevel(DTX_DataCollectionLevel.performance)
-        } else if (setDataCollectionLevel == "USER_BEHAVIOR") {
+        } else if (setDataCollectionLevel == 2) {
             Dynatrace.setDataCollectionLevel(DTX_DataCollectionLevel.userBehavior)
         } else {
         }
@@ -105,10 +111,14 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         var isCrashReportingOptedIn: Bool
         isCrashReportingOptedIn = Dynatrace.crashReportingOptedIn()
         result(isCrashReportingOptedIn)
-//    case "getDataCollectionLevel":
-//        let getDataCollectionLevelStr = String(decoding: Dynatrace.dataCollectionLevel(), as: String)
-    
-        
+    case "getDataCollectionLevel":
+        if (Dynatrace.dataCollectionLevel() == DTX_DataCollectionLevel.off) {
+            result("OFF")
+        } else if (Dynatrace.dataCollectionLevel() == DTX_DataCollectionLevel.userBehavior) {
+            result("USER_BEHAVIOR")
+        } else if (Dynatrace.dataCollectionLevel() == DTX_DataCollectionLevel.performance) {
+            result("PERFORMANCE")
+        }
     default:
         result(FlutterMethodNotImplemented)
     }

@@ -521,11 +521,18 @@ class Dynatrace {
   }
 
   static Future setDataCollectionLevel(String level) async {
-    String collectionLevel;
-    if (level == "OFF" || level == "PERFORMANCE" || level == "USER_BEHAVIOR") {
-      collectionLevel = level;
+    int collLvl;
+    if (level == "OFF" || level == "off" || level == "PERFORMANCE" || level == "performance" || level == "USER_BEHAVIOR" || level == "user_behavior") {
+
+      if (level == "OFF" || level == "off") {
+        collLvl = 0;
+      } else if (level == "PERFORMANCE" || level == "performance") {
+        collLvl = 1;
+      } else if (level == "USER_BEHAVIOR" || level == "user_behavior") {
+        collLvl = 2;
+      }
       try {
-        await _platform.invokeMethod('setDataCollectionLevel', {"dataCollectionLevel":collectionLevel});
+        await _platform.invokeMethod('setDataCollectionLevel', {"dataCollectionLevel":collLvl});
       } on PlatformException catch (e) {
         debugPrint("Failed to trigger setDataCollectionLevel SDK call: '${e.message}'.");
       }

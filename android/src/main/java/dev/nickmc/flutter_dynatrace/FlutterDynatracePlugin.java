@@ -383,31 +383,45 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       break;
 
     case "setDataCollectionLevel":
-      String dataCollectionLevelStr = call.argument("dataCollectionLevel");
-      if (dataCollectionLevelStr == "OFF") {
+      int dataCollectionLvl = call.argument("dataCollectionLevel");
+      //String dataCollectionLevelStr = call.argument("dataCollectionLevel");
+      Log.d("DataCollectionLevel", String.valueOf(dataCollectionLvl));
+      Log.d("OptIn", "Before changing DataCollectionLevel: " + dataCollectionLvl);
+      if (dataCollectionLvl == 0) {
+        Log.d("OptIn", "Before changing DataCollectionLevel: " + dataCollectionLvl);
+        //Log.d("OptIn", "Before changing Crash Reporting: " + String.valueOf(Dynatrace.isCrashReportingOptedIn()));
         Dynatrace.setDataCollectionLevel(DataCollectionLevel.OFF);
-        result.success("setDataCollectionLevel set to " + dataCollectionLevelStr);
-      } else if (dataCollectionLevelStr == "PERFORMANCE") {
+        Log.d("DataCollectionLevel", String.valueOf(dataCollectionLvl));
+        Log.d("OptIn", Dynatrace.getDataCollectionLevel().toString());
+        result.success("setDataCollectionLevel set to " + dataCollectionLvl);
+      } else if (dataCollectionLvl == 1) {
+        Log.d("OptIn", "Before changing DataCollectionLevel: " + dataCollectionLvl);
+        Log.d("DataCollectionLevel", String.valueOf(dataCollectionLvl));
         Dynatrace.setDataCollectionLevel(DataCollectionLevel.PERFORMANCE);
-        result.success("setDataCollectionLevel set to " + dataCollectionLevelStr);
-      } else if (dataCollectionLevelStr == "USER_BEHAVIOR") {
+        Log.d("OptIn", Dynatrace.getDataCollectionLevel().toString());
+        result.success("setDataCollectionLevel set to " + dataCollectionLvl);
+      } else if (dataCollectionLvl == 2) {
+        Log.d("OptIn", "Before changing DataCollectionLevel: " + dataCollectionLvl);
+        Log.d("DataCollectionLevel", String.valueOf(dataCollectionLvl));
+        Log.d("OptIn", Dynatrace.getDataCollectionLevel().toString());
         Dynatrace.setDataCollectionLevel(DataCollectionLevel.USER_BEHAVIOR);
-        result.success("setDataCollectionLevel set to " + dataCollectionLevelStr);
-      } else {
+        result.success("setDataCollectionLevel set to " + dataCollectionLvl);
       }
-
-
+      Log.d("OptIn", "After changing DataCollectionLevel: " + dataCollectionLvl);
       break;
 
      case "setCrashReportingOptedIn":
        boolean setCrashReportingCaptureStatus = call.argument("setCrashReportingOptedIn");
+       Log.d("OptIn", "Before changing Crash Reporting: " + String.valueOf(Dynatrace.isCrashReportingOptedIn()));
        Dynatrace.setCrashReportingOptedIn(setCrashReportingCaptureStatus);
+       Log.d("OptIn", String.valueOf(Dynatrace.isCrashReportingOptedIn()));
        result.success("Crash reporting capture status = " + setCrashReportingCaptureStatus);
        break;
 
      case "getDataCollectionLevel":
        String getDataCollectionLevelStr;
        getDataCollectionLevelStr = Dynatrace.getDataCollectionLevel().toString();
+       Log.d("DataCollectionLevel", getDataCollectionLevelStr);
        result.success(getDataCollectionLevelStr);
        break;
 

@@ -102,26 +102,26 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       case 'Single Action': {
         var now = new DateTime.now();
         //Dynatrace.enterAction(actions[0], options[1]);
-        Dynatrace.enterAction("currentTime0", "Single Action");
+        Dynatrace.enterAction0("currentTime0", "Single Action");
 //        Dynatrace.enterSubAction("currentTime0", "sub0", "Test Sub Action 0!");
 //        Dynatrace.leaveSubAction("currentTime0", "sub0");
 //        Dynatrace.enterSubAction("currentTime0", "sub1", "Test Sub Action 1!");
 //        Dynatrace.leaveSubAction("currentTime0", "sub1");
-        Dynatrace.leaveAction("currentTime0");
-        Dynatrace.enterAction("currentTime1", "Test 1 - Current time: $now");
+        Dynatrace.leaveAction0("currentTime0");
+        //Dynatrace.enterAction("currentTime1", "Test 1 - Current time: $now");
         // Dynatrace.enterSubAction("currentTime1", "sub0", "Test Sub Action 0!");
         // Dynatrace.leaveSubAction("currentTime1", "sub0");
         // Dynatrace.enterSubAction("currentTime1", "sub1", "Test Sub Action 1!");
         // Dynatrace.leaveSubAction("currentTime1", "sub1");
-        Dynatrace.leaveAction("currentTime1");
-        Dynatrace.enterAction("currentTime2", "Test 2 - Current time: $now");
-        // Dynatrace.enterSubAction("currentTime2", "sub0", "Test Sub Action 0!");
+//        Dynatrace.leaveAction("currentTime1");
+//        Dynatrace.enterAction("currentTime2", "Test 2 - Current time: $now");
+//        // Dynatrace.enterSubAction("currentTime2", "sub0", "Test Sub Action 0!");
         // Dynatrace.leaveSubAction("currentTime2", "sub0");
         // Dynatrace.enterSubAction("currentTime2", "sub1", "Test Sub Action 1!");
         // Dynatrace.leaveSubAction("currentTime2", "sub1");
-        Dynatrace.leaveAction("currentTime2");
-        Dynatrace.enterAction("currentTime3", "4th!");
-        Dynatrace.leaveAction("currentTime3");
+//        Dynatrace.leaveAction("currentTime2");
+//        Dynatrace.enterAction("currentTime3", "4th!");
+//        Dynatrace.leaveAction("currentTime3");
       }
       break;
       case 'Sub Action': {

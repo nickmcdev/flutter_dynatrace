@@ -12,12 +12,27 @@ class Dynatrace {
   static int _parentActionCounter = 0;
 
   static List<String> _parentActions = new List();
+  static Map<int, String> _parentActionsMap = new Map();
+  static List<int> _parentAction = new List();
   static List<String> _subActions0 = new List();
   static List<String> _subActions1 = new List();
   static List<String> _subActions2 = new List();
 
   // TODO: Find a better system to handle and store actions - Tried a map/dictionary and array/list but for some reason UA reponse time was between 6 seconds and 20 seconds for a simple enter/leaveAction :(
-  static Future enterAction(String parentAction, String parentActionName) async {
+  static Future enterAction0(String parentAction, String parentActionName) async {
+    int parentActionIds;
+    try {
+      parentActionIds = await _platform.invokeMethod('enterAction0', {"enterActionValues0": parentActionName});
+      _parentActionsMap[parentActionIds] = parentAction;
+    } on PlatformException catch (e) {
+      debugPrint("Failed to create User Action: '${e.message}'.");
+    }
+
+//    _parentAction.add(parentActionIds);
+
+  }
+  // static Future enterAction(String parentAction, {String parentActionName, String subAction, String subActionName}) async {
+  static Future enterAction(String parentAction, [String parentActionName, String subAction, String subActionName]) async {
     _parentActions = ["", "", ""];
     try {
       switch(_parentActionCounter) {
@@ -57,7 +72,30 @@ class Dynatrace {
       debugPrint("Failed to create User Action: '${e.message}'.");
     }
   }
+//  static Future enterAction(String parentAction, [parentActionName, subAction, subActionName]) async {
+//
+//  }
 
+  static Future leaveAction0([String parentAction, String subAction]) async {
+    int parentActionId;
+
+    if (_parentActionsMap.containsValue(parentAction)) {
+      var reversedParentActionsMap = _parentActionsMap.map((k, v) => MapEntry(v, k));
+      parentActionId = reversedParentActionsMap[parentAction];
+      try {
+        await _platform.invokeMethod('leaveAction0', {"leaveActionValues0": parentActionId});
+      } on PlatformException catch (e) {
+        debugPrint("Failed to leave User Action: '${e.message}'.");
+      }
+    } else {
+      parentActionId = -100;
+      debugPrint(parentActionId.toString());
+      debugPrint("There are no active parent actions with that name!");
+    }
+
+  }
+
+  //static Future leaveAction({String parentAction, String subAction}) async {
   static Future leaveAction(String parentAction) async {
 
   //Android

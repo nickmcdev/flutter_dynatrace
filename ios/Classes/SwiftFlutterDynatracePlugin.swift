@@ -49,19 +49,23 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     var action1: DTXAction?
     var action2: DTXAction?
     
-    var parentActions = [Int: DTXAction?]()
-    var parentActionCounter: Int = 0;
-    var subActions = [Int: [Int: DTXAction?]]()
-    var subActionCounter: Int = 0;
+    var parentActions: [Int: DTXAction] = [:]
+    var parentActionList = [DTXAction?]()
+    var parentActionCounter: Int = 1;
+    var subActions: [Int: DTXAction] = [:]
+    var subActionList = [DTXAction?]()
+    var subActionCounter: Int = 1;
     
     switch call.method {
         // TODO: Find a better system to handle and store actions - Tried a map/dictionary and array/list but for some reason UA reponse time was between 6 seconds and 20 seconds for a simple enter/leaveAction :(
     case "enterAction0":
-        let argsEnterAction0 = call.arguments as! [String: Any]
-        let actionName0 = argsEnterAction0["enterActionValues0"]  as! String
-        action0 = DTXAction.enter(withName: actionName0)
-        action0?.leave()
+        let argsEnterAction = call.arguments as! [String: Any]
+        let parentActionName = argsEnterAction["enterActionValues0"]  as! String
+        parentActionList.append(DTXAction.enter(withName: parentActionName))
+        parentActions[parentActionCounter] = parentActionList[parentActionCounter]
+        result(parentActionCounter)
         parentActionCounter += 1
+//        action0?.leave()
     case "enterAction1":
         let argsEnterAction1 = call.arguments as! [String: Any]
         let actionName1 = argsEnterAction1["enterActionValues1"]  as! String
@@ -73,7 +77,10 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         action2 = DTXAction.enter(withName: actionName2)
         action2?.leave()
     case "leaveAction0":
-        action0?.leave()
+        let argsLeaveAction = call.arguments as! [String: Any]
+        let parentActionId = argsLeaveAction["leaveActionValues0"] as! Int
+        parentActions[parentActionId]?.leave()
+//        action0?.leave()
     case "leaveAction1":
         action1?.leave()
     case "leaveAction2":

@@ -107,13 +107,22 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         // Dynatrace action4 = Dynatrace();
         // Dynatrace action5 = Dynatrace();
         Dynatrace.enterTest("testAction", parentActionName: "Test Action1!");
+        Dynatrace.enterTest("testAction", subAction: "testSubAction", subActionName: "Test SubAction1!");
+        Dynatrace.enterTest("testAction", subAction: "testSubAction2", subActionName: "Test SubAction2!");
+        Dynatrace.enterTest("testAction", subAction: "testSubAction3", subActionName: "Test SubAction3!");
+        Dynatrace.enterTest("testAction", subAction: "testSubAction4", subActionName: "Test SubAction4!");
+        Dynatrace.enterTest("testAction", subAction: "testSubAction5", subActionName: "Test SubAction5!");
+        Dynatrace.leaveTest(subAction: "testSubAction");
+        Dynatrace.leaveTest(subAction: "testSubAction2");
+        Dynatrace.leaveTest(subAction: "testSubAction3");
+        Dynatrace.leaveTest(subAction: "testSubAction4");
+        Dynatrace.leaveTest(subAction: "testSubAction5");
         Dynatrace.leaveTest(parentAction: "testAction");
         Dynatrace.enterTest("testAction2", parentActionName: "Test Action2!");
         Dynatrace.leaveTest(parentAction: "testAction2");
         Dynatrace.enterTest("testAction3", parentActionName: "Test Action3!");
         Dynatrace.leaveTest(parentAction: "testAction3");
         Dynatrace.enterTest("testAction4", parentActionName: "Test Action4!");
-        
         Dynatrace.enterTest("testAction5", parentActionName: "Test Action5!");
       
         //Dynatrace.enterAction(actions[0], options[1]);

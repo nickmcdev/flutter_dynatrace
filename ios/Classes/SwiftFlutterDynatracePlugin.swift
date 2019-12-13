@@ -81,6 +81,22 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         print(parentActionId)
         print(parentActionName)
         print(parentAction)
+        
+    case "enterSubTest":
+        print("Hello!")
+    
+        let argsEnterSubAction = call.arguments as! [String: Any]
+        let subAction = argsEnterSubAction["enterSubActionTest"] as! String
+        let subActionName = argsEnterSubAction["enterSubActionNameTest"]  as! String
+        let parentAction = argsEnterSubAction["enterSubActionParentAction"] as! String
+        self.subActionList.append(DTXAction.enter(withName: subActionName, parentAction: parentActionsTest[parentAction]))
+        print("ActionId: \(self.subActionId)")
+        self.subActionsTest[subAction] = self.subActionList[subActionId]
+        print(subActionId)
+        self.subActionId += 1
+        print(subActionId)
+        print(subActionName)
+        print(subAction)
     case "leaveTest":
         let argsLeaveAction = call.arguments as! [String: Any]
         let parentAction = argsLeaveAction["leaveActionIdTest"] as! String
@@ -89,6 +105,15 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         //parentActionsTest.removeValue(forKey: parentAction)
         if parentActionsTest[parentAction] == nil {
             print("No entry for action named \(parentAction)")
+        }
+    case "leaveSubTest":
+        let argsLeaveAction = call.arguments as! [String: Any]
+        let subAction = argsLeaveAction["leaveActionIdTest"] as! String
+        subActionsTest[subAction]?.leave()
+        print(subActionsTest.keys)
+        //parentActionsTest.removeValue(forKey: parentAction)
+        if parentActionsTest[subAction] == nil {
+            print("No entry for action named \(subAction)")
         }
         
         

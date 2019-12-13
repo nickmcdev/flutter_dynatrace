@@ -62,20 +62,40 @@ class Dynatrace {
   //   }
   // }
   static Future enterTest(String parentAction, {String parentActionName, String subAction, String subActionName}) async {
-    try {
+    if (parentAction != null && parentActionName != null && subAction == null && subActionName == null) {
+      try {
         debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
         await _platform.invokeMethod('enterTest', {"enterParentActionTest": parentAction, "enterParentActionNameTest": parentActionName,});
         } on PlatformException catch (e) {
       debugPrint("Failed to create User Action: '${e.message}'.");
+      } 
+    } else if (parentAction != null && parentActionName == null && subAction != null && subActionName != null) {
+      try {
+        debugPrint("Sub Action value: $subAction, Sub Action name: $subActionName");
+        await _platform.invokeMethod('enterSubTest', {"enterSubActionTest": subAction, "enterSubActionNameTest": subActionName, "enterSubActionParentAction": parentAction});
+        } on PlatformException catch (e) {
+      debugPrint("Failed to create User Action: '${e.message}'.");
+      }
+    } else {
+      debugPrint("Wrong parameters used in function.");
     }
   }
 
   static Future leaveTest({String parentAction, String subAction}) async {
-    try {
-          await _platform.invokeMethod('leaveTest', {"leaveActionIdTest": parentAction});
+    if (parentAction != null && subAction == null) {
+      try {
+        await _platform.invokeMethod('leaveTest', {"leaveActionIdTest": parentAction});
         } on PlatformException catch (e) {
           debugPrint("Failed to leave Parent User Action: '${e.message}'.");
         }
+      } else if (parentAction == null && subAction != null) {
+        try {
+          await _platform.invokeMethod('leaveSubTest', {"leaveActionIdTest": subAction});
+          } on PlatformException catch (e) {
+            debugPrint("Failed to leave Sub User Action: '${e.message}'.");
+        }
+      }
+    
   }
 
   static Future enterActionTest(String parentAction, {String parentActionName, String subAction, String subActionName}) async {

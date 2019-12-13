@@ -68,8 +68,6 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     switch call.method {
         // TODO: Find a better system to handle and store actions - Tried a map/dictionary and array/list but for some reason UA reponse time was between 6 seconds and 20 seconds for a simple enter/leaveAction :(
     case "enterTest":
-        print("Hello!")
-        
         let argsEnterAction = call.arguments as! [String: Any]
         let parentAction = argsEnterAction["enterParentActionTest"] as! String
         let parentActionName = argsEnterAction["enterParentActionNameTest"]  as! String
@@ -83,8 +81,6 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         print(parentAction)
         
     case "enterSubTest":
-        print("Hello!")
-    
         let argsEnterSubAction = call.arguments as! [String: Any]
         let subAction = argsEnterSubAction["enterSubActionTest"] as! String
         let subActionName = argsEnterSubAction["enterSubActionNameTest"]  as! String
@@ -115,7 +111,66 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         if parentActionsTest[subAction] == nil {
             print("No entry for action named \(subAction)")
         }
+    case "reportStringParentTest":
+        let argsReportStringParentAction = call.arguments as! [String: Any]
+        let parentAction = argsReportStringParentAction["pActionRSTest"] as! String
+        let keyParentAction = argsReportStringParentAction["pActionRSKeyTest"]  as! String
+        let stringValueParentAction = argsReportStringParentAction["pActionRSValueTest"] as! String
+        print(parentAction)
+        print(keyParentAction)
+        print(stringValueParentAction)
+        parentActionsTest[parentAction]?.reportValue(withName: keyParentAction, stringValue: stringValueParentAction)
+    
+    case "reportIntParentTest":
+        let argsReportIntParentAction = call.arguments as! [String: Any]
+        let parentAction = argsReportIntParentAction["pActionRITest"] as! String
+        let keyParentAction = argsReportIntParentAction["pActionRIKeyTest"]  as! String
+        let intValueParentAction = argsReportIntParentAction["pActionRIValueTest"] as! Int64
+        print(parentAction)
+        print(keyParentAction)
+        print(intValueParentAction)
+        parentActionsTest[parentAction]?.reportValue(withName: keyParentAction, intValue: intValueParentAction)
         
+    case "reportDoubleParentTest":
+        let argsReportDoubleParentAction = call.arguments as! [String: Any]
+        let parentAction = argsReportDoubleParentAction["pActionRDTest"] as! String
+        let keyParentAction = argsReportDoubleParentAction["pActionRDKeyTest"]  as! String
+        let doubleValueParentAction = argsReportDoubleParentAction["pActionRDValueTest"] as! Double
+        print(parentAction)
+        print(keyParentAction)
+        print(doubleValueParentAction)
+        parentActionsTest[parentAction]?.reportValue(withName: keyParentAction, doubleValue: doubleValueParentAction)
+    
+    case "reportStringSubTest":
+        let argsReportStringSubAction = call.arguments as! [String: Any]
+        let subAction = argsReportStringSubAction["sActionRSTest"] as! String
+        let keySubAction = argsReportStringSubAction["sActionRSKeyTest"]  as! String
+        let stringValueSubAction = argsReportStringSubAction["sActionRSValueTest"] as! String
+        print(subAction)
+        print(keySubAction)
+        print(stringValueSubAction)
+        subActionsTest[subAction]?.reportValue(withName: keySubAction, stringValue: stringValueSubAction)
+    
+    case "reportIntSubTest":
+        let argsReportIntSubAction = call.arguments as! [String: Any]
+        let subAction = argsReportIntSubAction["sActionRITest"] as! String
+        let keySubAction = argsReportIntSubAction["sActionRIKeyTest"]  as! String
+        let intValueSubAction = argsReportIntSubAction["sActionRIValueTest"] as! Int64
+        print(subAction)
+        print(keySubAction)
+        print(intValueSubAction)
+        parentActionsTest[subAction]?.reportValue(withName: keySubAction, intValue: intValueSubAction)
+        
+    case "reportDoubleSubTest":
+        let argsReportDoubleSubAction = call.arguments as! [String: Any]
+        let subAction = argsReportDoubleSubAction["sActionRDTest"] as! String
+        let keySubAction = argsReportDoubleSubAction["sActionRDKeyTest"]  as! String
+        let doubleValueSubAction = argsReportDoubleSubAction["sActionRDValueTest"] as! Double
+        print(subAction)
+        print(keySubAction)
+        print(doubleValueSubAction)
+        parentActionsTest[subAction]?.reportValue(withName: keySubAction, doubleValue: doubleValueSubAction)
+    
         
     case "enterActionTest":
         let argsEnterAction = call.arguments as! [String: Any]

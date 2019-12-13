@@ -9,7 +9,6 @@
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/ios/Classes/SwiftFlutterDynatracePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/ios/Classes/SwiftFlutterDynatracePlugin.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/lib/flutter_dynatrace.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/lib/flutter_dynatrace.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftFlutterDynatracePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftFlutterDynatracePlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_dynatrace.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_dynatrace.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -36,8 +35,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/flutter_dynatrace.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7">
-              <caret line="1" column="20" lean-forward="true" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
+            <state relative-caret-position="337">
+              <caret line="23" selection-start-line="23" selection-end-line="23" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -89,7 +91,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="x" value="-3254" />
     <option name="y" value="-1198" />
     <option name="width" value="1452" />
@@ -192,7 +194,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-3254" y="-1198" width="1452" height="1027" extended-state="0" />
+    <frame x="-3254" y="-1198" width="1452" height="1027" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49844238" visible="true" weight="0.29007092" />
@@ -278,8 +280,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/flutter_dynatrace.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7">
-          <caret line="1" column="20" lean-forward="true" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
+        <state relative-caret-position="337">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

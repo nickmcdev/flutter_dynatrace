@@ -36,6 +36,14 @@ import UIKit
 import Dynatrace
 
 public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
+    
+    var parentActionId: Int = 0
+    var parentActionsTest: [String: DTXAction] = [:]
+    var parentActionList = [DTXAction?]()
+    
+    var subActionId: Int = 0
+    var subActionsTest: [String: DTXAction] = [:]
+    var subActionList = [DTXAction?]()
 
 
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -50,21 +58,67 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     var action2: DTXAction?
     
     var parentActions: [Int: DTXAction] = [:]
-    var parentActionList = [DTXAction?]()
-    var parentActionCounter: Int = 1;
-    var subActions: [Int: DTXAction] = [:]
-    var subActionList = [DTXAction?]()
-    var subActionCounter: Int = 1;
+    
+    var parentActionCounter = 0
+    
+//    var subActions: [Int: DTXAction] = [:]
+//    var subActionList = [DTXAction?]()
+//    var subActionCounter: Int = 0;
     
     switch call.method {
         // TODO: Find a better system to handle and store actions - Tried a map/dictionary and array/list but for some reason UA reponse time was between 6 seconds and 20 seconds for a simple enter/leaveAction :(
-    case "enterAction0":
+    case "enterTest":
+        print("Hello!")
+        
         let argsEnterAction = call.arguments as! [String: Any]
-        let parentActionName = argsEnterAction["enterActionValues0"]  as! String
+        let parentAction = argsEnterAction["enterParentActionTest"] as! String
+        let parentActionName = argsEnterAction["enterParentActionNameTest"]  as! String
+        self.parentActionList.append(DTXAction.enter(withName: parentActionName))
+        print("ActionId: \(self.parentActionId)")
+        self.parentActionsTest[parentAction] = self.parentActionList[parentActionId]
+        print(parentActionId)
+        self.parentActionId += 1
+        print(parentActionId)
+        print(parentActionName)
+        print(parentAction)
+    case "leaveTest":
+        let argsLeaveAction = call.arguments as! [String: Any]
+        let parentAction = argsLeaveAction["leaveActionIdTest"] as! String
+        parentActionsTest[parentAction]?.leave()
+        print(parentActionsTest.keys)
+        //parentActionsTest.removeValue(forKey: parentAction)
+        if parentActionsTest[parentAction] == nil {
+            print("No entry for action named \(parentAction)")
+        }
+        
+        
+    case "enterActionTest":
+        let argsEnterAction = call.arguments as! [String: Any]
+        let parentAction = argsEnterAction["enterParentActionTest"] as! String
+        let parentActionName = argsEnterAction["enterParentActionNameTest"]  as! String
+        //let parentActionCounter = argsEnterAction["actionCounter"] as! Int
         parentActionList.append(DTXAction.enter(withName: parentActionName))
         parentActions[parentActionCounter] = parentActionList[parentActionCounter]
-        result(parentActionCounter)
+        print("Counter \(parentActionCounter)")
+        print(parentActionName)
+        print(parentAction)
         parentActionCounter += 1
+        //result(parentActionCounter)
+        
+//        action0?.leave()
+    case "leaveActionTest":
+        let argsLeaveAction = call.arguments as! [String: Any]
+        let actionId = argsLeaveAction["leaveActionIdTest"] as! Int
+        print(actionId)
+        print(parentActions[actionId])
+        parentActions[actionId]?.leave()
+//    case "enterAction0":
+//        let argsEnterAction = call.arguments as! [String: Any]
+//        let parentActionName = argsEnterAction["enterActionValues0"]  as! String
+//        parentActionList.append(DTXAction.enter(withName: parentActionName))
+//        parentActions[parentActionCounter] = parentActionList[parentActionCounter]
+//        result(parentActionCounter)
+//        parentActionCounter += 1
 //        action0?.leave()
     case "enterAction1":
         let argsEnterAction1 = call.arguments as! [String: Any]
@@ -129,5 +183,10 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     default:
         result(FlutterMethodNotImplemented)
     }
+    
   }
+    func incrementActionId() {
+        parentActionId += 1
+    }
+    
 }

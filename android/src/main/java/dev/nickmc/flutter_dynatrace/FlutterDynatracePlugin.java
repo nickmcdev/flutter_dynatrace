@@ -16,6 +16,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.dynatrace.android.agent.DTXAction;
@@ -36,6 +37,17 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   // User Action
   int parentActionCount = 0;
   int subActionCount = 0;
+
+
+
+
+  int parentActionCountTest = 0;
+  int subActionCountTest = 0;
+  Map<Integer, DTXAction> parentActionsMap = new HashMap();
+  Map<Integer, DTXAction> subActionsMap = new HashMap();
+  ArrayList<DTXAction> parentActionsListTest = new ArrayList<DTXAction>();
+  ArrayList<DTXAction> subActionsListTest = new ArrayList<DTXAction>();
+
   //String actionLeaveValue = "";
 
   Map<Integer, DTXAction> parentActions;
@@ -102,6 +114,20 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   @Override
   public void onMethodCall(MethodCall call, Result result) {
     switch (call.method) {
+    case "enterActionTest":
+      String enterActionTest = call.argument("enterParentActionTest");
+      String enterActionNameTest = call.argument("enterParentActionNameTest");
+      Log.d("enterAction", "Parent Action: " + enterActionTest);
+      Log.d("enterAction", "Parent Action name: " + enterActionNameTest);
+      parentActionsListTest.add(Dynatrace.enterAction(enterActionNameTest));
+      parentActionsMap.put(parentActionCountTest, parentActionsListTest.get(parentActionCountTest));
+      result.success(parentActionCountTest);
+      parentActionCountTest++;
+      break;
+    case "leaveActionTest":
+      int parentActionIdTest = call.argument("leaveActionIdTest");
+      parentActionsMap.get(parentActionIdTest).leaveAction();
+      break;
     case "enterAction0":
       //String parentAction = call.argument("enterActionValues");
       parentActionName0 = call.argument("enterActionValues0");

@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b0d5fb68-535e-42d9-bff4-c2c7fb2a7c4b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/ios/Classes/SwiftFlutterDynatracePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/ios/Classes/SwiftFlutterDynatracePlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/lib/flutter_dynatrace.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/lib/flutter_dynatrace.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner/Info.plist" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftFlutterDynatracePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftFlutterDynatracePlugin.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/flutter_dynatrace.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_dynatrace.dart" afterDir="false" />
@@ -28,7 +33,7 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_5X_API_26" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_3_XL_API_28" />
   <component name="FavoritesManager">
     <favorites_list name="flutter_dynatrace" />
   </component>
@@ -37,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/flutter_dynatrace.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="35" column="34" lean-forward="true" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
+            <state relative-caret-position="307">
+              <caret line="21" column="48" selection-start-line="21" selection-start-column="48" selection-end-line="21" selection-end-column="48" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -58,8 +63,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="104" column="64" selection-start-line="104" selection-start-column="64" selection-end-line="104" selection-end-column="64" />
+            <state relative-caret-position="105">
+              <caret line="98" column="9" selection-start-line="98" selection-start-column="9" selection-end-line="98" selection-end-column="9" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -199,7 +204,7 @@
     <frame x="-3254" y="-1198" width="1452" height="1027" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49844238" visible="true" weight="0.29007092" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49844238" visible="true" weight="0.29007092" />
       <window_info id="Captures" order="1" sideWeight="0.50155765" side_tool="true" weight="0.24969475" />
       <window_info id="Structure" order="2" sideWeight="0.50155765" side_tool="true" weight="0.24969475" />
       <window_info id="Image Layers" order="3" />
@@ -209,10 +214,10 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" sideWeight="0.50155765" side_tool="true" weight="0.24969475" />
       <window_info anchor="bottom" id="Dart Analysis" order="0" sideWeight="0.4993895" weight="0.32941177" />
-      <window_info anchor="bottom" id="Run" order="1" sideWeight="0.497558" visible="true" weight="0.46203208" />
+      <window_info active="true" anchor="bottom" id="Run" order="1" sideWeight="0.497558" visible="true" weight="0.4395722" />
       <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.4993895" weight="0.32941177" />
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Logcat" order="4" sideWeight="0.498779" weight="0.37865168" />
+      <window_info anchor="bottom" id="Logcat" order="4" sideWeight="0.498779" weight="0.5269663" />
       <window_info anchor="bottom" id="Debug" order="5" weight="0.50695187" />
       <window_info anchor="bottom" id="Terminal" order="6" weight="0.32941177" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.502442" side_tool="true" weight="0.31336898" />
@@ -272,8 +277,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="104" column="64" selection-start-line="104" selection-start-column="64" selection-end-line="104" selection-end-column="64" />
+        <state relative-caret-position="105">
+          <caret line="98" column="9" selection-start-line="98" selection-start-column="9" selection-end-line="98" selection-end-column="9" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -282,8 +287,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/flutter_dynatrace.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="35" column="34" lean-forward="true" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
+        <state relative-caret-position="307">
+          <caret line="21" column="48" selection-start-line="21" selection-start-column="48" selection-end-line="21" selection-end-column="48" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>

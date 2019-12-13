@@ -9,10 +9,14 @@ class Dynatrace {
   static const _platform = const MethodChannel('dev.nickmc.flutter_dynatrace/dynatrace');
 
   static final String url = "http://nickmcapache1.dtwlab.dynatrace.org:81/json/weather.json";
-  static int _parentActionCounter = 0;
+  static int _parentActionCounter = -1;
+  static int _subActionCounter = 0;
 
   static List<String> _parentActions = new List();
-  static Map<int, String> _parentActionsMap = new Map();
+  static Map<String, int> _parentActionsMap = new Map();
+  static List<String> _parentActionsTest = new List();
+  static Map<String, int> _subActionsMap = new Map();
+  static List<String> _subActionsTest = new List();
   static List<int> _parentAction = new List();
   static List<String> _subActions0 = new List();
   static List<String> _subActions1 = new List();
@@ -23,7 +27,7 @@ class Dynatrace {
     int parentActionIds;
     try {
       parentActionIds = await _platform.invokeMethod('enterAction0', {"enterActionValues0": parentActionName});
-      _parentActionsMap[parentActionIds] = parentAction;
+      _parentActionsMap[parentAction] = parentActionIds;
     } on PlatformException catch (e) {
       debugPrint("Failed to create User Action: '${e.message}'.");
     }
@@ -32,8 +36,107 @@ class Dynatrace {
 
   }
   // static Future enterAction(String parentAction, {String parentActionName, String subAction, String subActionName}) async {
+  // static Future enterActionTest(String parentAction, {String parentActionName, String subAction, String subActionName}) async {
+  //   _parentActions = ["", "", ""];
+    
+  //   if (parentAction != null && parentActionName != null && subAction == null && subActionName == null) {
+  //     try {
+  //       debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
+  //       _parentActionCounter = await _platform.invokeMethod('enterActionTest', {"enterParentActionTest": parentAction, "enterParentActionNameTest": parentActionName});
+  //       } on PlatformException catch (e) {
+  //     debugPrint("Failed to create User Action: '${e.message}'.");
+  //   }
+  //   _parentActionsMap[parentAction] = _parentActionCounter;
+
+  //   } else if (parentAction != null && parentActionName == null && subAction != null && subActionName != null) {
+  //     try {
+  //       debugPrint("Sub Action value: $subAction, Sub Action name: $subActionName");
+  //       _subActionCounter = await _platform.invokeMethod('enterSubActionTest', {"enterSubActionTest": subAction, "enterSubActionNameTest": subActionName});
+  //       } on PlatformException catch (e) {
+  //     debugPrint("Failed to create User Action: '${e.message}'.");
+  //   }
+  //   _subActionsMap[subAction] = _subActionCounter;
+
+  //   } else {
+  //     debugPrint("Wrong parameters used in function.");
+  //   }
+  // }
+  static Future enterTest(String parentAction, {String parentActionName, String subAction, String subActionName}) async {
+    try {
+        debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
+        await _platform.invokeMethod('enterTest', {"enterParentActionTest": parentAction, "enterParentActionNameTest": parentActionName,});
+        } on PlatformException catch (e) {
+      debugPrint("Failed to create User Action: '${e.message}'.");
+    }
+  }
+
+  static Future leaveTest({String parentAction, String subAction}) async {
+    try {
+          await _platform.invokeMethod('leaveTest', {"leaveActionIdTest": parentAction});
+        } on PlatformException catch (e) {
+          debugPrint("Failed to leave Parent User Action: '${e.message}'.");
+        }
+  }
+
+  static Future enterActionTest(String parentAction, {String parentActionName, String subAction, String subActionName}) async {
+    _parentActions = ["", "", ""];
+    _parentActionCounter++;
+    _parentActionsMap[parentAction] = _parentActionCounter;
+    debugPrint(_parentActionsMap[parentAction].toString());
+    debugPrint("test");
+    // _parentActionCounter++;
+    debugPrint(_parentActionCounter.toString());
+    
+    if (parentAction != null && parentActionName != null && subAction == null && subActionName == null) {
+      try {
+        debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
+        await _platform.invokeMethod('enterActionTest', {"enterParentActionTest": parentAction, "enterParentActionNameTest": parentActionName, "actionCounter": _parentActionCounter});
+        } on PlatformException catch (e) {
+      debugPrint("Failed to create User Action: '${e.message}'.");
+    }
+    _parentActionsMap[parentAction] = _parentActionCounter;
+    debugPrint("test");
+    // _parentActionCounter++;
+    debugPrint(_parentActionCounter.toString());
+
+    } else if (parentAction != null && parentActionName == null && subAction != null && subActionName != null) {
+      try {
+        debugPrint("Sub Action value: $subAction, Sub Action name: $subActionName");
+        _subActionCounter = await _platform.invokeMethod('enterSubActionTest', {"enterSubActionTest": subAction, "enterSubActionNameTest": subActionName});
+        } on PlatformException catch (e) {
+      debugPrint("Failed to create User Action: '${e.message}'.");
+    }
+    _subActionsMap[subAction] = _subActionCounter;
+
+    } else {
+      debugPrint("Wrong parameters used in function.");
+    }
+  }
+
+
   static Future enterAction(String parentAction, [String parentActionName, String subAction, String subActionName]) async {
     _parentActions = ["", "", ""];
+    
+    if (parentAction != null && parentActionName != null && subAction == null && subActionName == null) {
+      try {
+        debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
+        _parentActionCounter = await _platform.invokeMethod('enterActionTest', {"enterParentActionTest": parentAction, "enterParentActionNameTest": parentActionName});
+        } on PlatformException catch (e) {
+      debugPrint("Failed to create User Action: '${e.message}'.");
+    }
+    _parentActionsMap[parentAction] = _parentActionCounter;
+    } else if (parentAction != null && parentActionName == null && subAction != null && subActionName != null) {
+      try {
+        debugPrint("Sub Action value: $subAction, Sub Action name: $subActionName");
+        _subActionCounter = await _platform.invokeMethod('enterSubActionTest', {"enterSubActionTest": subAction, "enterSubActionNameTest": subActionName});
+        } on PlatformException catch (e) {
+      debugPrint("Failed to create User Action: '${e.message}'.");
+    }
+    _subActionsMap[subAction] = _subActionCounter;
+    } else {
+      debugPrint("Wrong parameters used in function.");
+    }
+
     try {
       switch(_parentActionCounter) {
         case 0: {
@@ -75,25 +178,51 @@ class Dynatrace {
 //  static Future enterAction(String parentAction, [parentActionName, subAction, subActionName]) async {
 //
 //  }
-
-  static Future leaveAction0([String parentAction, String subAction]) async {
-    int parentActionId;
-
-    if (_parentActionsMap.containsValue(parentAction)) {
-      var reversedParentActionsMap = _parentActionsMap.map((k, v) => MapEntry(v, k));
-      parentActionId = reversedParentActionsMap[parentAction];
-      try {
-        await _platform.invokeMethod('leaveAction0', {"leaveActionValues0": parentActionId});
-      } on PlatformException catch (e) {
-        debugPrint("Failed to leave User Action: '${e.message}'.");
+  static Future leaveActionTest({String parentAction, String subAction}) async {
+    int actionId;
+    if (parentAction != null && subAction == null) {
+      if (_parentActionsMap[parentAction] != null) {
+        actionId = _parentActionsMap[parentAction];
+        try {
+          await _platform.invokeMethod('leaveActionTest', {"leaveActionIdTest": actionId});
+        } on PlatformException catch (e) {
+          debugPrint("Failed to leave Parent User Action: '${e.message}'.");
+        }
+      } else if (parentAction == null && subAction != null) {
+        if (_subActionsMap[subAction] != null) {
+          actionId = _subActionsMap[subAction];
+          try {
+            await _platform.invokeMethod(
+                'leaveActionTest', {"leaveActionIdTest": actionId});
+          } on PlatformException catch (e) {
+            debugPrint("Failed to leave Sub User Action: '${e.message}'.");
+          }
+        } else {
+            debugPrint("Wrong parameters used. Please input value for parentAction (String) OR subAction (String).");
+          }
+        }
       }
-    } else {
-      parentActionId = -100;
-      debugPrint(parentActionId.toString());
-      debugPrint("There are no active parent actions with that name!");
     }
 
-  }
+
+  // static Future leaveAction0([String parentAction, String subAction]) async {
+  //   int parentActionId;
+
+  //   if (_parentActionsMap.containsValue(parentAction)) {
+  //     var reversedParentActionsMap = _parentActionsMap.map((k, v) => MapEntry(v, k));
+  //     parentActionId = reversedParentActionsMap[parentAction];
+  //     try {
+  //       await _platform.invokeMethod('leaveAction0', {"leaveActionValues0": parentActionId});
+  //     } on PlatformException catch (e) {
+  //       debugPrint("Failed to leave User Action: '${e.message}'.");
+  //     }
+  //   } else {
+  //     parentActionId = -100;
+  //     debugPrint(parentActionId.toString());
+  //     debugPrint("There are no active parent actions with that name!");
+  //   }
+
+  // }
 
   //static Future leaveAction({String parentAction, String subAction}) async {
   static Future leaveAction(String parentAction) async {

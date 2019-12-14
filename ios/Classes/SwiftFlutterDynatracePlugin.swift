@@ -170,6 +170,38 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         print(keySubAction)
         print(doubleValueSubAction)
         subActionsTest[subAction]?.reportValue(withName: keySubAction, doubleValue: doubleValueSubAction)
+        
+    case "reportEventParent":
+        let argsReportEventParentAction = call.arguments as! [String: Any]
+        let parentAction = argsReportEventParentAction["pActionRE"] as! String
+        let reportEventValue = argsReportEventParentAction["pActionREValue"]  as! String
+        print(parentAction)
+        print(reportEventValue)
+        parentActionsTest[parentAction]?.reportEvent(withName: reportEventValue)
+        
+    case "reportEventSub":
+        let argsReportEventSubAction = call.arguments as! [String: Any]
+        let subAction = argsReportEventSubAction["sActionRE"] as! String
+        let reportEventValue = argsReportEventSubAction["sActionREValue"]  as! String
+        print(subAction)
+        print(reportEventValue)
+        subActionsTest[subAction]?.reportEvent(withName: reportEventValue)
+    
+    case "reportErrorParent":
+        let argsReportErrorParentAction = call.arguments as! [String: Any]
+        let parentAction = argsReportErrorParentAction["pActionRErr"] as! String
+        let reportErrorValue = argsReportErrorParentAction["pActionRErrValue"]  as! String
+        print(parentAction)
+        print(reportErrorValue)
+        parentActionsTest[parentAction]?.reportEvent(withName: reportErrorValue)
+        
+    case "reportErrorSub":
+        let argsReportErrorSubAction = call.arguments as! [String: Any]
+        let subAction = argsReportErrorSubAction["sActionRErr"] as! String
+        let reportErrorValue = argsReportErrorSubAction["sActionRErrValue"]  as! String
+        print(subAction)
+        print(reportErrorValue)
+        subActionsTest[subAction]?.reportEvent(withName: reportErrorValue)
     
         
     case "enterActionTest":
@@ -248,6 +280,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let argsSetCrashReportingCaptureStatus = call.arguments as! [String: Any]
         let setCrashReportingCaptureStatus = argsSetCrashReportingCaptureStatus["setCrashReportingOptedIn"] as! Bool
         Dynatrace.setCrashReportingOptedIn(setCrashReportingCaptureStatus)
+        print("Capture status on?: \(DTX_StatusCode.captureOn)")
     case "isCrashReportingOptedIn":
         var isCrashReportingOptedIn: Bool
         isCrashReportingOptedIn = Dynatrace.crashReportingOptedIn()

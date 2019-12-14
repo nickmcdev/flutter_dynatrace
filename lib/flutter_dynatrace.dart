@@ -150,6 +150,46 @@ class Dynatrace {
       }
     }
   }
+
+  static Future reportEvent({String parentAction, String subAction, String event}) async {
+    if (parentAction != null && subAction == null && event != null) {
+      try {
+          debugPrint("Parent Action value: $parentAction, Event: $event");
+          await _platform.invokeMethod('reportEventParent', {"pActionRE": parentAction, "pActionREValue": event});
+        } on PlatformException catch (e) {
+          debugPrint("Failed to reportEvent with Parent User Action: '${e.message}'.");
+        }
+    } else if (parentAction == null && subAction != null && event != null) {
+      try {
+          debugPrint("Sub Action value: $subAction, Event: $event");
+          await _platform.invokeMethod('reportEventSub', {"sActionRE": parentAction, "sActionREValue": event});
+        } on PlatformException catch (e) {
+          debugPrint("Failed to reportEvent with Sub User Action: '${e.message}'.");
+        }
+    } else {
+      debugPrint("Wrong parameters used. Please add proper values for parentAction/subAction and event");
+    }
+  }
+
+  static Future reportError({String parentAction, String subAction, String error}) async {
+    if (parentAction != null && subAction == null && error != null) {
+      try {
+          debugPrint("Parent Action value: $parentAction, Event: $error");
+          await _platform.invokeMethod('reportErrorParent', {"pActionRErr": parentAction, "pActionRErrValue": error});
+        } on PlatformException catch (e) {
+          debugPrint("Failed to reportEvent with Parent User Action: '${e.message}'.");
+        }
+    } else if (parentAction == null && subAction != null && error != null) {
+      try {
+          debugPrint("Sub Action value: $subAction, Error: $error");
+          await _platform.invokeMethod('reportErrorSub', {"sActionRErr": parentAction, "sActionRErrValue": error});
+        } on PlatformException catch (e) {
+          debugPrint("Failed to reportError with Sub User Action: '${e.message}'.");
+        }
+    } else {
+      debugPrint("Wrong parameters used. Please add proper values for parentAction/subAction and error");
+    }
+  }
     
 
 
@@ -634,48 +674,48 @@ class Dynatrace {
     }
   }
 
-  static Future reportError(String parentAction, String key, int value) async {
-    int parentActionId;
-    if (_parentActions.indexOf(parentAction) != -1) {
-      parentActionId = _parentActions.indexOf(parentAction);
-    } else {
-      debugPrint("There are no active parent actions with that name!");
-    }
-    try {
-      switch(parentActionId) {
-        case 0: {
-          List<String> reportErrorValues = [key, value.toString()];
-          await _platform.invokeMethod('reportError0', {"reportErrorValues0": reportErrorValues});
-          debugPrint("Parent Action value: $parentAction, Key: $key, Value: $value");
-          reportErrorValues.clear();
-        }
-        break;
+  // static Future reportError(String parentAction, String key, int value) async {
+  //   int parentActionId;
+  //   if (_parentActions.indexOf(parentAction) != -1) {
+  //     parentActionId = _parentActions.indexOf(parentAction);
+  //   } else {
+  //     debugPrint("There are no active parent actions with that name!");
+  //   }
+  //   try {
+  //     switch(parentActionId) {
+  //       case 0: {
+  //         List<String> reportErrorValues = [key, value.toString()];
+  //         await _platform.invokeMethod('reportError0', {"reportErrorValues0": reportErrorValues});
+  //         debugPrint("Parent Action value: $parentAction, Key: $key, Value: $value");
+  //         reportErrorValues.clear();
+  //       }
+  //       break;
 
-        case 1: {
-          List<String> reportErrorValues = [key, value.toString()];
-          await _platform.invokeMethod('reportError1', {"reportErrorValues1": reportErrorValues});
-          debugPrint("Parent Action value: $parentAction, Key: $key, Value: $value");
-          reportErrorValues.clear();
-        }
-        break;
+  //       case 1: {
+  //         List<String> reportErrorValues = [key, value.toString()];
+  //         await _platform.invokeMethod('reportError1', {"reportErrorValues1": reportErrorValues});
+  //         debugPrint("Parent Action value: $parentAction, Key: $key, Value: $value");
+  //         reportErrorValues.clear();
+  //       }
+  //       break;
 
-        case 2: {
-          List<String> reportErrorValues = [key, value.toString()];
-          await _platform.invokeMethod('reportError2', {"reportErrorValues2": reportErrorValues});
-          debugPrint("Parent Action value: $parentAction, Key: $key, Value: $value");
-          reportErrorValues.clear();
-        }
-        break;
+  //       case 2: {
+  //         List<String> reportErrorValues = [key, value.toString()];
+  //         await _platform.invokeMethod('reportError2', {"reportErrorValues2": reportErrorValues});
+  //         debugPrint("Parent Action value: $parentAction, Key: $key, Value: $value");
+  //         reportErrorValues.clear();
+  //       }
+  //       break;
 
-        default: {
-          debugPrint("parentActionCounter is 3 or greater");
-        }
-        break;
-      }
-    } on PlatformException catch (e) {
-      debugPrint("Failed to create User Action: '${e.message}'.");
-    }
-  }
+  //       default: {
+  //         debugPrint("parentActionCounter is 3 or greater");
+  //       }
+  //       break;
+  //     }
+  //   } on PlatformException catch (e) {
+  //     debugPrint("Failed to create User Action: '${e.message}'.");
+  //   }
+  // }
 
   static Future reportErrorThrowable(String parentAction, String errorName, String throwable) async {
     int parentActionId;

@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="vv" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b0d5fb68-535e-42d9-bff4-c2c7fb2a7c4b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/ios/Classes/SwiftFlutterDynatracePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/ios/Classes/SwiftFlutterDynatracePlugin.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/lib/flutter_dynatrace.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/lib/flutter_dynatrace.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftFlutterDynatracePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftFlutterDynatracePlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/flutter_dynatrace.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_dynatrace.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -35,7 +41,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/flutter_dynatrace.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
+            <state relative-caret-position="-637">
               <caret line="23" selection-start-line="23" selection-end-line="23" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -91,11 +97,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="-3254" />
-    <option name="y" value="-1198" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="38" />
+    <option name="y" value="23" />
     <option name="width" value="1452" />
-    <option name="height" value="1027" />
+    <option name="height" value="982" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -194,7 +200,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-3254" y="-1198" width="1452" height="1027" extended-state="1" />
+    <frame x="38" y="23" width="1452" height="982" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49844238" visible="true" weight="0.29007092" />
@@ -207,10 +213,10 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" sideWeight="0.50155765" side_tool="true" weight="0.24969475" />
       <window_info anchor="bottom" id="Dart Analysis" order="0" sideWeight="0.4993895" weight="0.32941177" />
-      <window_info active="true" anchor="bottom" id="Run" order="1" sideWeight="0.497558" visible="true" weight="0.4395722" />
+      <window_info anchor="bottom" id="Run" order="1" sideWeight="0.497558" weight="0.4395722" />
       <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.4993895" weight="0.32941177" />
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Logcat" order="4" sideWeight="0.498779" weight="0.5269663" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="4" sideWeight="0.498779" visible="true" weight="0.23258427" />
       <window_info anchor="bottom" id="Debug" order="5" weight="0.50695187" />
       <window_info anchor="bottom" id="Terminal" order="6" weight="0.32941177" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.502442" side_tool="true" weight="0.31336898" />
@@ -280,7 +286,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/flutter_dynatrace.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
+        <state relative-caret-position="-637">
           <caret line="23" selection-start-line="23" selection-end-line="23" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />

@@ -43,8 +43,8 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
 
   int parentActionCountTest = 0;
   int subActionCountTest = 0;
-  Map<Integer, DTXAction> parentActionsMap = new HashMap();
-  Map<Integer, DTXAction> subActionsMap = new HashMap();
+  Map<String, DTXAction> parentActionsMap = new HashMap();
+  Map<String, DTXAction> subActionsMap = new HashMap();
   ArrayList<DTXAction> parentActionsListTest = new ArrayList<DTXAction>();
   ArrayList<DTXAction> subActionsListTest = new ArrayList<DTXAction>();
 
@@ -114,19 +114,34 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   @Override
   public void onMethodCall(MethodCall call, Result result) {
     switch (call.method) {
-    case "enterActionTest":
-      String enterActionTest = call.argument("enterParentActionTest");
-      String enterActionNameTest = call.argument("enterParentActionNameTest");
-      Log.d("enterAction", "Parent Action: " + enterActionTest);
-      Log.d("enterAction", "Parent Action name: " + enterActionNameTest);
-      parentActionsListTest.add(Dynatrace.enterAction(enterActionNameTest));
-      parentActionsMap.put(parentActionCountTest, parentActionsListTest.get(parentActionCountTest));
-      result.success(parentActionCountTest);
+    case "enterTest":
+      String parentAction = call.argument("enterParentActionTest");
+      String parentActionName = call.argument("enterParentActionNameTest");
+      Log.d("enterAction", "Parent Action: " + parentAction);
+      Log.d("enterAction", "Parent Action name: " + parentActionName);
+      parentActionsListTest.add(Dynatrace.enterAction(parentAction));
+      parentActionsMap.put(parentAction, parentActionsListTest.get(parentActionCountTest));
       parentActionCountTest++;
       break;
-    case "leaveActionTest":
-      int parentActionIdTest = call.argument("leaveActionIdTest");
-      parentActionsMap.get(parentActionIdTest).leaveAction();
+    case "leaveTest":
+      String parentActionLeave = call.argument("leaveActionIdTest");
+      parentActionsMap.get(parentActionLeave).leaveAction();
+t
+    case "enterSubTest":
+      String subAction = call.argument("enterSubActionTest");
+      String subActionName = call.argument("enterSubActionNameTest");
+      String parentActionSub = call.argument("enterSubActionParentAction");
+      Log.d("enterAction", "Sub Action: " + subAction);
+      Log.d("enterAction", "Sub Action name: " + subActionName);
+      subActionsListTest.add(Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
+      subActionsMap.put(subAction, subActionsListTest.get(subActionCountTest));
+      subActionCountTest++;
+      break;
+
+    case "leaveSubTest":
+      String subActionLeave = call.argument("leaveActionIdTest");
+      subActionsMap.get(subActionLeave).leaveAction();
+
       break;
     case "enterAction0":
       //String parentAction = call.argument("enterActionValues");

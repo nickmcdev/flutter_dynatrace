@@ -159,7 +159,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         print(subAction)
         print(keySubAction)
         print(intValueSubAction)
-        parentActionsTest[subAction]?.reportValue(withName: keySubAction, intValue: intValueSubAction)
+        subActionsTest[subAction]?.reportValue(withName: keySubAction, intValue: intValueSubAction)
         
     case "reportDoubleSubTest":
         let argsReportDoubleSubAction = call.arguments as! [String: Any]
@@ -169,7 +169,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         print(subAction)
         print(keySubAction)
         print(doubleValueSubAction)
-        parentActionsTest[subAction]?.reportValue(withName: keySubAction, doubleValue: doubleValueSubAction)
+        subActionsTest[subAction]?.reportValue(withName: keySubAction, doubleValue: doubleValueSubAction)
     
         
     case "enterActionTest":

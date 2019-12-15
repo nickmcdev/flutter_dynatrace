@@ -119,104 +119,100 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       String parentActionName = call.argument("enterParentActionNameTest");
       Log.d("enterAction", "Parent Action: " + parentAction);
       Log.d("enterAction", "Parent Action name: " + parentActionName);
-      parentActionsListTest.add(Dynatrace.enterAction(parentAction));
+      parentActionsListTest.add(Dynatrace.enterAction(parentActionName));
       parentActionsMap.put(parentAction, parentActionsListTest.get(parentActionCountTest));
       parentActionCountTest++;
       break;
+
     case "leaveTest":
-      String parentActionLeave = call.argument("leaveActionIdTest");
+      String parentActionLeave = call.argument("leaveParentActionTest");
       parentActionsMap.get(parentActionLeave).leaveAction();
-t
-    case "enterSubTest":
-      String subAction = call.argument("enterSubActionTest");
-      String subActionName = call.argument("enterSubActionNameTest");
-      String parentActionSub = call.argument("enterSubActionParentAction");
-      Log.d("enterAction", "Sub Action: " + subAction);
-      Log.d("enterAction", "Sub Action name: " + subActionName);
-      subActionsListTest.add(Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
-      subActionsMap.put(subAction, subActionsListTest.get(subActionCountTest));
-      subActionCountTest++;
+
+//    case "subTest":
+//      String subAction = call.argument("enterSubActionTest");
+//      String subActionName = call.argument("enterSubActionNameTest");
+//      String parentActionSub = call.argument("enterSubActionParentAction");
+//      Log.d("enterSubAction", "Sub Action: " + subAction);
+//      Log.d("enterSubAction", "Sub Action name: " + subActionName);
+//      subActionsListTest.add(Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
+//      subActionsMap.put(subAction, subActionsListTest.get(subActionCountTest));
+//      Log.d("enterSubAction", "subActionMap Value: " + subActionsListTest.get(subActionCountTest).toString());
+//      Log.d("enterSubAction", "Sub Action Count: " + subActionCountTest);
+//      subActionCountTest++;
+//      Log.d("enterSubAction", "Sub Action Count: " + subActionCountTest);
+//      break;
+
+//    case "leaveSubTest":
+//      String subActionLeave = call.argument("leaveSubActionTest");
+//      Log.d("leaveSubAction", "Sub Action: " + subActionLeave);
+//      subActionsMap.get(subActionLeave).leaveAction();
+
       break;
 
-    case "leaveSubTest":
-      String subActionLeave = call.argument("leaveActionIdTest");
-      subActionsMap.get(subActionLeave).leaveAction();
-
-      break;
-    case "enterAction0":
-      //String parentAction = call.argument("enterActionValues");
-      parentActionName0 = call.argument("enterActionValues0");
-      parentAction0 = Dynatrace.enterAction(parentActionName0);
-      //parentActionsList.add(Dynatrace.enterAction(parentAction));
-      //result.success(parentActionsList.size() - 1);
-      //Log.d("enterAction", "Parent Action ID: " + (parentActionsList.size() - 1));
-      parentActionCount++;
+    case "reportStringParentTest":
+      String parentActionRS = call.argument("pActionRSTest");
+      String parentActionRSKey = call.argument("pActionRSKeyTest");
+      String parentActionRSValue = call.argument("pActionRSValueTest");
+      parentActionsMap.get(parentActionRS).reportValue(parentActionRSKey, parentActionRSValue);
       break;
 
-    case "enterAction1":
-      parentActionName1 = call.argument("enterActionValues1");
-      parentAction1 = Dynatrace.enterAction(parentActionName1);
-      Log.d("enterAction", "Action created!");
+    case "reportIntParentTest":
+      String parentActionRI = call.argument("pActionRITest");
+      String parentActionRIKey = call.argument("pActionRIKeyTest");
+      int parentActionRIValue = call.argument("pActionRIValueTest");
+      parentActionsMap.get(parentActionRI).reportValue(parentActionRIKey, parentActionRIValue);
       break;
 
-    case "enterAction2":
-      parentActionName2 = call.argument("enterActionValues2");
-      parentAction2 = Dynatrace.enterAction(parentActionName2);
-      Log.d("enterAction", "Action created!");
+    case "reportDoubleParentTest":
+      String parentActionRD = call.argument("pActionRDTest");
+      String parentActionRDKey = call.argument("pActionRDKeyTest");
+      double parentActionRDValue = call.argument("pActionRDValueTest");
+      parentActionsMap.get(parentActionRD).reportValue(parentActionRDKey, parentActionRDValue);
       break;
 
-    case "enterSubAction0":
-      String subActionName0 = call.argument("enterSubActionValues0");
-      subActions0.add(Dynatrace.enterAction(subActionName0, parentAction0));
-      Log.d("enterSubAction", "Action created! - List: " + subActions0.size() + " " + subActions0.toString());
+    case "reportEventParent":
+      String parentActionRE = call.argument("pActionRE");
+      String parentActionREventValue = call.argument("pActionREValue");
+      parentActionsMap.get(parentActionRE).reportEvent(parentActionREventValue);
       break;
 
-    case "enterSubAction1":
-      String subActionName1 = call.argument("enterSubActionValues1");
-      subActions1.add(Dynatrace.enterAction(subActionName1, parentAction1));
-      Log.d("enterSubAction", "Action created! - List: " + subActions0.size() + " " + subActions0.toString());
+    case "reportErrorParent":
+      String parentActionRErr = call.argument("pActionRErr");
+      String parentActionRErrValue = call.argument("pActionRErrValue");
+      parentActionsMap.get(parentActionRErr).reportEvent(parentActionRErrValue);
       break;
 
-    case "enterSubAction2":
-      String subActionName2 = call.argument("enterSubActionValues2");
-      subActions2.add(Dynatrace.enterAction(subActionName2, parentAction2));
-      Log.d("enterSubAction", "Action created! - List: " + subActions0.size() + " " + subActions0.toString());
+    case "reportStringSubTest":
+      String subActionRS = call.argument("sActionRSTest");
+      String subActionRSKey = call.argument("sActionRSKeyTest");
+      String subActionRSValue = call.argument("sActionRSValueTest");
+      subActionsMap.get(subActionRS).reportValue(subActionRSKey, subActionRSValue);
       break;
 
-    case "leaveAction0":
-      Log.d("leaveAction", "Action left!");
-      parentAction0.leaveAction();
-      subActions0.clear();
+    case "reportIntSubTest":
+      String subActionRI = call.argument("sActionRITest");
+      String subActionRIKey = call.argument("sActionRIKeyTest");
+      int subActionRIValue = call.argument("sActionRIValueTest");
+      subActionsMap.get(subActionRI).reportValue(subActionRIKey, subActionRIValue);
       break;
 
-    case "leaveAction1":
-      Log.d("leaveAction", "Action left!");
-      parentAction1.leaveAction();
-      subActions1.clear();
+    case "reportDoubleSubTest":
+      String subActionRD = call.argument("sActionRDTest");
+      String subActionRDKey = call.argument("sActionRDKeyTest");
+      double subActionRDValue = call.argument("sActionRDValueTest");
+      subActionsMap.get(subActionRD).reportValue(subActionRDKey, subActionRDValue);
       break;
 
-    case "leaveAction2":
-      Log.d("leaveAction", "Action left!");
-      parentAction2.leaveAction();
-      subActions2.clear();
+    case "reportEventSub":
+      String subActionRE = call.argument("sActionRE");
+      String subActionREventValue = call.argument("sActionREValue");
+      subActionsMap.get(subActionRE).reportEvent(subActionREventValue);
       break;
 
-    case "leaveSubAction0":
-      Log.d("leaveSubAction", "Action left! - List: " + subActions0.size() + " " + subActions0.toString());
-      int idSubAction0 = call.argument("leaveSubActionValues0");
-      subActions0.get(idSubAction0).leaveAction();
-      break;
-
-    case "leaveSubAction1":
-      Log.d("leaveSubAction", "Action left! - List: " + subActions0.size() + " " + subActions0.toString());
-      int idSubAction1 = call.argument("leaveSubActionValues1");
-      subActions1.get(idSubAction1).leaveAction();
-      break;
-
-    case "leaveSubAction2":
-      Log.d("leaveSubAction", "Action left! - List: " + subActions0.size() + " " + subActions0.toString());
-      int idSubAction2 = call.argument("leaveSubActionValues2");
-      subActions2.get(idSubAction2).leaveAction();
+    case "reportErrorSub":
+      String subActionRErr = call.argument("sActionRErr");
+      String subActionRErrValue = call.argument("sActionRErrValue");
+      parentActionsMap.get(subActionRErr).reportEvent(subActionRErrValue);
       break;
 
     case "webUserActionEnter":

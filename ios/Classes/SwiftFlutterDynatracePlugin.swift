@@ -74,13 +74,13 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         self.parentActionList.append(DTXAction.enter(withName: parentActionName))
         print("ActionId: \(self.parentActionId)")
         self.parentActionsTest[parentAction] = self.parentActionList[parentActionId]
-        print(parentActionId)
+        print("Parent Action Id: \(parentActionId)")
         self.parentActionId += 1
-        print(parentActionId)
+        print("Parent Action Id: \(parentActionId)")
         print(parentActionName)
         print(parentAction)
         
-    case "enterSubTest":
+    case "subTest":
         let argsEnterSubAction = call.arguments as! [String: Any]
         let subAction = argsEnterSubAction["enterSubActionTest"] as! String
         let subActionName = argsEnterSubAction["enterSubActionNameTest"]  as! String
@@ -88,14 +88,14 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         self.subActionList.append(DTXAction.enter(withName: subActionName, parentAction: parentActionsTest[parentAction]))
         print("ActionId: \(self.subActionId)")
         self.subActionsTest[subAction] = self.subActionList[subActionId]
-        print(subActionId)
+        print("Sub Action Id: \(subActionId)")
         self.subActionId += 1
-        print(subActionId)
+        print("Sub Action Id: \(subActionId)")
         print(subActionName)
         print(subAction)
     case "leaveTest":
         let argsLeaveAction = call.arguments as! [String: Any]
-        let parentAction = argsLeaveAction["leaveActionIdTest"] as! String
+        let parentAction = argsLeaveAction["leaveParentActionTest"] as! String
         parentActionsTest[parentAction]?.leave()
         print(parentActionsTest.keys)
         //parentActionsTest.removeValue(forKey: parentAction)
@@ -104,7 +104,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         }
     case "leaveSubTest":
         let argsLeaveAction = call.arguments as! [String: Any]
-        let subAction = argsLeaveAction["leaveActionIdTest"] as! String
+        let subAction = argsLeaveAction["leaveSubActionTest"] as! String
         subActionsTest[subAction]?.leave()
         print(subActionsTest.keys)
         //parentActionsTest.removeValue(forKey: parentAction)

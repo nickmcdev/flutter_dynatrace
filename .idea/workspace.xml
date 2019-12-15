@@ -6,14 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b0d5fb68-535e-42d9-bff4-c2c7fb2a7c4b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/android/src/main/java/dev/nickmc/flutter_dynatrace/FlutterDynatracePlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/ios/Classes/SwiftFlutterDynatracePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/ios/Classes/SwiftFlutterDynatracePlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/lib/flutter_dynatrace.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_dynatrace/lib/flutter_dynatrace.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/SwiftFlutterDynatracePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/SwiftFlutterDynatracePlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_dynatrace.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_dynatrace.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -61,8 +55,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="150" column="92" selection-start-line="150" selection-start-column="92" selection-end-line="150" selection-end-column="92" />
+            <state relative-caret-position="2355">
+              <caret line="157" column="4" selection-start-line="157" selection-start-column="4" selection-end-line="157" selection-end-column="4" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -96,8 +90,8 @@
         <option value="$PROJECT_DIR$/test/flutter_dynatrace_test.dart" />
         <option value="$PROJECT_DIR$/android/build.gradle" />
         <option value="$PROJECT_DIR$/example/ios/Runner/Info.plist" />
-        <option value="$PROJECT_DIR$/example/lib/main.dart" />
         <option value="$PROJECT_DIR$/lib/flutter_dynatrace.dart" />
+        <option value="$PROJECT_DIR$/example/lib/main.dart" />
       </list>
     </option>
   </component>
@@ -290,8 +284,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/example/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="150" column="92" selection-start-line="150" selection-start-column="92" selection-end-line="150" selection-end-column="92" />
+        <state relative-caret-position="2355">
+          <caret line="157" column="4" selection-start-line="157" selection-start-column="4" selection-end-line="157" selection-end-column="4" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>

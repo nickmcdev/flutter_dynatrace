@@ -255,149 +255,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       }
       break;
 
-    case "reportString0":
-      reportStringValues = call.argument("reportStringValues0");
-      parentAction0.reportValue(reportStringValues.get(0), reportStringValues.get(1));
-      reportStringValues.clear();
-      break;
-
-    case "reportString1":
-      reportStringValues = call.argument("reportStringValues1");
-      parentAction1.reportValue(reportStringValues.get(0), reportStringValues.get(1));
-      reportStringValues.clear();
-      break;
-
-    case "reportString2":
-      reportStringValues = call.argument("reportStringValues2");
-      parentAction2.reportValue(reportStringValues.get(0), reportStringValues.get(1));
-      reportStringValues.clear();
-      break;
-
-    case "reportInt0":
-      reportIntValues = call.argument("reportIntValues0");
-      parentAction0.reportValue(reportIntValues.get(0), Integer.parseInt(reportIntValues.get(1)));
-      reportIntValues.clear();
-      break;
-
-    case "reportInt1":
-      reportIntValues = call.argument("reportIntValues1");
-      parentAction1.reportValue(reportIntValues.get(0), Integer.parseInt(reportIntValues.get(1)));
-      reportIntValues.clear();
-      break;
-
-    case "reportInt2":
-      reportIntValues = call.argument("reportIntValues2");
-      parentAction2.reportValue(reportIntValues.get(0), Integer.parseInt(reportIntValues.get(1)));
-      reportIntValues.clear();
-      break;
-
-    case "reportDouble0":
-      reportDoubleValues = call.argument("reportDoubleValues0");
-      parentAction0.reportValue(reportDoubleValues.get(0), Double.parseDouble(reportDoubleValues.get(1)));
-      reportDoubleValues.clear();
-      break;
-
-    case "reportDouble1":
-      reportDoubleValues = call.argument("reportDoubleValues1");
-      parentAction1.reportValue(reportDoubleValues.get(0), Double.parseDouble(reportDoubleValues.get(1)));
-      reportDoubleValues.clear();
-      break;
-
-    case "reportDouble2":
-      reportDoubleValues = call.argument("reportDoubleValues2");
-      parentAction2.reportValue(reportDoubleValues.get(0), Double.parseDouble(reportDoubleValues.get(1)));
-      reportDoubleValues.clear();
-      break;
-
-    // case "reportEvent0":
-    //   reportEventValue = call.argument("reportEventValue0");
-    //   parentAction0.reportEvent(reportEventValue);
-    //   break;
-
-    // case "reportEvent1":
-    //   reportEventValue = call.argument("reportEventValue1");
-    //   parentAction1.reportEvent(reportEventValue);
-    //   break;
-
-    // case "reportEvent2":
-    //   reportEventValue = call.argument("reportEventValue2");
-    //   parentAction2.reportEvent(reportEventValue);
-    //   break;
-
-    // case "reportErrorCode0":
-    //   reportErrorValues = call.argument("reportErrorValues0");
-    //   parentAction0.reportError(reportErrorValues.get(0), Integer.parseInt(reportErrorValues.get(1)));
-    //   reportErrorValues.clear();
-    //   break;
-
-    // case "reportErrorCode1":
-    //   reportErrorValues = call.argument("reportErrorValues1");
-    //   parentAction1.reportError(reportErrorValues.get(0), Integer.parseInt(reportErrorValues.get(1)));
-    //   reportErrorValues.clear();
-    //   break;
-
-    // case "reportErrorCode2":
-    //   reportErrorValues = call.argument("reportErrorValues2");
-    //   parentAction2.reportError(reportErrorValues.get(0), Integer.parseInt(reportErrorValues.get(1)));
-    //   reportErrorValues.clear();
-    //   break;
-
-    // case "reportErrorThrowable0":
-    //   reportErrorThrowableValues = call.argument("reportErrorThrowableValues0");
-    //   parentAction0.reportError(reportErrorValues.get(0), reportErrorThrowableValues.get(1));
-    //   reportErrorThrowableValues.clear();
-    //   break;
-
-    // case "reportErrorThrowable1":
-    //   reportErrorThrowableValues = call.argument("reportErrorThrowableValues1");
-    //   parentAction1.reportError(reportErrorValues.get(0), reportErrorThrowableValues.get(1));
-    //   reportErrorThrowableValues.clear();
-    //   break;
-
-    // case "reportErrorThrowable2":
-    //   reportErrorThrowableValues = call.argument("reportErrorThrowableValues2");
-    //   parentAction2.reportError(reportErrorValues.get(0), reportErrorThrowableValues.get(1));
-    //   reportErrorThrowableValues.clear();
-    //   break;
-
-    // case "reportErrorCode":
-    //   reportErrorValues = call.argument("reportErrorValues");
-    //   Dynatrace.reportError(reportErrorValues.get(0), Integer.parseInt(reportErrorValues.get(1)));
-    //   reportErrorValues.clear();
-    //   break;
-
-    // case "reportErrorThrowable":
-    //   reportErrorThrowableValues = call.argument("reportErrorThrowableValues");
-    //   Dynatrace.reportError(reportErrorValues.get(0), reportErrorThrowableValues.get(1));
-    //   reportErrorThrowableValues.clear();
-    //   break;
-
-    // case "reportErrorCode":
-    //   //errorName = call.argument("reportErrorName");
-    //   errorName = "TestError";
-    //   errorValue = call.argument("reportErrorValue");
-    //   parentAction0.reportError(errorName, errorValue);
-    //   break;
-
-    // case "reportErrorThrowable":
-    //   //errorName = call.argument("reportErrorNameThrowable");
-    //   errorName = "TestError";
-    //   errorThrowable = call.argument("reportErrorThrowable");
-    //   parentAction0.reportError(errorName, errorThrowable);
-    //   break;
-
-    // case "reportErrorCodeNoAction":
-    //   //errorName = call.argument("reportErrorNameNoAction");
-    //   errorName = "TestError";
-    //   errorValue = call.argument("reportErrorValueNoAction");
-    //   break;
-
-    // case "reportErrorThrowableNoAction":
-    //   //errorName = call.argument("reportErrorNameThrowableNoAction");
-    //   errorName = "TestError";
-    //   errorThrowable = call.argument("reportErrorThrowableNoAction");
-    //   break;
-
     case "endVisit":
       Dynatrace.endVisit();
       result.success("User session ended!");
@@ -474,7 +331,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
          Log.d("Dyna", "Capture status = " + captureStatusStr);
          result.success(captureStatusStr);
        }
-
        break;
 
      case "isCrashReportingOptedIn":
@@ -489,7 +345,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
          Log.d("Dyna", "Crash report capture status = " + crashReportStatusStr);
          result.success(crashReportStatusStr);
        }
-
        break;
 
     case "startAndroidAgent":

@@ -101,11 +101,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       break;
       case 'Single Action': {
         var now = new DateTime.now();
-        // Dynatrace action1 = Dynatrace();
-        // Dynatrace action2 = Dynatrace();
-        // Dynatrace action3 = Dynatrace();
-        // Dynatrace action4 = Dynatrace();
-        // Dynatrace action5 = Dynatrace();
         Dynatrace.enterTest(parentAction: "testAction", parentActionName: "Test Action1!");
         Dynatrace.reportValue(parentAction: "testAction", key: "reportString", stringValue: "It works!");
         Dynatrace.reportValue(parentAction: "testAction", key: "reportInt", intValue: 1337);
@@ -152,119 +147,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
         Dynatrace.leaveTest(parentAction: "testAction4");
         Dynatrace.leaveTest(parentAction: "testAction5");
-      
-        //Dynatrace.enterAction(actions[0], options[1]);
-        //Dynatrace.enterAction0("currentTime0", "Single Action");
-        // Dynatrace.enterActionTest("testAction", parentActionName: "Test Action1!");
-        // Dynatrace.enterActionTest("testAction2", parentActionName: "Test Action2!");
-        // Dynatrace.enterActionTest("testAction3", parentActionName: "Test Action3!");
-        //Dynatrace.enterActionTest("testAction", subAction: "testSub", subActionName: "Test Sub Action1");
-        //Dynatrace.enterActionTest("testAction", subAction: "testSub2", subActionName: "Test Sub Action2");
-        //Dynatrace.leaveActionTest(subAction: "testSub");
-        //Dynatrace.leaveActionTest(subAction: "testSub2");
-        // Dynatrace.leaveActionTest(parentAction: "testAction");
-        // Dynatrace.leaveActionTest(parentAction: "testAction2");
-        // Dynatrace.leaveActionTest(parentAction: "testAction3");
-//        Dynatrace.enterSubAction("currentTime0", "sub0", "Test Sub Action 0!");
-//        Dynatrace.leaveSubAction("currentTime0", "sub0");
-//        Dynatrace.enterSubAction("currentTime0", "sub1", "Test Sub Action 1!");
-//        Dynatrace.leaveSubAction("currentTime0", "sub1");
-        //Dynatrace.leaveAction0("currentTime0");
-        //Dynatrace.enterAction("currentTime1", "Test 1 - Current time: $now");
-        // Dynatrace.enterSubAction("currentTime1", "sub0", "Test Sub Action 0!");
-        // Dynatrace.leaveSubAction("currentTime1", "sub0");
-        // Dynatrace.enterSubAction("currentTime1", "sub1", "Test Sub Action 1!");
-        // Dynatrace.leaveSubAction("currentTime1", "sub1");
-//        Dynatrace.leaveAction("currentTime1");
-//        Dynatrace.enterAction("currentTime2", "Test 2 - Current time: $now");
-//        // Dynatrace.enterSubAction("currentTime2", "sub0", "Test Sub Action 0!");
-        // Dynatrace.leaveSubAction("currentTime2", "sub0");
-        // Dynatrace.enterSubAction("currentTime2", "sub1", "Test Sub Action 1!");
-        // Dynatrace.leaveSubAction("currentTime2", "sub1");
-//        Dynatrace.leaveAction("currentTime2");
-//        Dynatrace.enterAction("currentTime3", "4th!");
-//        Dynatrace.leaveAction("currentTime3");
+
       }
       break;
       case 'Sub Action': {
         var now = new DateTime.now();
-        
-        // Dynatrace.enterAction("currentTime0", "Test 0 - Current time: $now");
-        // Dynatrace.reportValueString("currentTime0", "reportString0", "Here!");
-        // Dynatrace.reportValueInt("currentTime0", "reportInt0", 1337);
-        // Dynatrace.reportValueDouble("currentTime0", "reportDouble0", 13.37);
-        // Dynatrace.enterSubAction("currentTime0", "sub0", "Test Sub Action 0!");
-        // Dynatrace.leaveSubAction("currentTime0", "sub0");
-        // Dynatrace.enterSubAction("currentTime0", "sub1", "Test Sub Action 1!");
-        // Dynatrace.leaveSubAction("currentTime0", "sub1");
-        // Dynatrace.enterSubAction("currentTime0", "sub2", "Test Sub Action 2!");
-        // Dynatrace.leaveSubAction("currentTime0", "sub2");
-        // Dynatrace.enterSubAction("currentTime0", "sub3", "Test Sub Action 3!");
-        // Dynatrace.leaveSubAction("currentTime0", "sub3");
-        // Dynatrace.enterSubAction("currentTime0", "sub4", "Test Sub Action 4!");
-        // Dynatrace.leaveSubAction("currentTime0", "sub4");
-        // Dynatrace.reportValueString("currentTime0", "reportString1", "Here!");
-        // Dynatrace.reportValueInt("currentTime0", "reportInt1", 1337);
-        // Dynatrace.reportValueDouble("currentTime0", "reportDouble1", 13.37);
-        // Dynatrace.leaveAction("currentTime0");
 
-
-
-
-
-        // Dynatrace.enterAction("currentTime1", "Test 1 - Current time: $now");
-        // Dynatrace.reportValueString("currentTime1", "reportString0", "Here!");
-        // Dynatrace.reportValueInt("currentTime1", "reportInt1", 1337);
-        // Dynatrace.reportValueDouble("currentTime1", "reportDouble1", 13.37);
-        // Dynatrace.enterSubAction("currentTime1", "sub0", "Test Sub Action 0!");
-        // Dynatrace.leaveSubAction("sub0");
-        // Dynatrace.enterSubAction("currentTime1", "sub1", "Test Sub Action 1!");
-        // Dynatrace.leaveSubAction("sub1");
-        // Dynatrace.reportValueString("currentTime1", "reportString1", "Here!");
-        // Dynatrace.reportValueInt("currentTime1", "reportInt1", 1337);
-        // Dynatrace.reportValueDouble("currentTime1", "reportDouble1", 13.37);
-        // Dynatrace.leaveAction("currentTime1");
-        // Dynatrace.enterAction("currentTime2", "Test 2 - Current time: $now");
-        // Dynatrace.reportValueString("currentTime2", "reportString0", "Here!");
-        // Dynatrace.reportValueInt("currentTime2", "reportInt2", 1337);
-        // Dynatrace.reportValueDouble("currentTime2", "reportDouble2", 13.37);
-        // Dynatrace.enterSubAction("currentTime2", "sub0", "Test Sub Action 0!");
-        // Dynatrace.leaveSubAction("sub0");
-        // Dynatrace.enterSubAction("currentTime2", "sub1", "Test Sub Action 1!");
-        // Dynatrace.leaveSubAction("sub1");
-        // Dynatrace.reportValueString("currentTime2", "reportString1", "Here!");
-        // Dynatrace.reportValueInt("currentTime2", "reportInt2", 1337);
-        // Dynatrace.reportValueDouble("currentTime2", "reportDouble2", 13.37);
-        // Dynatrace.leaveAction("currentTime2");
-
-
-        //   var now = new DateTime.now();
-        //   var nowSub = new DateTime.now();
-        //   Dynatrace.enterAction("currentTime", "Current time: $now");
-        //   Dynatrace.enterSubAction("currentTime", parentActionName, subAction, subActionName)
-        //   Dynatrace.leaveAction("currentTime");
       }
       break;
-    // case 'Action with reportString': {
-    //   Dynatrace.enterAction("reportStringTime", "Current time - report : $now");
-    //   Dynatrace.leaveAction("reportStringTime");
-    // }
-    // break;
-    // case 'Action with reportInt': {
-    //   Dynatrace.enterAction("reportStringTime", "Current time - report : $now");
-    //   Dynatrace.leaveAction("reportStringTime");
-    // }
-    // break;
-    // case 'Action with reportDouble': {
-    //   Dynatrace.enterAction("reportStringTime", "Current time - report : $now");
-    //   Dynatrace.leaveAction("reportStringTime");
-    // }
-    // break;
-    // case 'Action with reportEvent': {
-    //   Dynatrace.enterAction("reportStringTime", "Current time - report : $now");
-    //   Dynatrace.leaveAction("reportStringTime");
-    // }
-    // break;
+    
       case 'Web Action': {
         String url = "https://jsonplaceholder.typicode.com/todos/1";
         Dynatrace.webUserAction(url, "GET");

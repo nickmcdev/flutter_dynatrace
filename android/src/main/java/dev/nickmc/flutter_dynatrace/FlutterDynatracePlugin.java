@@ -34,12 +34,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   String beaconUrl = "https://bf96722syz.bf.dynatrace.com/mbeacon";
   boolean withDebugLogging = true;
 
-  // User Action
-  int parentActionCount = 0;
-  int subActionCount = 0;
-
-
-
 
   int parentActionCountTest = 0;
   int subActionCountTest = 0;
@@ -48,50 +42,18 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   ArrayList<DTXAction> parentActionsListTest = new ArrayList<DTXAction>();
   ArrayList<DTXAction> subActionsListTest = new ArrayList<DTXAction>();
 
-  //String actionLeaveValue = "";
-
-  Map<Integer, DTXAction> parentActions;
-  DTXAction parentAction0, parentAction1, parentAction2;
-  String parentActionName0, parentActionName1, parentActionName2;
-  DTXAction subAction;
   DTXAction batteryLevel;
   DTXAction connectionType;
-  ArrayList<DTXAction> parentActionsList = new ArrayList<DTXAction>();
-  ArrayList<DTXAction> subActionsList = new ArrayList<DTXAction>();
-  ArrayList<DTXAction> subActions0 = new ArrayList<DTXAction>();
-  ArrayList<DTXAction> subActions1 = new ArrayList<DTXAction>();
-  ArrayList<DTXAction> subActions2 = new ArrayList<DTXAction>();
-  ArrayList<String> parentActionValues = new ArrayList<String>();
-  ArrayList<String> subActionValues = new ArrayList<String>();
-
-
-  // reportValue
-  ArrayList<String> reportStringValues = new ArrayList<String>();
-  ArrayList<String> reportIntValues = new ArrayList<String>();
-  ArrayList<String> reportDoubleValues = new ArrayList<String>();
-  ArrayList<String> reportEventValues = new ArrayList<String>();
-  ArrayList<String> reportErrorValues = new ArrayList<String>();
-  ArrayList<String> reportErrorThrowableValues = new ArrayList<String>();
 
   // startupAgent
   ArrayList<String> startupAgentParams = new ArrayList<String>();
-
-  // reportEvent
-  String eventValue;
-
-  // reportError
-  String errorName;
-  int errorValue = -1;
-  Throwable errorThrowable;
 
   // Web Request
   DTXAction webUserAction;
   String requestTag;
   String requestTagHeaderName;
   WebRequestTiming timing;
-  String tagIdValue = "";
   String url;
-  int statusCodeSuccess = 200;
   int wrStatusCode;
 
 

@@ -167,20 +167,30 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       break;
 
       case 'Web Action': {
-        String url = "https://jsonplaceholder.typicode.com/todos/1";
-        Dynatrace.webUserAction(url, "GET");
+        //String url = "https://jsonplaceholder.typicode.com/todos/1";
+        String url = "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json";
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json", "GET");
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick2.json", "GET");
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick3.json", "GET");
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick4.json", "GET");
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick5.json", "GET");
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick6.json", "GET");
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick7.json", "GET");
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick8.json", "GET");
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick9.json", "GET");
+        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick10.json", "GET");
       }
       break;
       case 'reportString': {
-        Dynatrace.enterAction("reportString", "reportString!");
-        //Dynatrace.reportValueString("reportString", "ReportStringAction", "We did it!");
-        Dynatrace.leaveAction("reportString");
+        // Dynatrace.enterAction("reportString", "reportString!");
+        // //Dynatrace.reportValueString("reportString", "ReportStringAction", "We did it!");
+        // Dynatrace.leaveAction("reportString");
       }
       break;
       case 'reportInt': {
-        Dynatrace.enterAction("reportInt", "reportInt!");
-        //Dynatrace.reportValueInt("reportInt", "ReportIntAction", 10000);
-        Dynatrace.leaveAction("reportInt");
+        // Dynatrace.enterAction("reportInt", "reportInt!");
+        // //Dynatrace.reportValueInt("reportInt", "ReportIntAction", 10000);
+        // Dynatrace.leaveAction("reportInt");
       }
       break;
       case 'reportDouble': {

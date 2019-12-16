@@ -1,36 +1,3 @@
-//import Flutter
-//import UIKit
-//import Dynatrace
-//
-//public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
-//
-//
-//  public static func register(with registrar: FlutterPluginRegistrar) {
-//    let channel = FlutterMethodChannel(name: "dev.nickmc.flutter_dynatrace/dynatrace", binaryMessenger: registrar.messenger())
-//    let instance = SwiftFlutterDynatracePlugin()
-//    registrar.addMethodCallDelegate(instance, channel: channel)
-//  }
-//
-//  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-//    switch call.method {
-//      case "enterAction0":
-//        //var actionName0 = call.arguments("enterAction0Values")
-//        let action0 = DTXAction.enter(withName: "Test Action 0")
-//        action0?.leave()
-//      case "enterAction1":
-//        var actionName1 = call.arguments as! String
-//        var action1 = DTXAction.enter(withName: "Test Action 1")
-//        action1?.leave()
-//        //result("iOS " + UIDevice.current.systemVersion)
-//      case "enterAction2":
-//        var actionName2 = call.arguments as! String
-//        var action2 = DTXAction.enter(withName: "Test Action 2")
-//        action2?.leave()
-//      default:
-//        result(FlutterMethodNotImplemented)
-//    }
-//  }
-//}
 import Flutter
 import UIKit
 import Dynatrace
@@ -44,6 +11,17 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     var subActionId: Int = 0
     var subActionsTest: [String: DTXAction] = [:]
     var subActionList = [DTXAction?]()
+    
+//    // Web Request
+    var webActionId: Int = 0
+    var webActionsTest: [Int: DTXAction] = [:]
+    var webActionList = [DTXAction?]()
+    var webAction: DTXAction?
+//    var requestTag: String
+//    var requestTagHeaderName: String
+//    var url: String
+    var wrStatusCode: Int = -1
+    var webrequestTiming: DTXWebRequestTiming?
 
 
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -53,20 +31,16 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    var action0: DTXAction?
-    var action1: DTXAction?
-    var action2: DTXAction?
+//    var action0: DTXAction?
+//    var action1: DTXAction?
+//    var action2: DTXAction?
+//
+//    var parentActions: [Int: DTXAction] = [:]
+//
+//    var parentActionCounter = 0
     
-    var parentActions: [Int: DTXAction] = [:]
-    
-    var parentActionCounter = 0
-    
-//    var subActions: [Int: DTXAction] = [:]
-//    var subActionList = [DTXAction?]()
-//    var subActionCounter: Int = 0;
     
     switch call.method {
-        // TODO: Find a better system to handle and store actions - Tried a map/dictionary and array/list but for some reason UA reponse time was between 6 seconds and 20 seconds for a simple enter/leaveAction :(
     case "enterTest":
         let argsEnterAction = call.arguments as! [String: Any]
         let parentAction = argsEnterAction["enterParentActionTest"] as! String
@@ -93,6 +67,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         print("Sub Action Id: \(subActionId)")
         print(subActionName)
         print(subAction)
+        
     case "leaveTest":
         let argsLeaveAction = call.arguments as! [String: Any]
         let parentAction = argsLeaveAction["leaveParentActionTest"] as! String
@@ -102,6 +77,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         if parentActionsTest[parentAction] == nil {
             print("No entry for action named \(parentAction)")
         }
+        
     case "leaveSubTest":
         let argsLeaveAction = call.arguments as! [String: Any]
         let subAction = argsLeaveAction["leaveSubActionTest"] as! String
@@ -111,6 +87,91 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         if parentActionsTest[subAction] == nil {
             print("No entry for action named \(subAction)")
         }
+        
+    case "webUserActionEnter":
+        let argsEnterWebAction = call.arguments as! [String: Any]
+        let urlFromFlutter = argsEnterWebAction["webUserActionUrl"] as! String
+        //var webAction: Int = webActionId
+        var xdyna: String?
+        let url = URL(string: urlFromFlutter)
+        self.webAction = DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)")
+        if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
+            self.webrequestTiming = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
+            xdyna = dynatraceHeaderValue
+        }
+        //self.webActionList.append(DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)"))
+        
+//        print("WebActionId: \(self.webActionId)")
+//        self.webActionsTest[webAction] = self.parentActionList[webActionId]
+//        print("Web Action Id: \(webActionId)")
+//        self.webActionId += 1
+//        print("Web Action Id: \(webActionId)")
+        //self.webAction = DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)")
+        if (url != nil) {
+            self.webrequestTiming?.start()
+            result(xdyna);
+        } else {
+            result("Not able to capture Web User Action as URL is nil");
+        }
+        
+    case "webUserActionEnterTest":
+            let argsEnterWebAction = call.arguments as! [String: Any]
+            let urlFromFlutter = argsEnterWebAction["webUserActionUrl"] as! String
+            let data: [String: Any]
+            let webAction: Int = webActionId
+            var xdyna: String?
+            let url = URL(string: urlFromFlutter)
+            self.webActionList.append(DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)"))
+            self.webActionsTest[webAction] = self.webActionList[webAction]
+            if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
+                self.webrequestTiming = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
+                xdyna = dynatraceHeaderValue
+            }
+            
+            print("Web Action Id: \(webActionId)")
+            self.webActionId += 1
+            print("Web Action Id: \(webActionId)")
+            if (url != nil) {
+                data = ["x-dynatrace": xdyna as Any, "webActionId": webAction]
+                self.webrequestTiming?.start()
+                result(data)
+                //result(xdyna);
+            } else {
+                result("Not able to capture Web User Action as URL is nil");
+            }
+
+
+    case "webUserActionResponse":
+        let argsLeaveWebAction = call.arguments as! [String: Any]
+        self.wrStatusCode = argsLeaveWebAction["webUserActionResponseCode"] as! Int
+        //let webAction = argsLeaveWebAction["webUserActionUrl"] as! Int
+        if (wrStatusCode != 200) {
+            self.webrequestTiming?.stop("Failed request: \(wrStatusCode)")
+            self.webAction?.leave()
+            //webActionsTest[webAction]?.leave()
+            print("Web Request Failed!")
+        } else {
+            self.webrequestTiming?.stop("200")
+            self.webAction?.leave()
+            //webActionsTest[webAction]?.leave()
+            print("Web Request Successful!")
+        }
+    case "webUserActionResponseTest":
+        let argsLeaveWebAction = call.arguments as! [String: Any]
+        let wrStatusCode = argsLeaveWebAction["webUserActionResponseCode"] as! Int
+        let webAction = argsLeaveWebAction["webUserActionId"] as! Int
+        if (wrStatusCode != 200) {
+            webrequestTiming?.stop("Failed request: \(wrStatusCode)")
+            //self.webAction?.leave()
+            webActionsTest[webAction]?.leave()
+            print("Web Request Failed!")
+        } else {
+            webrequestTiming?.stop("200")
+            //self.webAction?.leave()
+            webActionsTest[webAction]?.leave()
+            print("Web Request Successful!")
+        }
+        
     case "reportStringParentTest":
         let argsReportStringParentAction = call.arguments as! [String: Any]
         let parentAction = argsReportStringParentAction["pActionRSTest"] as! String

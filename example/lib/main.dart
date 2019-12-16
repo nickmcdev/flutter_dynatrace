@@ -107,36 +107,46 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         Dynatrace.reportValue(parentAction: "testAction", key: "reportDouble", doubleValue: 13.37);
         Dynatrace.reportEvent(parentAction: "testAction", event: "Here is the event!");
         Dynatrace.reportError(parentAction: "testAction", error: "Index out of range.");
-//        Dynatrace.enterTest("testAction", subAction: "testSubAction", subActionName: "Test SubAction1!");
-//        Dynatrace.leaveTest(subAction: "testSubAction");
-//        // Dynatrace.reportValue(subAction: "testSubAction", key: "reportString", stringValue: "It works!");
-//        // Dynatrace.reportValue(subAction: "testSubAction", key: "reportInt", intValue: 1337);
-//        // Dynatrace.reportValue(subAction: "testSubAction", key: "reportDouble", doubleValue: 13.37);
-//        Dynatrace.enterTest("testAction", subAction: "testSubAction2", subActionName: "Test SubAction2!");
-//        Dynatrace.leaveTest(subAction: "testSubAction2");
-//        // Dynatrace.reportValue(subAction: "testSubAction2", key: "reportString", stringValue: "It works!");
-//        // Dynatrace.reportValue(subAction: "testSubAction2", key: "reportInt", intValue: 1337);
-//        // Dynatrace.reportValue(subAction: "testSubAction2", key: "reportDouble", doubleValue: 13.37);
-//        Dynatrace.enterTest("testAction", subAction: "testSubAction3", subActionName: "Test SubAction3!");
-//        Dynatrace.leaveTest(subAction: "testSubAction3");
-//        // Dynatrace.reportValue(subAction: "testSubAction3", key: "reportString", stringValue: "It works!");
-//        // Dynatrace.reportValue(subAction: "testSubAction3", key: "reportInt", intValue: 1337);
-//        // Dynatrace.reportValue(subAction: "testSubAction3", key: "reportDouble", doubleValue: 13.37);
-//        Dynatrace.enterTest("testAction", subAction: "testSubAction4", subActionName: "Test SubAction4!");
-//        Dynatrace.leaveTest(subAction: "testSubAction4");
-//        // Dynatrace.reportValue(subAction: "testSubAction4", key: "reportString", stringValue: "It works!");
-//        // Dynatrace.reportValue(subAction: "testSubAction4", key: "reportInt", intValue: 1337);
-//        // Dynatrace.reportValue(subAction: "testSubAction4", key: "reportDouble", doubleValue: 13.37);
-//        Dynatrace.enterTest("testAction", subAction: "testSubAction5", subActionName: "Test SubAction5!");
-//        Dynatrace.leaveTest(subAction: "testSubAction5");
-        // Dynatrace.reportValue(subAction: "testSubAction5", key: "reportString", stringValue: "It works!");
-        // Dynatrace.reportValue(subAction: "testSubAction5", key: "reportInt", intValue: 1337);
-        // Dynatrace.reportValue(subAction: "testSubAction5", key: "reportDouble", doubleValue: 13.37);
-
-//        Dynatrace.leaveTest(subAction: "testSubAction2");
-//        Dynatrace.leaveTest(subAction: "testSubAction3");
-//        Dynatrace.leaveTest(subAction: "testSubAction4");
-//        Dynatrace.leaveTest(subAction: "testSubAction5");
+       Dynatrace.enterTest(parentAction: "testAction", subAction: "testSubAction", subActionName: "Test SubAction1!");
+      //  Dynatrace.leaveTest(subAction: "testSubAction");
+       Dynatrace.reportValue(subAction: "testSubAction", key: "reportString", stringValue: "It works!");
+       Dynatrace.reportValue(subAction: "testSubAction", key: "reportInt", intValue: 1337);
+       Dynatrace.reportValue(subAction: "testSubAction", key: "reportDouble", doubleValue: 13.37);
+       Dynatrace.reportEvent(subAction: "testSubAction", event: "Here is the event!");
+        Dynatrace.reportError(subAction: "testSubAction", error: "Index out of range.");
+       Dynatrace.enterTest(parentAction: "testAction", subAction: "testSubAction2", subActionName: "Test SubAction2!");
+      //  Dynatrace.leaveTest(subAction: "testSubAction2");
+       Dynatrace.reportValue(subAction: "testSubAction2", key: "reportString", stringValue: "It works!");
+       Dynatrace.reportValue(subAction: "testSubAction2", key: "reportInt", intValue: 1337);
+       Dynatrace.reportValue(subAction: "testSubAction2", key: "reportDouble", doubleValue: 13.37);
+       Dynatrace.reportEvent(subAction: "testSubAction2", event: "Here is the event!");
+        Dynatrace.reportError(subAction: "testSubAction2", error: "Index out of range.");
+       Dynatrace.enterTest(parentAction: "testAction", subAction: "testSubAction3", subActionName: "Test SubAction3!");
+      //  Dynatrace.leaveTest(subAction: "testSubAction3");
+       Dynatrace.reportValue(subAction: "testSubAction3", key: "reportString", stringValue: "It works!");
+       Dynatrace.reportValue(subAction: "testSubAction3", key: "reportInt", intValue: 1337);
+       Dynatrace.reportValue(subAction: "testSubAction3", key: "reportDouble", doubleValue: 13.37);
+       Dynatrace.reportEvent(subAction: "testSubAction3", event: "Here is the event!");
+        Dynatrace.reportError(subAction: "testSubAction3", error: "Index out of range.");
+       Dynatrace.enterTest(parentAction: "testAction", subAction: "testSubAction4", subActionName: "Test SubAction4!");
+      //  Dynatrace.leaveTest(subAction: "testSubAction4");
+       Dynatrace.reportValue(subAction: "testSubAction4", key: "reportString", stringValue: "It works!");
+       Dynatrace.reportValue(subAction: "testSubAction4", key: "reportInt", intValue: 1337);
+       Dynatrace.reportValue(subAction: "testSubAction4", key: "reportDouble", doubleValue: 13.37);
+       Dynatrace.reportEvent(subAction: "testSubAction4", event: "Here is the event!");
+        Dynatrace.reportError(subAction: "testSubAction4", error: "Index out of range.");
+       Dynatrace.enterTest(parentAction: "testAction", subAction: "testSubAction5", subActionName: "Test SubAction5!");
+        // Dynatrace.leaveTest(subAction: "testSubAction5");
+        Dynatrace.reportValue(subAction: "testSubAction5", key: "reportString", stringValue: "It works!");
+        Dynatrace.reportValue(subAction: "testSubAction5", key: "reportInt", intValue: 1337);
+        Dynatrace.reportValue(subAction: "testSubAction5", key: "reportDouble", doubleValue: 13.37);
+        Dynatrace.reportEvent(subAction: "testSubAction5", event: "Here is the event!");
+        Dynatrace.reportError(subAction: "testSubAction5", error: "Index out of range.");
+        Dynatrace.leaveTest(subAction: "testSubAction");
+       Dynatrace.leaveTest(subAction: "testSubAction2");
+       Dynatrace.leaveTest(subAction: "testSubAction3");
+       Dynatrace.leaveTest(subAction: "testSubAction4");
+       Dynatrace.leaveTest(subAction: "testSubAction5");
         Dynatrace.leaveTest(parentAction: "testAction");
         Dynatrace.enterTest(parentAction: "testAction2", parentActionName: "Test Action2!");
         Dynatrace.leaveTest(parentAction: "testAction2");
@@ -155,7 +165,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
       }
       break;
-    
+
       case 'Web Action': {
         String url = "https://jsonplaceholder.typicode.com/todos/1";
         Dynatrace.webUserAction(url, "GET");

@@ -127,26 +127,26 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
     case "leaveTest":
       String parentActionLeave = call.argument("leaveParentActionTest");
       parentActionsMap.get(parentActionLeave).leaveAction();
+      break;
 
-//    case "subTest":
-//      String subAction = call.argument("enterSubActionTest");
-//      String subActionName = call.argument("enterSubActionNameTest");
-//      String parentActionSub = call.argument("enterSubActionParentAction");
-//      Log.d("enterSubAction", "Sub Action: " + subAction);
-//      Log.d("enterSubAction", "Sub Action name: " + subActionName);
-//      subActionsListTest.add(Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
-//      subActionsMap.put(subAction, subActionsListTest.get(subActionCountTest));
-//      Log.d("enterSubAction", "subActionMap Value: " + subActionsListTest.get(subActionCountTest).toString());
-//      Log.d("enterSubAction", "Sub Action Count: " + subActionCountTest);
-//      subActionCountTest++;
-//      Log.d("enterSubAction", "Sub Action Count: " + subActionCountTest);
-//      break;
+    case "subTest":
+      String subAction = call.argument("enterSubActionTest");
+      String subActionName = call.argument("enterSubActionNameTest");
+      String parentActionSub = call.argument("enterSubActionParentAction");
+      Log.d("enterSubAction", "Sub Action: " + subAction);
+      Log.d("enterSubAction", "Sub Action name: " + subActionName);
+      subActionsListTest.add(Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
+      subActionsMap.put(subAction, subActionsListTest.get(subActionCountTest));
+      Log.d("enterSubAction", "subActionMap Value: " + subActionsListTest.get(subActionCountTest).toString());
+      Log.d("enterSubAction", "Sub Action Count: " + subActionCountTest);
+      subActionCountTest++;
+      Log.d("enterSubAction", "Sub Action Count: " + subActionCountTest);
+      break;
 
-//    case "leaveSubTest":
-//      String subActionLeave = call.argument("leaveSubActionTest");
-//      Log.d("leaveSubAction", "Sub Action: " + subActionLeave);
-//      subActionsMap.get(subActionLeave).leaveAction();
-
+    case "leaveSubTest":
+      String subActionLeave = call.argument("leaveSubActionTest");
+      Log.d("leaveSubAction", "Sub Action: " + subActionLeave);
+      subActionsMap.get(subActionLeave).leaveAction();
       break;
 
     case "reportStringParentTest":
@@ -212,7 +212,7 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
     case "reportErrorSub":
       String subActionRErr = call.argument("sActionRErr");
       String subActionRErrValue = call.argument("sActionRErrValue");
-      parentActionsMap.get(subActionRErr).reportEvent(subActionRErrValue);
+      subActionsMap.get(subActionRErr).reportEvent(subActionRErrValue);
       break;
 
     case "webUserActionEnter":

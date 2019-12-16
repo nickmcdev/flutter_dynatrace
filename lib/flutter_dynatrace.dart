@@ -162,7 +162,7 @@ class Dynatrace {
     } else if (parentAction == null && subAction != null && event != null) {
       try {
           debugPrint("Sub Action value: $subAction, Event: $event");
-          await _platform.invokeMethod('reportEventSub', {"sActionRE": parentAction, "sActionREValue": event});
+          await _platform.invokeMethod('reportEventSub', {"sActionRE": subAction, "sActionREValue": event});
         } on PlatformException catch (e) {
           debugPrint("Failed to reportEvent with Sub User Action: '${e.message}'.");
         }
@@ -177,12 +177,12 @@ class Dynatrace {
           debugPrint("Parent Action value: $parentAction, Event: $error");
           await _platform.invokeMethod('reportErrorParent', {"pActionRErr": parentAction, "pActionRErrValue": error});
         } on PlatformException catch (e) {
-          debugPrint("Failed to reportEvent with Parent User Action: '${e.message}'.");
+          debugPrint("Failed to reportError with Parent User Action: '${e.message}'.");
         }
     } else if (parentAction == null && subAction != null && error != null) {
       try {
           debugPrint("Sub Action value: $subAction, Error: $error");
-          await _platform.invokeMethod('reportErrorSub', {"sActionRErr": parentAction, "sActionRErrValue": error});
+          await _platform.invokeMethod('reportErrorSub', {"sActionRErr": subAction, "sActionRErrValue": error});
         } on PlatformException catch (e) {
           debugPrint("Failed to reportError with Sub User Action: '${e.message}'.");
         }

@@ -207,7 +207,7 @@ class Dynatrace {
   static Future<void> leaveWebUserAction({String parentAction, String subAction, String url, int responseCode}) async {
     if (parentAction != null && subAction == null) { 
       try {
-        _platform.invokeMethod('webParentActionResponse', {"webParentActionLeave": parentAction, "webParentActionLeaveUrl": url, "webParentActionResponseCode": responseCode});
+        _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveUrl": url, "webParentActionResponseCode": responseCode});
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Parent Web User Action: '${e.message}'.");
       }

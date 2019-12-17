@@ -15,6 +15,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,14 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   Map<String, DTXAction> subActionsMap = new HashMap();
   ArrayList<DTXAction> parentActionsListTest = new ArrayList<DTXAction>();
   ArrayList<DTXAction> subActionsListTest = new ArrayList<DTXAction>();
+
+
+  int webParentActionId = 0;
+  int webSubActionId = 0;
+  Map<String, WebRequestTiming> webParentActions = new HashMap();
+  Map<String, WebRequestTiming> webSubActions = new HashMap();
+  ArrayList<WebRequestTiming> webParentActionTimings = new ArrayList<WebRequestTiming>();
+  ArrayList<WebRequestTiming> webSubActionTimings = new ArrayList<WebRequestTiming>();
 
   DTXAction batteryLevel;
   DTXAction connectionType;
@@ -71,9 +80,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
     this.activity = activity;
   }
 
-
-  // TODO: Find a better system to handle and store actions - Tried a map/dictionary and array/list but for some reason UA reponse time was between 6 seconds and 20 seconds for a simple enter/leaveAction :(
-  @Override
   public void onMethodCall(MethodCall call, Result result) {
     switch (call.method) {
     case "enterTest":
@@ -109,6 +115,52 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       String subActionLeave = call.argument("leaveSubActionTest");
       Log.d("leaveSubAction", "Sub Action: " + subActionLeave);
       subActionsMap.get(subActionLeave).leaveAction();
+      break;
+
+    case "webParentActionEnter":
+      String urlFromFlutter = call.argument("webParentActionUrl");
+      String webParentAction = call.argument("webParentAction");
+      int webParentActionNum = webParentActionId;
+      URL url = null;
+      try {
+        url = new URL(urlFromFlutter);
+      } catch (MalformedURLException e) {
+        e.printStackTrace();
+      }
+
+      //String requestTag = webParentActionTimings.add(webParentAction).getRequestTag();
+      String requestTag = parentActionsMap.get(webParentAction).getRequestTag();
+      // [3] Associate the timing with the tag
+      webParentActionTimings.add(Dynatrace.getWebRequestTiming(requestTag));
+      webParentActions.put(urlFromFlutter, webParentActionTimings.get(webParentActionNum));
+      // [4] Fetch the request tag header name
+      if (url != null) {
+        Log.d("DTXWeb", "URL: " + urlFromFlutter);
+        webParentActions.get(urlFromFlutter).startWebRequestTiming();
+        webParentActionId++;
+        result.success(requestTag);
+      }
+
+      break;
+
+
+    case "webParentActionResponse":
+      String webParentActionLeaveUrl = call.argument("webParentActionLeaveUrl");
+      int wrStatusCodeParent = call.argument("webParentActionResponseCode");
+
+      if (wrStatusCodeParent != 200) {
+        try {
+          webParentActions.get(webParentActionLeaveUrl).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "Failed request.");
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
+      } else if (wrStatusCodeParent == 200) {
+        try {
+          webParentActions.get(webParentActionLeaveUrl).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "OK");
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
+      }
       break;
 
     case "reportStringParentTest":
@@ -191,31 +243,31 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       }
       break;
 
-    case "webUserActionResponse":
-      wrStatusCode = call.argument("webUserActionResponseCode");
-      Log.d("WebRequestInfo", "Web Request Status Code: " + wrStatusCode);
-      if (wrStatusCode != 200) {
-        try {
-          timing.stopWebRequestTiming(url, wrStatusCode, "Failed request");
-          webUserAction.leaveAction();
-          Log.d("WebRequestInfo", "Web Request Failed!");
-        } catch (MalformedURLException e) {
-          webUserAction.reportError("Web Request Error", e);
-          webUserAction.leaveAction();
-          e.printStackTrace();
-        }
-      } else {
-        try {
-          timing.stopWebRequestTiming(url, wrStatusCode, "OK");
-          webUserAction.leaveAction();
-          Log.d("WebRequestInfo", "Web Request Successful!");
-        } catch (MalformedURLException e) {
-          webUserAction.reportError("Web Request Error", e);
-          webUserAction.leaveAction();
-          e.printStackTrace();
-        }
-      }
-      break;
+//    case "webUserActionResponse":
+//      wrStatusCode = call.argument("webUserActionResponseCode");
+//      Log.d("WebRequestInfo", "Web Request Status Code: " + wrStatusCode);
+//      if (wrStatusCode != 200) {
+//        try {
+//          timing.stopWebRequestTiming(url, wrStatusCode, "Failed request");
+//          webUserAction.leaveAction();
+//          Log.d("WebRequestInfo", "Web Request Failed!");
+//        } catch (MalformedURLException e) {
+//          webUserAction.reportError("Web Request Error", e);
+//          webUserAction.leaveAction();
+//          e.printStackTrace();
+//        }
+//      } else {
+//        try {
+//          timing.stopWebRequestTiming(url, wrStatusCode, "OK");
+//          webUserAction.leaveAction();
+//          Log.d("WebRequestInfo", "Web Request Successful!");
+//        } catch (MalformedURLException e) {
+//          webUserAction.reportError("Web Request Error", e);
+//          webUserAction.leaveAction();
+//          e.printStackTrace();
+//        }
+//      }
+//      break;
 
     case "endVisit":
       Dynatrace.endVisit();

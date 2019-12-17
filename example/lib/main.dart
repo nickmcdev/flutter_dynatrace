@@ -175,12 +175,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick3.json", requestType: "GET");
         Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick4.json", requestType: "GET");
         Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick5.json", requestType: "GET");
-        Dynatrace.enterTest(subAction: "webSubActionButton", subActionName: "Sub Action - Button", parentAction: "webActionButton");
-        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick6.json", requestType: "GET");
-        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick7.json", requestType: "GET");
-        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick8.json", requestType: "GET");
-        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick9.json", requestType: "GET");
-        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick10.json", requestType: "GET");
+        Dynatrace.enterTest(subAction: "webSubActionButton", subActionName: "Sub Action Button", parentAction: "webActionButton");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick6.json", requestType: "GET");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick7.json", requestType: "GET");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick8.json", requestType: "GET");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick9.json", requestType: "GET");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick10.json", requestType: "GET");
         Dynatrace.leaveTest(subAction: "webSubActionButton");
         Dynatrace.leaveTest(parentAction: "webActionButton");
 

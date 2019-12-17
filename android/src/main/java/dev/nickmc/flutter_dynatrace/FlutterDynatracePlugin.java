@@ -35,7 +35,7 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   String beaconUrl = "https://bf96722syz.bf.dynatrace.com/mbeacon";
   boolean withDebugLogging = true;
 
-
+  // User Actions
   int parentActionCountTest = 0;
   int subActionCountTest = 0;
   Map<String, DTXAction> parentActionsMap = new HashMap();
@@ -43,7 +43,7 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   ArrayList<DTXAction> parentActionsListTest = new ArrayList<DTXAction>();
   ArrayList<DTXAction> subActionsListTest = new ArrayList<DTXAction>();
 
-
+  // Web Requests
   int webParentActionId = 0;
   int webSubActionId = 0;
   Map<String, WebRequestTiming> webParentActions = new HashMap();
@@ -51,19 +51,12 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   ArrayList<WebRequestTiming> webParentActionTimings = new ArrayList<WebRequestTiming>();
   ArrayList<WebRequestTiming> webSubActionTimings = new ArrayList<WebRequestTiming>();
 
+  // Metric Actions
   DTXAction batteryLevel;
   DTXAction connectionType;
 
   // startupAgent
   ArrayList<String> startupAgentParams = new ArrayList<String>();
-
-  // Web Request
-  DTXAction webUserAction;
-  String requestTag;
-  String requestTagHeaderName;
-  WebRequestTiming timing;
-  String url;
-  int wrStatusCode;
 
 
   // Platform channel
@@ -128,12 +121,9 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
         e.printStackTrace();
       }
 
-      //String requestTag = webParentActionTimings.add(webParentAction).getRequestTag();
       String requestTag = parentActionsMap.get(webParentAction).getRequestTag();
-      // [3] Associate the timing with the tag
       webParentActionTimings.add(Dynatrace.getWebRequestTiming(requestTag));
       webParentActions.put(urlFromFlutter, webParentActionTimings.get(webParentActionNum));
-      // [4] Fetch the request tag header name
       if (url != null) {
         Log.d("DTXWeb", "URL: " + urlFromFlutter);
         webParentActions.get(urlFromFlutter).startWebRequestTiming();
@@ -142,7 +132,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       }
 
       break;
-
 
     case "webParentActionResponse":
       String webParentActionLeaveUrl = call.argument("webParentActionLeaveUrl");
@@ -157,6 +146,48 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       } else if (wrStatusCodeParent == 200) {
         try {
           webParentActions.get(webParentActionLeaveUrl).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "OK");
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
+      }
+      break;
+
+    case "webSubActionEnter":
+      String urlFromFlutterSub = call.argument("webSubActionUrl");
+      String webSubAction = call.argument("webSubAction");
+      int webSubActionNum = webSubActionId;
+      URL urlSub = null;
+      try {
+        urlSub = new URL(urlFromFlutterSub);
+      } catch (MalformedURLException e) {
+        e.printStackTrace();
+      }
+
+      String requestTagSub = subActionsMap.get(webSubAction).getRequestTag();
+      webSubActionTimings.add(Dynatrace.getWebRequestTiming(requestTagSub));
+      webSubActions.put(urlFromFlutterSub, webSubActionTimings.get(webSubActionNum));
+      if (urlSub != null) {
+        Log.d("DTXWeb", "URL: " + urlFromFlutterSub);
+        webSubActions.get(urlFromFlutterSub).startWebRequestTiming();
+        webSubActionId++;
+        result.success(requestTagSub);
+      }
+
+      break;
+
+    case "webSubActionResponse":
+      String webSubActionLeaveUrl = call.argument("webSubActionLeaveUrl");
+      int wrStatusCodeSub = call.argument("webSubActionResponseCode");
+
+      if (wrStatusCodeSub != 200) {
+        try {
+          webSubActions.get(webSubActionLeaveUrl).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "Failed request.");
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
+      } else if (wrStatusCodeSub == 200) {
+        try {
+          webSubActions.get(webSubActionLeaveUrl).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "OK");
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }
@@ -228,46 +259,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       String subActionRErrValue = call.argument("sActionRErrValue");
       subActionsMap.get(subActionRErr).reportEvent(subActionRErrValue);
       break;
-
-    case "webUserActionEnter":
-      url = call.argument("webUserActionUrl");
-      webUserAction = Dynatrace.enterAction("WebRequest - " + url);
-      requestTag = webUserAction.getRequestTag();
-      timing = Dynatrace.getWebRequestTiming(requestTag);
-      requestTagHeaderName = Dynatrace.getRequestTagHeader();
-      timing.startWebRequestTiming();
-      if (url != null) {
-        result.success(requestTag);
-      } else {
-        result.error("UNAVAILABLE", "Not able to capture User Action.", null);
-      }
-      break;
-
-//    case "webUserActionResponse":
-//      wrStatusCode = call.argument("webUserActionResponseCode");
-//      Log.d("WebRequestInfo", "Web Request Status Code: " + wrStatusCode);
-//      if (wrStatusCode != 200) {
-//        try {
-//          timing.stopWebRequestTiming(url, wrStatusCode, "Failed request");
-//          webUserAction.leaveAction();
-//          Log.d("WebRequestInfo", "Web Request Failed!");
-//        } catch (MalformedURLException e) {
-//          webUserAction.reportError("Web Request Error", e);
-//          webUserAction.leaveAction();
-//          e.printStackTrace();
-//        }
-//      } else {
-//        try {
-//          timing.stopWebRequestTiming(url, wrStatusCode, "OK");
-//          webUserAction.leaveAction();
-//          Log.d("WebRequestInfo", "Web Request Successful!");
-//        } catch (MalformedURLException e) {
-//          webUserAction.reportError("Web Request Error", e);
-//          webUserAction.leaveAction();
-//          e.printStackTrace();
-//        }
-//      }
-//      break;
 
     case "endVisit":
       Dynatrace.endVisit();
@@ -440,31 +431,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   }
 
   public void tagWebRequest(String url) {
-  }
-
-  public void webUserAction(String url) throws MalformedURLException {
-    webUserAction = Dynatrace.enterAction("WebRequest - " + url);
-    requestTag = webUserAction.getRequestTag();
-    timing = Dynatrace.getWebRequestTiming(requestTag);
-    requestTagHeaderName = Dynatrace.getRequestTagHeader();
-
-    try {
-      timing.startWebRequestTiming();
-      //Response response = client.newCall(request).execute();
-
-      // handle response
-      //String body = response.body().string();
-
-      // [7] Once done reading, timing can stop
-      timing.stopWebRequestTiming(url, 200, "Success!");
-    } catch (IOException e) {
-      timing.stopWebRequestTiming(url, -1, e.toString());
-      reportError("WebRequestError", e);
-    }
-    finally {
-      webUserAction.leaveAction();
-    }
-
   }
 
   /**

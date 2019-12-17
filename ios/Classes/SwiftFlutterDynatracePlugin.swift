@@ -13,8 +13,18 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     var subActionList = [DTXAction?]()
     
 //    // Web Request
-    var webActionId: Int = 0
-    var webActionsTest: [Int: DTXAction] = [:]
+    
+    var webActionsTest: [String: DTXAction] = [:]
+    
+    var webParentActionId: Int = 0
+    var webParentActions: [String: DTXWebRequestTiming] = [:]
+    var webParentActionTimings = [DTXWebRequestTiming?]()
+    
+    var webSubActionId: Int = 0
+    var webSubActions: [String: DTXWebRequestTiming] = [:]
+    var webSubActionTimings = [DTXWebRequestTiming?]()
+    
+    
     var webActionList = [DTXAction?]()
     var webAction: DTXAction?
 //    var requestTag: String
@@ -114,31 +124,103 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
             result("Not able to capture Web User Action as URL is nil");
         }
         
-    case "webUserActionEnterTest":
+    case "webParentActionEnter":
             let argsEnterWebAction = call.arguments as! [String: Any]
-            let urlFromFlutter = argsEnterWebAction["webUserActionUrl"] as! String
-            let data: [String: Any]
-            let webAction: Int = webActionId
+            let urlFromFlutter = argsEnterWebAction["webParentActionUrl"] as! String
+            let webParentAction: Int = webParentActionId
+            print("TESTDTX: URL: \(urlFromFlutter)")
             var xdyna: String?
             let url = URL(string: urlFromFlutter)
-            self.webActionList.append(DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)"))
-            self.webActionsTest[webAction] = self.webActionList[webAction]
             if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
-                self.webrequestTiming = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
+                self.webParentActionTimings.append(DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url))
+                self.webParentActions[urlFromFlutter] = self.webParentActionTimings[webParentAction]
                 xdyna = dynatraceHeaderValue
             }
             
-            print("Web Action Id: \(webActionId)")
-            self.webActionId += 1
-            print("Web Action Id: \(webActionId)")
+            print("TESTDTX: Web Action Id: \(webParentAction)")
+            self.webParentActionId += 1
+            print("TESTDTX: Web Action Id: \(webParentAction)")
             if (url != nil) {
-                data = ["x-dynatrace": xdyna as Any, "webActionId": webAction]
-                self.webrequestTiming?.start()
-                result(data)
-                //result(xdyna);
+                self.webParentActions[urlFromFlutter]?.start()
+                print(xdyna as Any)
+                result(xdyna)
             } else {
                 result("Not able to capture Web User Action as URL is nil");
             }
+        
+    case "webParentActionResponse":
+        let argsLeaveWebAction = call.arguments as! [String: Any]
+        let wrStatusCode = argsLeaveWebAction["webParentActionResponseCode"] as! Int
+        let webParentActionLeaveUrl = argsLeaveWebAction["webParentActionLeaveUrl"] as! String
+        if (wrStatusCode != 200) {
+            webParentActions[webParentActionLeaveUrl]?.stop("Failed request: \(wrStatusCode)")
+            print("TESTDTX: Web Request Failed!")
+        } else {
+            webParentActions[webParentActionLeaveUrl]?.stop("200")
+            print("TESTDTX: Web Request Successful!")
+        }
+        
+    case "webSubActionEnter":
+            let argsEnterWebSubAction = call.arguments as! [String: Any]
+            let urlFromFlutter = argsEnterWebSubAction["webSubActionUrl"] as! String
+            let webSubAction: Int = webSubActionId
+            print("TESTDTX: URL: \(urlFromFlutter)")
+            var xdyna: String?
+            let url = URL(string: urlFromFlutter)
+            if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
+                self.webSubActionTimings.append(DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url))
+                self.webSubActions[urlFromFlutter] = self.webSubActionTimings[webSubAction]
+                xdyna = dynatraceHeaderValue
+            }
+            
+            print("TESTDTX: Web Action Id: \(webSubAction)")
+            self.webSubActionId += 1
+            print("TESTDTX: Web Action Id: \(webSubAction)")
+            if (url != nil) {
+                self.webSubActions[urlFromFlutter]?.start()
+                print(xdyna as Any)
+                result(xdyna)
+            } else {
+                result("Not able to capture Web User Action as URL is nil");
+            }
+    case "webSubActionResponse":
+        let argsLeaveWebSubAction = call.arguments as! [String: Any]
+        let wrStatusCode = argsLeaveWebSubAction["webSubActionResponseCode"] as! Int
+        let webSubActionLeaveUrl = argsLeaveWebSubAction["webSubActionLeaveUrl"] as! String
+        if (wrStatusCode != 200) {
+            webSubActions[webSubActionLeaveUrl]?.stop("Failed request: \(wrStatusCode)")
+            print("TESTDTX: Web Request Failed!")
+        } else {
+            webSubActions[webSubActionLeaveUrl]?.stop("200")
+            print("TESTDTX: Web Request Successful!")
+        }
+        
+//    case "webParentActionEnter":
+//        let argsEnterWebAction = call.arguments as! [String: Any]
+//        let webParentAction = argsEnterWebAction["webParentAction"] as! String
+//        let urlFromFlutter = argsEnterWebAction["webParentActionUrl"] as! String
+//        let webAction: Int = webActionId
+//        print("TESTDTX: URL: \(urlFromFlutter)")
+//        var xdyna: String?
+//        let url = URL(string: urlFromFlutter)
+//        self.webActionList.append(DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)"))
+//        if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
+//            self.webrequestTiming = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
+//            self.webActionsTest[dynatraceHeaderValue] = self.webActionList[webAction]
+//            xdyna = dynatraceHeaderValue
+//            print("TESTDTX: Map value: \(String(describing: webActionsTest[dynatraceHeaderValue]))")
+//        }
+//
+//        print("TESTDTX: Web Action Id: \(webActionId)")
+//        self.webActionId += 1
+//        print("TESTDTX: Web Action Id: \(webActionId)")
+//        if (url != nil) {
+//            self.webrequestTiming?.start()
+//            print(xdyna as Any)
+//            result(xdyna)
+//        } else {
+//            result("Not able to capture Web User Action as URL is nil");
+//        }
 
 
     case "webUserActionResponse":
@@ -159,17 +241,18 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     case "webUserActionResponseTest":
         let argsLeaveWebAction = call.arguments as! [String: Any]
         let wrStatusCode = argsLeaveWebAction["webUserActionResponseCode"] as! Int
-        let webAction = argsLeaveWebAction["webUserActionId"] as! Int
+        let webAction = argsLeaveWebAction["webUserActionId"] as! String
+        print("TESTDTX: WebAction x-dyna: \(webAction)")
         if (wrStatusCode != 200) {
             webrequestTiming?.stop("Failed request: \(wrStatusCode)")
             //self.webAction?.leave()
             webActionsTest[webAction]?.leave()
-            print("Web Request Failed!")
+            print("TESTDTX: Web Request Failed!")
         } else {
             webrequestTiming?.stop("200")
             //self.webAction?.leave()
             webActionsTest[webAction]?.leave()
-            print("Web Request Successful!")
+            print("TESTDTX: Web Request Successful!")
         }
         
     case "reportStringParentTest":

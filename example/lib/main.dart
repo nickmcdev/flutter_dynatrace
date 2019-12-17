@@ -169,16 +169,31 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       case 'Web Action': {
         //String url = "https://jsonplaceholder.typicode.com/todos/1";
         String url = "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json";
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json", "GET");
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick2.json", "GET");
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick3.json", "GET");
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick4.json", "GET");
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick5.json", "GET");
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick6.json", "GET");
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick7.json", "GET");
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick8.json", "GET");
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick9.json", "GET");
-        Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick10.json", "GET");
+        Dynatrace.enterTest(parentAction: "webActionButton", parentActionName: "Touch on Web Action Button");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json", requestType: "GET");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick2.json", requestType: "GET");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick3.json", requestType: "GET");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick4.json", requestType: "GET");
+        Dynatrace.webUserAction(parentAction: "webActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick5.json", requestType: "GET");
+        Dynatrace.enterTest(subAction: "webSubActionButton", subActionName: "Sub Action - Button", parentAction: "webActionButton");
+        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick6.json", requestType: "GET");
+        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick7.json", requestType: "GET");
+        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick8.json", requestType: "GET");
+        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick9.json", requestType: "GET");
+        Dynatrace.webUserAction(subAction: "webSubActionButton", url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick10.json", requestType: "GET");
+        Dynatrace.leaveTest(subAction: "webSubActionButton");
+        Dynatrace.leaveTest(parentAction: "webActionButton");
+
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json", "GET");
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick2.json", "GET");
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick3.json", "GET");
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick4.json", "GET");
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick5.json", "GET");
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick6.json", "GET");
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick7.json", "GET");
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick8.json", "GET");
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick9.json", "GET");
+        // Dynatrace.webUserAction("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick10.json", "GET");
       }
       break;
       case 'reportString': {

@@ -140,49 +140,86 @@ class Dynatrace {
   }
     
 
-  static Future<String> webUserAction(String url, String requestType) async {
+  static Future<String> webUserAction({String parentAction, String subAction, String url, String requestType}) async {
     final String tagHeaderName = "x-dynatrace";
     int responseCode;
     String responseBody;
     String requestTag;
 
-    requestTag = await webAction(url);
-    debugPrint("x-dynatrace value = " + requestTag.toString());
-    if (requestType == "GET") {
+    if (requestType == "GET" && parentAction != null && subAction == null) {
+      requestTag = await webAction(url, parentAction: parentAction);
+      debugPrint("x-dynatrace value = " + requestTag.toString());
       var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
       responseCode = response.statusCode;
-      leaveWebUserAction(responseCode);
+      leaveWebUserAction(parentAction: parentAction, url: url, responseCode: responseCode);
       responseBody = response.body;
       debugPrint("Response Status Code: " + responseCode.toString());
       debugPrint("Response Status Body: " + responseBody.toString());
-    } else if (requestType == "POST") {
-      var response = await http.post(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
+    } else if (requestType == "GET" && parentAction == null && subAction != null) {
+      requestTag = await webAction(url, subAction: subAction);
+      debugPrint("x-dynatrace value = " + requestTag.toString());
+      var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
       responseCode = response.statusCode;
-      leaveWebUserAction(responseCode);
+      leaveWebUserAction(subAction: subAction, url: url, responseCode: responseCode);
       responseBody = response.body;
       debugPrint("Response Status Code: " + responseCode.toString());
-      debugPrint("Response Body: " + responseBody.toString());
+      debugPrint("Response Status Body: " + responseBody.toString());
+    } else if (requestType == "POST" && parentAction != null && subAction == null) {
+      requestTag = await webAction(url, parentAction: parentAction);
+      debugPrint("x-dynatrace value = " + requestTag.toString());
+      var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
+      responseCode = response.statusCode;
+      leaveWebUserAction(parentAction: parentAction, url: url, responseCode: responseCode);
+      responseBody = response.body;
+      debugPrint("Response Status Code: " + responseCode.toString());
+      debugPrint("Response Status Body: " + responseBody.toString());
+    } else if (requestType == "POST" && parentAction == null && subAction != null) {
+      requestTag = await webAction(url, subAction: subAction);
+      debugPrint("x-dynatrace value = " + requestTag.toString());
+      var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
+      responseCode = response.statusCode;
+      leaveWebUserAction(subAction: subAction, url: url, responseCode: responseCode);
+      responseBody = response.body;
+      debugPrint("Response Status Code: " + responseCode.toString());
+      debugPrint("Response Status Body: " + responseBody.toString());
     }
     return responseBody;
   }
 
-  static Future<void> leaveWebUserAction(int responseCode) async {
-    try {
-      _platform.invokeMethod('webUserActionResponse', {"webUserActionResponseCode":responseCode});
-    } on PlatformException catch (e) {
-      debugPrint("Failed to leave Web User Action: '${e.message}'.");
-    }
-  }
-
-  static Future<String> webAction(String url) async {
+  static Future<String> webAction(String url, {String parentAction, String subAction}) async {
     String result;
-    try {
-      result = await _platform.invokeMethod('webUserActionEnter', {"webUserActionUrl":url});
-    } on PlatformException catch (e) {
-      debugPrint("Failed to create User Action: '${e.message}'.");
+    if (parentAction != null && subAction == null) {
+      try {
+        result = await _platform.invokeMethod('webParentActionEnter', {"webParentAction": parentAction, "webParentActionUrl": url});
+      } on PlatformException catch (e) {
+        debugPrint("Failed to create Parent Web User Action: '${e.message}'.");
+      }
+    } else if (parentAction == null && subAction != null) {
+      try {
+        result = await _platform.invokeMethod('webSubActionEnter', {"webSubAction": subAction, "webSubActionUrl": url});
+      } on PlatformException catch (e) {
+        debugPrint("Failed to create Sub Web User Action: '${e.message}'.");
+      }
     }
     return result;
   }
+
+  static Future<void> leaveWebUserAction({String parentAction, String subAction, String url, int responseCode}) async {
+    if (parentAction != null && subAction == null) { 
+      try {
+        _platform.invokeMethod('webParentActionResponse', {"webParentActionLeave": parentAction, "webParentActionLeaveUrl": url, "webParentActionResponseCode": responseCode});
+      } on PlatformException catch (e) {
+        debugPrint("Failed to leave Parent Web User Action: '${e.message}'.");
+      }
+    } else if (parentAction == null && subAction != null) {
+      try {
+        _platform.invokeMethod('webSubActionResponse', {"webSubActionLeave": subAction, "webSubActionLeaveUrl": url, "webSubActionResponseCode": responseCode});
+      } on PlatformException catch (e) {
+        debugPrint("Failed to leave Sub Web User Action: '${e.message}'.");
+      }
+    }
+  }
+
 
   static Future flushEvents() async {
     try {

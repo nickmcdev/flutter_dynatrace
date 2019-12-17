@@ -9,18 +9,18 @@ class Dynatrace {
 
   static final String url = "http://nickmcapache1.dtwlab.dynatrace.org:81/json/weather.json";
 
-  static Future enterTest({String parentAction, String parentActionName, String subAction, String subActionName}) async {
+  static Future enterAction({String parentAction, String parentActionName, String subAction, String subActionName}) async {
     if (parentAction != null && parentActionName != null && subAction == null && subActionName == null) {
       try {
         debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
-        await _platform.invokeMethod('enterTest', {"enterParentActionTest": parentAction, "enterParentActionNameTest": parentActionName});
+        await _platform.invokeMethod('enterAction', {"enterParentAction": parentAction, "enterParentActionName": parentActionName});
         } on PlatformException catch (e) {
       debugPrint("Failed to create User Action: '${e.message}'.");
       } 
     } else if (parentAction != null && parentActionName == null && subAction != null && subActionName != null) {
       try {
         debugPrint("Sub Action value: $subAction, Sub Action name: $subActionName");
-        await _platform.invokeMethod('subTest', {"enterSubActionTest": subAction, "enterSubActionNameTest": subActionName, "enterSubActionParentAction": parentAction});
+        await _platform.invokeMethod('subAction', {"enterSubAction": subAction, "enterSubActionName": subActionName, "enterSubActionParentAction": parentAction});
         } on PlatformException catch (e) {
       debugPrint("Failed to create User Action: '${e.message}'.");
       }
@@ -29,16 +29,16 @@ class Dynatrace {
     }
   }
 
-  static Future leaveTest({String parentAction, String subAction}) async {
+  static Future leaveAction({String parentAction, String subAction}) async {
     if (parentAction != null && subAction == null) {
       try {
-        await _platform.invokeMethod('leaveTest', {"leaveParentActionTest": parentAction});
+        await _platform.invokeMethod('leaveAction', {"leaveParentAction": parentAction});
         } on PlatformException catch (e) {
           debugPrint("Failed to leave Parent User Action: '${e.message}'.");
         }
       } else if (parentAction == null && subAction != null) {
         try {
-          await _platform.invokeMethod('leaveSubTest', {"leaveSubActionTest": subAction});
+          await _platform.invokeMethod('leaveSubAction', {"leaveSubAction": subAction});
           } on PlatformException catch (e) {
             debugPrint("Failed to leave Sub User Action: '${e.message}'.");
         }
@@ -50,21 +50,21 @@ class Dynatrace {
       if (stringValue != null && intValue == null && doubleValue == null) {
         try {
           debugPrint("Parent Action value: $parentAction, Key: $key, String Value: $stringValue");
-          await _platform.invokeMethod('reportStringParentTest', {"pActionRSTest": parentAction, "pActionRSKeyTest": key, "pActionRSValueTest": stringValue});
+          await _platform.invokeMethod('reportStringParent', {"pActionRS": parentAction, "pActionRSKey": key, "pActionRSValue": stringValue});
         } on PlatformException catch (e) {
           debugPrint("Failed to reportValue String with Parent User Action: '${e.message}'.");
         }
       } else if (stringValue == null && intValue != null && doubleValue == null) {
         try {
           debugPrint("Parent Action value: $parentAction, Key: $key, Int Value: $intValue");
-          await _platform.invokeMethod('reportIntParentTest', {"pActionRITest": parentAction, "pActionRIKeyTest": key, "pActionRIValueTest": intValue});
+          await _platform.invokeMethod('reportIntParent', {"pActionRI": parentAction, "pActionRIKey": key, "pActionRIValue": intValue});
         } on PlatformException catch (e) {
           debugPrint("Failed to reportValue Int with Parent User Action: '${e.message}'.");
         }
       } else if (stringValue == null && intValue == null && doubleValue != null) {
         try {
           debugPrint("Parent Action value: $parentAction, Key: $key, Double Value: $stringValue");
-          await _platform.invokeMethod('reportDoubleParentTest', {"pActionRDTest": parentAction, "pActionRDKeyTest": key, "pActionRDValueTest": doubleValue});
+          await _platform.invokeMethod('reportDoubleParent', {"pActionRD": parentAction, "pActionRDKey": key, "pActionRDValue": doubleValue});
         } on PlatformException catch (e) {
           debugPrint("Failed to reportValue Double with Parent User Action: '${e.message}'.");
         }
@@ -75,21 +75,21 @@ class Dynatrace {
       if (stringValue != null && intValue == null && doubleValue == null) {
         try {
           debugPrint("Sub Action value: $subAction, Key: $key, String Value: $stringValue");
-          await _platform.invokeMethod('reportStringSubTest', {"sActionRSTest": subAction, "sActionRSKeyTest": key, "sActionRSValueTest": stringValue});
+          await _platform.invokeMethod('reportStringSub', {"sActionRS": subAction, "sActionRSKey": key, "sActionRSValue": stringValue});
         } on PlatformException catch (e) {
           debugPrint("Failed to reportValue String with Sub User Action: '${e.message}'.");
         }
       } else if (stringValue == null && intValue != null && doubleValue == null) {
         try {
           debugPrint("Sub Action value: $subAction, Key: $key, Int Value: $intValue");
-          await _platform.invokeMethod('reportIntSubTest', {"sActionRITest": subAction, "sActionRIKeyTest": key, "sActionRIValueTest": intValue});
+          await _platform.invokeMethod('reportIntSub', {"sActionRI": subAction, "sActionRIKey": key, "sActionRIValue": intValue});
         } on PlatformException catch (e) {
           debugPrint("Failed to reportValue Int with Sub User Action: '${e.message}'.");
         }
       } else if (stringValue == null && intValue == null && doubleValue != null) {
         try {
           debugPrint("Sub Action value: $subAction, Key: $key, Double Value: $stringValue");
-          await _platform.invokeMethod('reportDoubleSubTest', {"sActionRDTest": subAction, "sActionRDKeyTest": key, "sActionRDValueTest": doubleValue});
+          await _platform.invokeMethod('reportDoubleSub', {"sActionRD": subAction, "sActionRDKey": key, "sActionRDValue": doubleValue});
         } on PlatformException catch (e) {
           debugPrint("Failed to reportValue Double with Sub User Action: '${e.message}'.");
         }

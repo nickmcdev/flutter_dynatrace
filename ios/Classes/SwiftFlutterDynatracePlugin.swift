@@ -5,17 +5,14 @@ import Dynatrace
 public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     
     var parentActionId: Int = 0
-    var parentActionsTest: [String: DTXAction] = [:]
+    var parentActions: [String: DTXAction] = [:]
     var parentActionList = [DTXAction?]()
     
     var subActionId: Int = 0
-    var subActionsTest: [String: DTXAction] = [:]
+    var subActions: [String: DTXAction] = [:]
     var subActionList = [DTXAction?]()
     
 //    // Web Request
-    
-    var webActionsTest: [String: DTXAction] = [:]
-    
     var webParentActionId: Int = 0
     var webParentActions: [String: DTXWebRequestTiming] = [:]
     var webParentActionTimings = [DTXWebRequestTiming?]()
@@ -27,9 +24,6 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     
     var webActionList = [DTXAction?]()
     var webAction: DTXAction?
-//    var requestTag: String
-//    var requestTagHeaderName: String
-//    var url: String
     var wrStatusCode: Int = -1
     var webrequestTiming: DTXWebRequestTiming?
 
@@ -41,67 +35,56 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-//    var action0: DTXAction?
-//    var action1: DTXAction?
-//    var action2: DTXAction?
-//
-//    var parentActions: [Int: DTXAction] = [:]
-//
-//    var parentActionCounter = 0
-    
     
     switch call.method {
-    case "enterTest":
+    case "enterAction":
         let argsEnterAction = call.arguments as! [String: Any]
-        let parentAction = argsEnterAction["enterParentActionTest"] as! String
-        let parentActionName = argsEnterAction["enterParentActionNameTest"]  as! String
+        let parentAction = argsEnterAction["enterParentAction"] as! String
+        let parentActionName = argsEnterAction["enterParentActionName"]  as! String
         self.parentActionList.append(DTXAction.enter(withName: parentActionName))
         print("ActionId: \(self.parentActionId)")
-        self.parentActionsTest[parentAction] = self.parentActionList[parentActionId]
+        self.parentActions[parentAction] = self.parentActionList[parentActionId]
         print("Parent Action Id: \(parentActionId)")
         self.parentActionId += 1
         print("Parent Action Id: \(parentActionId)")
         print(parentActionName)
         print(parentAction)
         
-    case "subTest":
+    case "subAction":
         let argsEnterSubAction = call.arguments as! [String: Any]
-        let subAction = argsEnterSubAction["enterSubActionTest"] as! String
-        let subActionName = argsEnterSubAction["enterSubActionNameTest"]  as! String
+        let subAction = argsEnterSubAction["enterSubAction"] as! String
+        let subActionName = argsEnterSubAction["enterSubActionName"]  as! String
         let parentAction = argsEnterSubAction["enterSubActionParentAction"] as! String
-        self.subActionList.append(DTXAction.enter(withName: subActionName, parentAction: parentActionsTest[parentAction]))
+        self.subActionList.append(DTXAction.enter(withName: subActionName, parentAction: parentActions[parentAction]))
         print("ActionId: \(self.subActionId)")
-        self.subActionsTest[subAction] = self.subActionList[subActionId]
+        self.subActions[subAction] = self.subActionList[subActionId]
         print("Sub Action Id: \(subActionId)")
         self.subActionId += 1
         print("Sub Action Id: \(subActionId)")
         print(subActionName)
         print(subAction)
         
-    case "leaveTest":
+    case "leaveAction":
         let argsLeaveAction = call.arguments as! [String: Any]
-        let parentAction = argsLeaveAction["leaveParentActionTest"] as! String
-        parentActionsTest[parentAction]?.leave()
-        print(parentActionsTest.keys)
-        //parentActionsTest.removeValue(forKey: parentAction)
-        if parentActionsTest[parentAction] == nil {
+        let parentAction = argsLeaveAction["leaveParentAction"] as! String
+        parentActions[parentAction]?.leave()
+        print(parentActions.keys)
+        if parentActions[parentAction] == nil {
             print("No entry for action named \(parentAction)")
         }
         
-    case "leaveSubTest":
+    case "leaveSubAction":
         let argsLeaveAction = call.arguments as! [String: Any]
-        let subAction = argsLeaveAction["leaveSubActionTest"] as! String
-        subActionsTest[subAction]?.leave()
-        print(subActionsTest.keys)
-        //parentActionsTest.removeValue(forKey: parentAction)
-        if parentActionsTest[subAction] == nil {
+        let subAction = argsLeaveAction["leaveSubAction"] as! String
+        subActions[subAction]?.leave()
+        print(subActions.keys)
+        if parentActions[subAction] == nil {
             print("No entry for action named \(subAction)")
         }
         
     case "webUserActionEnter":
         let argsEnterWebAction = call.arguments as! [String: Any]
         let urlFromFlutter = argsEnterWebAction["webUserActionUrl"] as! String
-        //var webAction: Int = webActionId
         var xdyna: String?
         let url = URL(string: urlFromFlutter)
         self.webAction = DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)")
@@ -109,14 +92,6 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
             self.webrequestTiming = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
             xdyna = dynatraceHeaderValue
         }
-        //self.webActionList.append(DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)"))
-        
-//        print("WebActionId: \(self.webActionId)")
-//        self.webActionsTest[webAction] = self.parentActionList[webActionId]
-//        print("Web Action Id: \(webActionId)")
-//        self.webActionId += 1
-//        print("Web Action Id: \(webActionId)")
-        //self.webAction = DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)")
         if (url != nil) {
             self.webrequestTiming?.start()
             result(xdyna);
@@ -183,6 +158,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
             } else {
                 result("Not able to capture Web User Action as URL is nil");
             }
+        
     case "webSubActionResponse":
         let argsLeaveWebSubAction = call.arguments as! [String: Any]
         let wrStatusCode = argsLeaveWebSubAction["webSubActionResponseCode"] as! Int
@@ -195,125 +171,65 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
             print("TESTDTX: Web Request Successful!")
         }
         
-//    case "webParentActionEnter":
-//        let argsEnterWebAction = call.arguments as! [String: Any]
-//        let webParentAction = argsEnterWebAction["webParentAction"] as! String
-//        let urlFromFlutter = argsEnterWebAction["webParentActionUrl"] as! String
-//        let webAction: Int = webActionId
-//        print("TESTDTX: URL: \(urlFromFlutter)")
-//        var xdyna: String?
-//        let url = URL(string: urlFromFlutter)
-//        self.webActionList.append(DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)"))
-//        if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
-//            self.webrequestTiming = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
-//            self.webActionsTest[dynatraceHeaderValue] = self.webActionList[webAction]
-//            xdyna = dynatraceHeaderValue
-//            print("TESTDTX: Map value: \(String(describing: webActionsTest[dynatraceHeaderValue]))")
-//        }
-//
-//        print("TESTDTX: Web Action Id: \(webActionId)")
-//        self.webActionId += 1
-//        print("TESTDTX: Web Action Id: \(webActionId)")
-//        if (url != nil) {
-//            self.webrequestTiming?.start()
-//            print(xdyna as Any)
-//            result(xdyna)
-//        } else {
-//            result("Not able to capture Web User Action as URL is nil");
-//        }
-
-
-    case "webUserActionResponse":
-        let argsLeaveWebAction = call.arguments as! [String: Any]
-        self.wrStatusCode = argsLeaveWebAction["webUserActionResponseCode"] as! Int
-        //let webAction = argsLeaveWebAction["webUserActionUrl"] as! Int
-        if (wrStatusCode != 200) {
-            self.webrequestTiming?.stop("Failed request: \(wrStatusCode)")
-            self.webAction?.leave()
-            //webActionsTest[webAction]?.leave()
-            print("Web Request Failed!")
-        } else {
-            self.webrequestTiming?.stop("200")
-            self.webAction?.leave()
-            //webActionsTest[webAction]?.leave()
-            print("Web Request Successful!")
-        }
-    case "webUserActionResponseTest":
-        let argsLeaveWebAction = call.arguments as! [String: Any]
-        let wrStatusCode = argsLeaveWebAction["webUserActionResponseCode"] as! Int
-        let webAction = argsLeaveWebAction["webUserActionId"] as! String
-        print("TESTDTX: WebAction x-dyna: \(webAction)")
-        if (wrStatusCode != 200) {
-            webrequestTiming?.stop("Failed request: \(wrStatusCode)")
-            //self.webAction?.leave()
-            webActionsTest[webAction]?.leave()
-            print("TESTDTX: Web Request Failed!")
-        } else {
-            webrequestTiming?.stop("200")
-            //self.webAction?.leave()
-            webActionsTest[webAction]?.leave()
-            print("TESTDTX: Web Request Successful!")
-        }
-        
-    case "reportStringParentTest":
+    case "reportStringParent":
         let argsReportStringParentAction = call.arguments as! [String: Any]
-        let parentAction = argsReportStringParentAction["pActionRSTest"] as! String
-        let keyParentAction = argsReportStringParentAction["pActionRSKeyTest"]  as! String
-        let stringValueParentAction = argsReportStringParentAction["pActionRSValueTest"] as! String
+        let parentAction = argsReportStringParentAction["pActionRS"] as! String
+        let keyParentAction = argsReportStringParentAction["pActionRSKey"]  as! String
+        let stringValueParentAction = argsReportStringParentAction["pActionRSValue"] as! String
         print(parentAction)
         print(keyParentAction)
         print(stringValueParentAction)
-        parentActionsTest[parentAction]?.reportValue(withName: keyParentAction, stringValue: stringValueParentAction)
+        parentActions[parentAction]?.reportValue(withName: keyParentAction, stringValue: stringValueParentAction)
     
-    case "reportIntParentTest":
+    case "reportIntParent":
         let argsReportIntParentAction = call.arguments as! [String: Any]
-        let parentAction = argsReportIntParentAction["pActionRITest"] as! String
-        let keyParentAction = argsReportIntParentAction["pActionRIKeyTest"]  as! String
-        let intValueParentAction = argsReportIntParentAction["pActionRIValueTest"] as! Int64
+        let parentAction = argsReportIntParentAction["pActionRI"] as! String
+        let keyParentAction = argsReportIntParentAction["pActionRIKey"]  as! String
+        let intValueParentAction = argsReportIntParentAction["pActionRIValue"] as! Int64
         print(parentAction)
         print(keyParentAction)
         print(intValueParentAction)
-        parentActionsTest[parentAction]?.reportValue(withName: keyParentAction, intValue: intValueParentAction)
+        parentActions[parentAction]?.reportValue(withName: keyParentAction, intValue: intValueParentAction)
         
-    case "reportDoubleParentTest":
+    case "reportDoubleParent":
         let argsReportDoubleParentAction = call.arguments as! [String: Any]
-        let parentAction = argsReportDoubleParentAction["pActionRDTest"] as! String
-        let keyParentAction = argsReportDoubleParentAction["pActionRDKeyTest"]  as! String
-        let doubleValueParentAction = argsReportDoubleParentAction["pActionRDValueTest"] as! Double
+        let parentAction = argsReportDoubleParentAction["pActionRD"] as! String
+        let keyParentAction = argsReportDoubleParentAction["pActionRDKey"]  as! String
+        let doubleValueParentAction = argsReportDoubleParentAction["pActionRDValue"] as! Double
         print(parentAction)
         print(keyParentAction)
         print(doubleValueParentAction)
-        parentActionsTest[parentAction]?.reportValue(withName: keyParentAction, doubleValue: doubleValueParentAction)
+        parentActions[parentAction]?.reportValue(withName: keyParentAction, doubleValue: doubleValueParentAction)
     
-    case "reportStringSubTest":
+    case "reportStringSub":
         let argsReportStringSubAction = call.arguments as! [String: Any]
-        let subAction = argsReportStringSubAction["sActionRSTest"] as! String
-        let keySubAction = argsReportStringSubAction["sActionRSKeyTest"]  as! String
-        let stringValueSubAction = argsReportStringSubAction["sActionRSValueTest"] as! String
+        let subAction = argsReportStringSubAction["sActionRS"] as! String
+        let keySubAction = argsReportStringSubAction["sActionRSKey"]  as! String
+        let stringValueSubAction = argsReportStringSubAction["sActionRSValue"] as! String
         print(subAction)
         print(keySubAction)
         print(stringValueSubAction)
-        subActionsTest[subAction]?.reportValue(withName: keySubAction, stringValue: stringValueSubAction)
+        subActions[subAction]?.reportValue(withName: keySubAction, stringValue: stringValueSubAction)
     
-    case "reportIntSubTest":
+    case "reportIntSub":
         let argsReportIntSubAction = call.arguments as! [String: Any]
-        let subAction = argsReportIntSubAction["sActionRITest"] as! String
-        let keySubAction = argsReportIntSubAction["sActionRIKeyTest"]  as! String
-        let intValueSubAction = argsReportIntSubAction["sActionRIValueTest"] as! Int64
+        let subAction = argsReportIntSubAction["sActionRI"] as! String
+        let keySubAction = argsReportIntSubAction["sActionRIKey"]  as! String
+        let intValueSubAction = argsReportIntSubAction["sActionRIValue"] as! Int64
         print(subAction)
         print(keySubAction)
         print(intValueSubAction)
-        subActionsTest[subAction]?.reportValue(withName: keySubAction, intValue: intValueSubAction)
+        subActions[subAction]?.reportValue(withName: keySubAction, intValue: intValueSubAction)
         
-    case "reportDoubleSubTest":
+    case "reportDoubleSub":
         let argsReportDoubleSubAction = call.arguments as! [String: Any]
-        let subAction = argsReportDoubleSubAction["sActionRDTest"] as! String
-        let keySubAction = argsReportDoubleSubAction["sActionRDKeyTest"]  as! String
-        let doubleValueSubAction = argsReportDoubleSubAction["sActionRDValueTest"] as! Double
+        let subAction = argsReportDoubleSubAction["sActionRD"] as! String
+        let keySubAction = argsReportDoubleSubAction["sActionRDKey"]  as! String
+        let doubleValueSubAction = argsReportDoubleSubAction["sActionRDValue"] as! Double
         print(subAction)
         print(keySubAction)
         print(doubleValueSubAction)
-        subActionsTest[subAction]?.reportValue(withName: keySubAction, doubleValue: doubleValueSubAction)
+        subActions[subAction]?.reportValue(withName: keySubAction, doubleValue: doubleValueSubAction)
         
     case "reportEventParent":
         let argsReportEventParentAction = call.arguments as! [String: Any]
@@ -321,7 +237,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let reportEventValue = argsReportEventParentAction["pActionREValue"]  as! String
         print(parentAction)
         print(reportEventValue)
-        parentActionsTest[parentAction]?.reportEvent(withName: reportEventValue)
+        parentActions[parentAction]?.reportEvent(withName: reportEventValue)
         
     case "reportEventSub":
         let argsReportEventSubAction = call.arguments as! [String: Any]
@@ -329,7 +245,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let reportEventValue = argsReportEventSubAction["sActionREValue"]  as! String
         print(subAction)
         print(reportEventValue)
-        subActionsTest[subAction]?.reportEvent(withName: reportEventValue)
+        subActions[subAction]?.reportEvent(withName: reportEventValue)
     
     case "reportErrorParent":
         let argsReportErrorParentAction = call.arguments as! [String: Any]
@@ -337,7 +253,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let reportErrorValue = argsReportErrorParentAction["pActionRErrValue"]  as! String
         print(parentAction)
         print(reportErrorValue)
-        parentActionsTest[parentAction]?.reportEvent(withName: reportErrorValue)
+        parentActions[parentAction]?.reportEvent(withName: reportErrorValue)
         
     case "reportErrorSub":
         let argsReportErrorSubAction = call.arguments as! [String: Any]
@@ -345,7 +261,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let reportErrorValue = argsReportErrorSubAction["sActionRErrValue"]  as! String
         print(subAction)
         print(reportErrorValue)
-        subActionsTest[subAction]?.reportEvent(withName: reportErrorValue)
+        subActions[subAction]?.reportEvent(withName: reportErrorValue)
     
     case "endVisit":
         Dynatrace.endVisit()

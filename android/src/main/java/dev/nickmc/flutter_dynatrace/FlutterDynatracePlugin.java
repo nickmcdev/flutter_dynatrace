@@ -13,7 +13,6 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,12 +35,12 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
   boolean withDebugLogging = true;
 
   // User Actions
-  int parentActionCountTest = 0;
-  int subActionCountTest = 0;
+  int parentActionCount = 0;
+  int subActionCount = 0;
   Map<String, DTXAction> parentActionsMap = new HashMap();
   Map<String, DTXAction> subActionsMap = new HashMap();
-  ArrayList<DTXAction> parentActionsListTest = new ArrayList<DTXAction>();
-  ArrayList<DTXAction> subActionsListTest = new ArrayList<DTXAction>();
+  ArrayList<DTXAction> parentActionsList = new ArrayList<DTXAction>();
+  ArrayList<DTXAction> subActionsList = new ArrayList<DTXAction>();
 
   // Web Requests
   int webParentActionId = 0;
@@ -75,37 +74,37 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
 
   public void onMethodCall(MethodCall call, Result result) {
     switch (call.method) {
-    case "enterTest":
-      String parentAction = call.argument("enterParentActionTest");
-      String parentActionName = call.argument("enterParentActionNameTest");
+    case "enterAction":
+      String parentAction = call.argument("enterParentAction");
+      String parentActionName = call.argument("enterParentActionName");
       Log.d("enterAction", "Parent Action: " + parentAction);
       Log.d("enterAction", "Parent Action name: " + parentActionName);
-      parentActionsListTest.add(Dynatrace.enterAction(parentActionName));
-      parentActionsMap.put(parentAction, parentActionsListTest.get(parentActionCountTest));
-      parentActionCountTest++;
+      parentActionsList.add(Dynatrace.enterAction(parentActionName));
+      parentActionsMap.put(parentAction, parentActionsList.get(parentActionCount));
+      parentActionCount++;
       break;
 
-    case "leaveTest":
-      String parentActionLeave = call.argument("leaveParentActionTest");
+    case "leaveAction":
+      String parentActionLeave = call.argument("leaveParentAction");
       parentActionsMap.get(parentActionLeave).leaveAction();
       break;
 
-    case "subTest":
-      String subAction = call.argument("enterSubActionTest");
-      String subActionName = call.argument("enterSubActionNameTest");
+    case "subAction":
+      String subAction = call.argument("enterSubAction");
+      String subActionName = call.argument("enterSubActionName");
       String parentActionSub = call.argument("enterSubActionParentAction");
       Log.d("enterSubAction", "Sub Action: " + subAction);
       Log.d("enterSubAction", "Sub Action name: " + subActionName);
-      subActionsListTest.add(Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
-      subActionsMap.put(subAction, subActionsListTest.get(subActionCountTest));
-      Log.d("enterSubAction", "subActionMap Value: " + subActionsListTest.get(subActionCountTest).toString());
-      Log.d("enterSubAction", "Sub Action Count: " + subActionCountTest);
-      subActionCountTest++;
-      Log.d("enterSubAction", "Sub Action Count: " + subActionCountTest);
+      subActionsList.add(Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
+      subActionsMap.put(subAction, subActionsList.get(subActionCount));
+      Log.d("enterSubAction", "subActionMap Value: " + subActionsList.get(subActionCount).toString());
+      Log.d("enterSubAction", "Sub Action Count: " + subActionCount);
+      subActionCount++;
+      Log.d("enterSubAction", "Sub Action Count: " + subActionCount);
       break;
 
-    case "leaveSubTest":
-      String subActionLeave = call.argument("leaveSubActionTest");
+    case "leaveSubAction":
+      String subActionLeave = call.argument("leaveSubAction");
       Log.d("leaveSubAction", "Sub Action: " + subActionLeave);
       subActionsMap.get(subActionLeave).leaveAction();
       break;
@@ -194,24 +193,24 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       }
       break;
 
-    case "reportStringParentTest":
-      String parentActionRS = call.argument("pActionRSTest");
-      String parentActionRSKey = call.argument("pActionRSKeyTest");
-      String parentActionRSValue = call.argument("pActionRSValueTest");
+    case "reportStringParent":
+      String parentActionRS = call.argument("pActionRS");
+      String parentActionRSKey = call.argument("pActionRSKey");
+      String parentActionRSValue = call.argument("pActionRSValue");
       parentActionsMap.get(parentActionRS).reportValue(parentActionRSKey, parentActionRSValue);
       break;
 
-    case "reportIntParentTest":
-      String parentActionRI = call.argument("pActionRITest");
-      String parentActionRIKey = call.argument("pActionRIKeyTest");
-      int parentActionRIValue = call.argument("pActionRIValueTest");
+    case "reportIntParent":
+      String parentActionRI = call.argument("pActionRI");
+      String parentActionRIKey = call.argument("pActionRIKey");
+      int parentActionRIValue = call.argument("pActionRIValue");
       parentActionsMap.get(parentActionRI).reportValue(parentActionRIKey, parentActionRIValue);
       break;
 
-    case "reportDoubleParentTest":
-      String parentActionRD = call.argument("pActionRDTest");
-      String parentActionRDKey = call.argument("pActionRDKeyTest");
-      double parentActionRDValue = call.argument("pActionRDValueTest");
+    case "reportDoubleParent":
+      String parentActionRD = call.argument("pActionRD");
+      String parentActionRDKey = call.argument("pActionRDKey");
+      double parentActionRDValue = call.argument("pActionRDValue");
       parentActionsMap.get(parentActionRD).reportValue(parentActionRDKey, parentActionRDValue);
       break;
 
@@ -227,24 +226,24 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       parentActionsMap.get(parentActionRErr).reportEvent(parentActionRErrValue);
       break;
 
-    case "reportStringSubTest":
-      String subActionRS = call.argument("sActionRSTest");
-      String subActionRSKey = call.argument("sActionRSKeyTest");
-      String subActionRSValue = call.argument("sActionRSValueTest");
+    case "reportStringSub":
+      String subActionRS = call.argument("sActionRS");
+      String subActionRSKey = call.argument("sActionRSKey");
+      String subActionRSValue = call.argument("sActionRSValue");
       subActionsMap.get(subActionRS).reportValue(subActionRSKey, subActionRSValue);
       break;
 
-    case "reportIntSubTest":
-      String subActionRI = call.argument("sActionRITest");
-      String subActionRIKey = call.argument("sActionRIKeyTest");
-      int subActionRIValue = call.argument("sActionRIValueTest");
+    case "reportIntSub":
+      String subActionRI = call.argument("sActionRI");
+      String subActionRIKey = call.argument("sActionRIKey");
+      int subActionRIValue = call.argument("sActionRIValue");
       subActionsMap.get(subActionRI).reportValue(subActionRIKey, subActionRIValue);
       break;
 
-    case "reportDoubleSubTest":
-      String subActionRD = call.argument("sActionRDTest");
-      String subActionRDKey = call.argument("sActionRDKeyTest");
-      double subActionRDValue = call.argument("sActionRDValueTest");
+    case "reportDoubleSub":
+      String subActionRD = call.argument("sActionRD");
+      String subActionRDKey = call.argument("sActionRDKey");
+      double subActionRDValue = call.argument("sActionRDValue");
       subActionsMap.get(subActionRD).reportValue(subActionRDKey, subActionRDValue);
       break;
 
@@ -325,30 +324,24 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
        break;
 
      case "getCaptureStatus":
-       String captureStatusStr;
        boolean captureStatus = Dynatrace.getCaptureStatus();
        if (captureStatus == true) {
-         captureStatusStr = "true";
-         Log.d("Dyna", "Capture status = " + captureStatusStr);
-         result.success(captureStatusStr);
-       } else {
-         captureStatusStr = "false";
-         Log.d("Dyna", "Capture status = " + captureStatusStr);
-         result.success(captureStatusStr);
+         Log.d("Dyna", "Capture status = " + captureStatus);
+         result.success(captureStatus);
+       } else if (captureStatus == false) {
+         Log.d("Dyna", "Capture status = " + captureStatus);
+         result.success(captureStatus);
        }
        break;
 
      case "isCrashReportingOptedIn":
-       String crashReportStatusStr;
        boolean crashReportStatus = Dynatrace.isCrashReportingOptedIn();
        if (crashReportStatus == true) {
-         crashReportStatusStr = "true";
-         Log.d("Dyna", "Crash report capture status = " + crashReportStatusStr);
-         result.success(crashReportStatusStr);
+         Log.d("Dyna", "Crash report capture status = " + crashReportStatus);
+         result.success(crashReportStatus);
        } else {
-         crashReportStatusStr = "false";
-         Log.d("Dyna", "Crash report capture status = " + crashReportStatusStr);
-         result.success(crashReportStatusStr);
+         Log.d("Dyna", "Crash report capture status = " + crashReportStatus);
+         result.success(crashReportStatus);
        }
        break;
 

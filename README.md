@@ -7,24 +7,39 @@ This plugin is **NOT** officially supported by Dynatrace.
 
 ## How to use the plugin:
 Android:
-Add the code snippet from the WebUI to your Root build.gradle file. 
+![Grade snippet in WebUI](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webUIGradle.png)
+Add the code snippet from the WebUI to your Root build.gradle file:
+![Grade snippet in Android Studio](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/gradleUpdateAndroidStudio.png)
+[Link to the official Dynatrace doc on implementing the above](https://www.dynatrace.com/support/help/shortlink/dynatrace-android-gradle-plugin-first-steps)
 
 iOS:
 Go to your project in terminal and run:
 pod install
+![pod install command in terminal](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/podInstall.png)
+Add the code snippet from the WebUI to your **Runner info.plist**:
+![info.plist in WebUI](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/infoPList.png)
+![info.plist in Xcode](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/flutterInfoPList.png)
+
 
 ### Starting the Agent manually:
-iOS:
 ````
-Dynatrace.startupWithInfoPlistSettings();
-````
+import 'package:flutter_dynatrace/flutter_dynatrace.dart';
+import 'dart:io' show Platform;
 
-Android (Will update this method soon):
-````
 String appId = "updateThisValue";
 String beaconUrl = "updateThisValue";
-// startup(String appId, String beaconUrl, bool withDebugLogging, bool certValidation, bool crashReporting, bool optIn)
-Dynatrace.startup(appId, beaconUrl, true, false, false, false);
+
+// This can be set in the initState function so that the agents can start when the app starts
+@override
+  void initState() {
+	if (Platform.isIOS == true) {
+		Dynatrace.startupWithInfoPlistSettings();
+	} else if (Platform.isAndroid == true) {
+		// startup(String appId, String beaconUrl, bool withDebugLogging, bool certValidation, bool crashReporting, bool optIn)
+		Dynatrace.startup(appId, beaconUrl, true, false, false, false);
+
+	super.initState();
+  }
 
 ````
 
@@ -157,6 +172,40 @@ isCaptureStatus() async {
 	debugPrint(capture.toString());
 }
 ````
+
+### Results from the Example app in Dynatrace (Left is Android - Right is iOS):
+Overall Sessions:
+![Sessions](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/exampleAppAndroidLeftiOSRight.png) 
+
+Single Action:
+![Single Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/singleAction.png) 
+
+Sub Actions:
+![Sub Actions](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/subActions.png) 
+
+Web Action:
+![Web Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webAction.png)
+
+Web Action with reportString:
+![Web Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webActionReportString.png)
+
+reportValue - String:
+![reportValue - String](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportString.png)
+
+reportValue - Int:
+![reportValue - Int](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportInt.png)
+
+reportValue - Double:
+![reportValue - Double](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportDouble.png)
+
+reportEvent:
+![reportEvent](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportEvent.png)
+
+reportError:
+![reportError](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportError.png)
+
+reportValues:
+![reportValues](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportValues.png)
 
 I will provide more examples and features in upcoming releases. Any feedback on what you like and or don't like and what would be useful to have changed/updated, would be fantastic!
 

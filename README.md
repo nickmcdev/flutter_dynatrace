@@ -128,7 +128,7 @@ Dynatrace.leaveAction(parentAction: actions[12]);
 
 #### Using identifyUser:
 ````
-String userName = flutter@dynatrace.com; 
+String userName = "flutter@dynatrace.com"; 
 Dynatrace.identifyUser(userName);
 ````
 
@@ -158,6 +158,6 @@ isCaptureStatus() async {
 }
 ````
 
-I will provide more examples and features in upcoming releases. Any feedback on what you like and or don't like and what would be useful to have changed/updated, that would be fantastic!
+I will provide more examples and features in upcoming releases. Any feedback on what you like and or don't like and what would be useful to have changed/updated, would be fantastic!
 
 Thanks!

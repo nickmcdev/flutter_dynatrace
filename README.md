@@ -1,6 +1,6 @@
 # flutter_dynatrace
 
-This plugin allows you to use the Dynatrace Mobile SDKs (iOS and Android) to help monitor your Flutter apps. 
+This plugin allows you to use the Dynatrace Mobile SDKs (iOS and Android) to help monitor your Flutter apps. Please give the example app attached to the plugin repo a go if you want to test out the similar SDK calls in this doc.
 
 This plugin is **NOT** officially supported by Dynatrace. 
 
@@ -21,7 +21,9 @@ Add the code snippet from the WebUI to your **Runner info.plist**:
 ![info.plist in Xcode](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/flutterInfoPList.png)
 
 
+
 ### Starting the Agent manually:
+
 ````
 import 'package:flutter_dynatrace/flutter_dynatrace.dart';
 import 'dart:io' show Platform;
@@ -44,26 +46,40 @@ String beaconUrl = "updateThisValue";
 ````
 
 
-### Create user action:
-You will need to use the following combinations of parameters(or this SDK call won’t work):
-For enterAction:
-parentAction and parentActionName
-or
-subAction, subActionName **AND** parentAction
+#### Single/Parent Action:
 
-For leaveAction:
-parentAction
-or
-subAction
+**Dynatrace.enterAction();**
+Required parameters:
+- parentAction
+- parentActionName
 
-#### Single Action
+**Dynatrace.leaveAction();**
+Required parameters:
+- parentAction
+
 ````
 Dynatrace.enterAction(parentAction: actions[0], parentActionName: "Touch on " + options[1]);
 // do something
 Dynatrace.leaveAction(parentAction: actions[0]);
 ````
 
-#### Sub Actions
+**Result:**
+![Single Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/singleAction.png) 
+
+
+#### Sub Actions:
+
+**Dynatrace.enterAction();**
+Required parameters:
+- parentAction
+- subAction
+- subActionName
+
+**Dynatrace.leaveAction();**
+Required parameters:
+- subAction
+
+
 ````
 Dynatrace.enterAction(parentAction: actions[1], parentActionName: "Touch on " + options[2]);
 // do something
@@ -79,7 +95,22 @@ Dynatrace.leaveAction(subAction: actions[2]);
 Dynatrace.leaveAction(parentAction: actions[1]);
 ````
 
-#### Web Action
+**Result:**
+![Sub Actions](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/subActions.png) 
+
+
+#### Web Action (Needs to be inside of a Parent or Sub Action):
+
+*Note:* Currently have this set for JSON requests and request types of **POST or GET**. I will work on making this more dynamic in the future.
+
+**Dynatrace.dynaWebRequest();**
+Required parameters:
+- parentAction **OR** subAction
+- url
+- requestType
+  - "GET"
+  - "POST"
+
 ````
 String url = "https://dog.ceo/api/breeds/image/random";
 Dynatrace.enterAction(parentAction: actions[5], parentActionName: "Touch on " + options[3]);
@@ -94,7 +125,18 @@ Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET")
 Dynatrace.leaveAction(parentAction: actions[5]);
 ````
 
-#### Web Action with reportValue (String)
+**Result:**
+![Web Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webAction.png)
+
+
+#### Web Action with reportValue - String:
+
+**Dynatrace.reportValue(); (String)**
+Required parameters:
+- parentAction **OR** subAction
+- key
+- stringValue
+
 ````
 Dynatrace.enterAction(parentAction: actions[6], parentActionName: "Touch on Web Action + reportString");
 // This is used for web requests of application/json and will automatically tag and time the request and return of response body if you want to use it.
@@ -112,16 +154,97 @@ Dynatrace.reportValue(parentAction: actions[6], key: "Message", stringValue: mes
 Dynatrace.leaveAction(parentAction: actions[6]);
 ````
 
-#### Using reportValue:
-You will need to use the following combinations of parameters(or this SDK call won’t work):
-parentAction, key AND either stringValue, intValue or doubleValue
-or
-subAction, key AND either stringValue, intValue or doubleValue
+**Result:**
+![Web Action with reportString](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webActionReportString.png)
 
-reportError will require parentAction || subAction + error as string (appednd .toString())
-I will also try and find a better way to approach the reportError SDK call in future releases
+With just a parentAction and reportString:
+![reportValue - String](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportString.png)
 
-reportEvent will require parentAction || subAction + event
+
+#### reportValue - Int:
+
+**Dynatrace.reportValue(); (Int)**
+Required parameters:
+- parentAction **OR** subAction
+- key
+- intValue
+
+````
+Dynatrace.enterAction(parentAction: actions[8], parentActionName: "Touch on + " + options[6]);
+Dynatrace.reportValue(parentAction: actions[8], key: "Jenny", intValue: 8675309);
+Dynatrace.leaveAction(parentAction: actions[8]);
+````
+
+**Result:**
+![reportValue - Int](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportInt.png)
+
+
+#### reportValue - Double:
+
+**Dynatrace.reportValue(); (Double)**
+Required parameters:
+- parentAction **OR** subAction
+- key
+- doubleValue
+
+````
+Dynatrace.enterAction(parentAction: actions[9], parentActionName: "Touch on + " + options[7]);
+Dynatrace.reportValue(parentAction: actions[9], key: "Mobile", doubleValue: 1.337);
+Dynatrace.leaveAction(parentAction: actions[9]);
+````
+
+**Result:**
+![reportValue - Double](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportDouble.png)
+
+
+#### reportEvent:
+
+**Dynatrace.reportEvent();**
+Required parameters:
+- parentAction **OR** subAction
+- event
+
+````
+Dynatrace.enterAction(parentAction: actions[10], parentActionName: "Touch on + " + options[8]);
+Dynatrace.reportEvent(parentAction: actions[10], event: "Data has been received!");
+Dynatrace.leaveAction(parentAction: actions[10]);
+````
+
+**Result:**
+![reportEvent](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportEvent.png)
+
+
+#### reportError:
+
+This is essentially the same implementation as reportEvent currently. I will update this in a future release.
+
+**Dynatrace.reportError();**
+Required parameters:
+- parentAction **OR** subAction
+- error
+
+````
+int a = 100; 
+int b = 0; 
+int result;
+
+Dynatrace.enterAction(parentAction: actions[12], parentActionName: "Touch on + " + options[10]);
+
+	try {  
+    	result = a ~/ b; 
+    } catch(e) { 
+        Dynatrace.reportError(parentAction: actions[12], error: e.toString()); 
+    } 
+
+Dynatrace.leaveAction(parentAction: actions[12]);
+````
+
+**Result:**
+![reportError2](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportError2.png)
+![reportError](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportError.png)
+
+
+#### All options for reportValue + reportEvent + reportError:
 
 ````
 int a = 100; 
@@ -133,13 +256,19 @@ Dynatrace.reportValue(parentAction: actions[12], key: "Dynatrace", stringValue: 
 Dynatrace.reportValue(parentAction: actions[12], key: "Jenny", intValue: 8675309);
 Dynatrace.reportValue(parentAction: actions[12], key: "Mobile", doubleValue: 1.337);
 Dynatrace.reportEvent(parentAction: actions[12], event: "Data has been received!");
-try {  
-    result = a ~/ b; 
-} catch(e) { 
-    Dynatrace.reportError(parentAction: actions[12], error: e.toString()); 
-} 
+
+	try {  
+    	result = a ~/ b; 
+    } catch(e) { 
+        Dynatrace.reportError(parentAction: actions[12], error: e.toString()); 
+    } 
+
 Dynatrace.leaveAction(parentAction: actions[12]);
 ````
+
+**Result:**
+![reportValues](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportValues.png)
+
 
 #### Using identifyUser:
 ````
@@ -174,38 +303,10 @@ isCaptureStatus() async {
 ````
 
 ### Results from the Example app in Dynatrace (Left is Android - Right is iOS):
-Overall Sessions:
+Overall Session view from the above examples:
 ![Sessions](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/exampleAppAndroidLeftiOSRight.png) 
 
-Single Action:
-![Single Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/singleAction.png) 
 
-Sub Actions:
-![Sub Actions](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/subActions.png) 
-
-Web Action:
-![Web Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webAction.png)
-
-Web Action with reportString:
-![Web Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webActionReportString.png)
-
-reportValue - String:
-![reportValue - String](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportString.png)
-
-reportValue - Int:
-![reportValue - Int](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportInt.png)
-
-reportValue - Double:
-![reportValue - Double](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportDouble.png)
-
-reportEvent:
-![reportEvent](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportEvent.png)
-
-reportError:
-![reportError](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportError.png)
-
-reportValues:
-![reportValues](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportValues.png)
 
 I will provide more examples and features in upcoming releases. Any feedback on what you like and or don't like and what would be useful to have changed/updated, would be fantastic!
 

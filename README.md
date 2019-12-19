@@ -288,6 +288,29 @@ Dynatrace.identifyUser(userName);
 ````
 ---
 
+### Setting Data Collection Level:
+````
+// Set level to off - You can use "OFF" or "off"
+Dynatrace.setDataCollectionLevel("OFF");
+
+// Set level to performance - You can use "PERFORMANCE" or "performance"
+Dynatrace.setDataCollectionLevel("PERFORMANCE");
+
+// Set level to user behavior - You can use "USER_BEHAVIOR" or "user_behavior"
+Dynatrace.setDataCollectionLevel("USER_BEHAVIOR");
+````
+---
+
+### Setting Crash Reporting Capture:
+````
+// On
+Dynatrace.setCrashReportingOptedIn(true);
+
+// Off
+Dynatrace.setCrashReportingOptedIn(false);
+````
+---
+
 ### No parameter SDK calls:
 
 ````

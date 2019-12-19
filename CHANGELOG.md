@@ -6,3 +6,6 @@
 
 ## 0.0.3
 * Updated/moved around doc.
+
+## 0.0.4
+* Doc :( Forgot to add Data collection level/crash report capture.

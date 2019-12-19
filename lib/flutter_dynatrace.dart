@@ -7,8 +7,6 @@ import 'dart:io' show Platform;
 class Dynatrace {
   static const _platform = const MethodChannel('dev.nickmc.flutter_dynatrace/dynatrace');
 
-  static final String url = "http://nickmcapache1.dtwlab.dynatrace.org:81/json/weather.json";
-
   static Future enterAction({String parentAction, String parentActionName, String subAction, String subActionName}) async {
     if (parentAction != null && parentActionName != null && subAction == null && subActionName == null) {
       try {

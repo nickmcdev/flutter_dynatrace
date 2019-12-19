@@ -2,9 +2,8 @@
 
 This plugin allows you to use the Dynatrace Mobile SDKs (iOS and Android) to help monitor your Flutter apps. 
 
-{{#callout  title='Note' type='info' }}
 This plugin is **NOT** officially supported by Dynatrace. 
-{{/callout}}
+
 
 ## How to use the plugin:
 Android:
@@ -20,9 +19,13 @@ iOS:
 Dynatrace.startupWithInfoPlistSettings();
 ````
 
-Android:
+Android (Will update this method soon):
 ````
+String appId = "updateThisValue";
+String beaconUrl = "updateThisValue";
+// startup(String appId, String beaconUrl, bool withDebugLogging, bool certValidation, bool crashReporting, bool optIn)
 Dynatrace.startup(appId, beaconUrl, true, false, false, false);
+
 ````
 
 
@@ -101,6 +104,7 @@ or
 subAction, key AND either stringValue, intValue or doubleValue
 
 reportError will require parentAction || subAction + error as string (appednd .toString())
+I will also try and find a better way to approach the reportError SDK call in future releases
 
 reportEvent will require parentAction || subAction + event
 

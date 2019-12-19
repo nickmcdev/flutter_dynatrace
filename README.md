@@ -48,7 +48,7 @@ String beaconUrl = "updateThisValue";
 ````
 ---
 
-#### Single/Parent Action:
+### Single/Parent Action:
 
 **Dynatrace.enterAction();**
 Required parameters:
@@ -70,7 +70,7 @@ Dynatrace.leaveAction(parentAction: actions[0]);
 
 ---
 
-#### Sub Actions:
+### Sub Actions:
 
 **Dynatrace.enterAction();**
 Required parameters:
@@ -103,7 +103,7 @@ Dynatrace.leaveAction(parentAction: actions[1]);
 
 ---
 
-#### Web Action (Needs to be inside of a Parent or Sub Action):
+### Web Action (Needs to be inside of a Parent or Sub Action):
 
 *Note:* Currently have this set for JSON requests and request types of **POST or GET**. I will work on making this more dynamic in the future.
 
@@ -134,7 +134,7 @@ Dynatrace.leaveAction(parentAction: actions[5]);
 
 ---
 
-#### Web Action with reportValue - String:
+### Web Action with reportValue - String:
 
 **Dynatrace.reportValue(); (String)**
 Required parameters:
@@ -167,7 +167,7 @@ With just a parentAction and reportString:
 
 ---
 
-#### reportValue - Int:
+### reportValue - Int:
 
 **Dynatrace.reportValue(); (Int)**
 Required parameters:
@@ -186,7 +186,7 @@ Dynatrace.leaveAction(parentAction: actions[8]);
 
 ---
 
-#### reportValue - Double:
+### reportValue - Double:
 
 **Dynatrace.reportValue(); (Double)**
 Required parameters:
@@ -205,7 +205,7 @@ Dynatrace.leaveAction(parentAction: actions[9]);
 
 ---
 
-#### reportEvent:
+### reportEvent:
 
 **Dynatrace.reportEvent();**
 Required parameters:
@@ -223,7 +223,7 @@ Dynatrace.leaveAction(parentAction: actions[10]);
 
 ---
 
-#### reportError:
+### reportError:
 
 This is essentially the same implementation as reportEvent currently. I will update this in a future release.
 
@@ -254,7 +254,7 @@ Dynatrace.leaveAction(parentAction: actions[12]);
 
 ---
 
-#### All options for reportValue + reportEvent + reportError:
+### All options for reportValue + reportEvent + reportError:
 
 ````
 int a = 100; 
@@ -281,14 +281,15 @@ Dynatrace.leaveAction(parentAction: actions[12]);
 
 ---
 
-#### Using identifyUser:
+### Using identifyUser:
 ````
 String userName = "flutter@dynatrace.com"; 
 Dynatrace.identifyUser(userName);
 ````
 ---
 
-#### No parameter SDK calls:
+### No parameter SDK calls:
+
 ````
 Dynatrace.flushEvents();
 Dynatrace.endVisit();
@@ -296,7 +297,7 @@ Dynatrace.shutdown();
 ````
 ---
 
-#### SDK calls with return values:
+### SDK calls with return values:
 These will return a Future<T> instance so you will need to create a function that allows for the async await properties so that the value from the Native layer will not generate a future instance (just like Promises for JavaScript)
 ````
 dataCollectionLevel() async {	

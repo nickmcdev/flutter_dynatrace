@@ -1,6 +1,6 @@
 name: flutter_dynatrace
 description: Mobile agent integration with Flutter!
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/nickmcdev/flutter_dynatrace
 
 environment:

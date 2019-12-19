@@ -6,16 +6,18 @@ This plugin is **NOT** officially supported by Dynatrace.
 
 
 ## How to use the plugin:
-Android:
+##### Android:
 ![Grade snippet in WebUI](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webUIGradle.png)
+
 Add the code snippet from the WebUI to your Root build.gradle file:
 ![Grade snippet in Android Studio](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/gradleUpdateAndroidStudio.png)
 [Link to the official Dynatrace doc on implementing the above](https://www.dynatrace.com/support/help/shortlink/dynatrace-android-gradle-plugin-first-steps)
 
-iOS:
+##### iOS:
 Go to your project in terminal and run:
 pod install
 ![pod install command in terminal](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/podInstall.png)
+
 Add the code snippet from the WebUI to your **Runner info.plist**:
 ![info.plist in WebUI](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/infoPList.png)
 ![info.plist in Xcode](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/flutterInfoPList.png)
@@ -44,7 +46,7 @@ String beaconUrl = "updateThisValue";
   }
 
 ````
-
+---
 
 #### Single/Parent Action:
 
@@ -66,6 +68,7 @@ Dynatrace.leaveAction(parentAction: actions[0]);
 **Result:**
 ![Single Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/singleAction.png) 
 
+---
 
 #### Sub Actions:
 
@@ -98,6 +101,7 @@ Dynatrace.leaveAction(parentAction: actions[1]);
 **Result:**
 ![Sub Actions](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/subActions.png) 
 
+---
 
 #### Web Action (Needs to be inside of a Parent or Sub Action):
 
@@ -128,6 +132,7 @@ Dynatrace.leaveAction(parentAction: actions[5]);
 **Result:**
 ![Web Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webAction.png)
 
+---
 
 #### Web Action with reportValue - String:
 
@@ -160,6 +165,7 @@ Dynatrace.leaveAction(parentAction: actions[6]);
 With just a parentAction and reportString:
 ![reportValue - String](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportString.png)
 
+---
 
 #### reportValue - Int:
 
@@ -178,6 +184,7 @@ Dynatrace.leaveAction(parentAction: actions[8]);
 **Result:**
 ![reportValue - Int](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportInt.png)
 
+---
 
 #### reportValue - Double:
 
@@ -196,6 +203,7 @@ Dynatrace.leaveAction(parentAction: actions[9]);
 **Result:**
 ![reportValue - Double](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportDouble.png)
 
+---
 
 #### reportEvent:
 
@@ -213,6 +221,7 @@ Dynatrace.leaveAction(parentAction: actions[10]);
 **Result:**
 ![reportEvent](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportEvent.png)
 
+---
 
 #### reportError:
 
@@ -243,6 +252,7 @@ Dynatrace.leaveAction(parentAction: actions[12]);
 ![reportError2](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportError2.png)
 ![reportError](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportError.png)
 
+---
 
 #### All options for reportValue + reportEvent + reportError:
 
@@ -269,12 +279,14 @@ Dynatrace.leaveAction(parentAction: actions[12]);
 **Result:**
 ![reportValues](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/reportValues.png)
 
+---
 
 #### Using identifyUser:
 ````
 String userName = "flutter@dynatrace.com"; 
 Dynatrace.identifyUser(userName);
 ````
+---
 
 #### No parameter SDK calls:
 ````
@@ -282,6 +294,7 @@ Dynatrace.flushEvents();
 Dynatrace.endVisit();
 Dynatrace.shutdown();
 ````
+---
 
 #### SDK calls with return values:
 These will return a Future<T> instance so you will need to create a function that allows for the async await properties so that the value from the Native layer will not generate a future instance (just like Promises for JavaScript)
@@ -301,12 +314,13 @@ isCaptureStatus() async {
 	debugPrint(capture.toString());
 }
 ````
+---
 
 ### Results from the Example app in Dynatrace (Left is Android - Right is iOS):
 Overall Session view from the above examples:
 ![Sessions](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/exampleAppAndroidLeftiOSRight.png) 
 
-
+---
 
 I will provide more examples and features in upcoming releases. Any feedback on what you like and or don't like and what would be useful to have changed/updated, would be fantastic!
 

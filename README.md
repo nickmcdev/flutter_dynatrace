@@ -6,14 +6,14 @@ This plugin is **NOT** officially supported by Dynatrace.
 
 
 ## How to use the plugin:
-##### Android:
+### Android:
 ![Grade snippet in WebUI](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webUIGradle.png)
 
 Add the code snippet from the WebUI to your Root build.gradle file:
 ![Grade snippet in Android Studio](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/gradleUpdateAndroidStudio.png)
 [Link to the official Dynatrace doc on implementing the above](https://www.dynatrace.com/support/help/shortlink/dynatrace-android-gradle-plugin-first-steps)
 
-##### iOS:
+### iOS:
 Go to your project in terminal and run:
 pod install
 ![pod install command in terminal](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/podInstall.png)

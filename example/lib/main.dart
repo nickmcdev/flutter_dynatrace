@@ -66,13 +66,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         // I will add more functionality to this in upcoming releases/updates
         // requestType can be "POST" or "GET" - if others are used, the web request will not occur
         // set response to String of JSON
-    String reportValueTitle = await Dynatrace.dynaWebRequest(parentAction: actions[6], url: "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json", requestType: "GET");
+    String reportValueMessage = await Dynatrace.dynaWebRequest(parentAction: actions[6], url: "https://dog.ceo/api/breeds/image/random", requestType: "GET");
         // decode response
-    var jsonResp = json.decode(reportValueTitle);
+    var jsonResp = json.decode(reportValueMessage);
         // set new String to grab the key title's value
-    var title = jsonResp["data"]["title"];
+    var message = jsonResp["message"];
         // use the reportValue(string) SDK to put it in the waterfall
-    Dynatrace.reportValue(parentAction: actions[6], key: "Title", stringValue: title);
+    Dynatrace.reportValue(parentAction: actions[6], key: "Message", stringValue: message);
         // leave action
     Dynatrace.leaveAction(parentAction: actions[6]);
     changeText("Touch on " + options[4]);
@@ -172,20 +172,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       break;
 
       case 'Web Action': {
-        //List<String> urls = ["https://jsonplaceholder.typicode.com/todos/1", "https://jsonplaceholder.typicode.com/todos/2", "https://jsonplaceholder.typicode.com/todos/3", "https://jsonplaceholder.typicode.com/todos/4", "https://jsonplaceholder.typicode.com/todos/5"];
-        List<String> urls = ["http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json", "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick2.json", "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick3.json", "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick4.json", "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick5.json"];
-        
-        //String url = "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json";
+        String url = "https://dog.ceo/api/breeds/image/random";
         Dynatrace.enterAction(parentAction: actions[5], parentActionName: "Touch on " + options[3]);
-
         // This is used for web requests of application/json and will automatically tag and time the request and return of response body if you want to use it.
         // I will add more functionality to this in upcoming releases/updates
         // requestType can be "POST" or "GET" - if others are used, the web request will not occur
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[1], requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[2], requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[3], requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[4], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
         Dynatrace.leaveAction(parentAction: actions[5]);
         changeText("Touch on " + options[3]);
 
@@ -230,20 +226,35 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       break;
 
       case 'Action with reportError': {
+        int a = 100; 
+        int b = 0; 
+        int result;  
         Dynatrace.enterAction(parentAction: actions[11], parentActionName: "Touch on " + options[9]);
-        Dynatrace.reportError(parentAction: actions[11], error: "Index out of range");
+        try {  
+          result = a ~/ b; 
+        } catch(e) { 
+          Dynatrace.reportError(parentAction: actions[11], error: e.toString()); 
+        } 
         Dynatrace.leaveAction(parentAction: actions[11]);
         changeText("Touch on $options[9]");
       }
       break;
 
       case 'Action with reportValues': {
+        int a = 100; 
+        int b = 0; 
+        int result;
+
         Dynatrace.enterAction(parentAction: actions[12], parentActionName: "Touch on + " + options[10]);
         Dynatrace.reportValue(parentAction: actions[12], key: "Dynatrace", stringValue: "All-in-one, all you need");
         Dynatrace.reportValue(parentAction: actions[12], key: "Jenny", intValue: 8675309);
         Dynatrace.reportValue(parentAction: actions[12], key: "Mobile", doubleValue: 1.337);
         Dynatrace.reportEvent(parentAction: actions[12], event: "Data has been received!");
-        Dynatrace.reportError(parentAction: actions[12], error: "Index out of range");
+        try {  
+          result = a ~/ b; 
+        } catch(e) { 
+          Dynatrace.reportError(parentAction: actions[12], error: e.toString()); 
+        } 
         Dynatrace.leaveAction(parentAction: actions[12]);
         changeText("Touch on $options[10]");
       }

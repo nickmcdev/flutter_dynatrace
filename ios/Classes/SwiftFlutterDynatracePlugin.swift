@@ -107,8 +107,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
             var xdyna: String?
             let url = URL(string: urlFromFlutter)
             if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
-                self.webParentActionTimings.append(DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url))
-                self.webParentActions[urlFromFlutter] = self.webParentActionTimings[webParentAction]
+                self.webParentActions[urlFromFlutter] = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
                 xdyna = dynatraceHeaderValue
             }
             
@@ -129,9 +128,19 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let webParentActionLeaveUrl = argsLeaveWebAction["webParentActionLeaveUrl"] as! String
         if (wrStatusCode != 200) {
             webParentActions[webParentActionLeaveUrl]?.stop("Failed request: \(wrStatusCode)")
+            if let value = webParentActions.removeValue(forKey: webParentActionLeaveUrl) {
+                print("The value \(value) was removed.")
+            } else {
+                print("No value found for that key.")
+            }
             print("TESTDTX: Web Request Failed!")
         } else {
             webParentActions[webParentActionLeaveUrl]?.stop("200")
+            if let value = webParentActions.removeValue(forKey: webParentActionLeaveUrl) {
+                print("The value \(value) was removed.")
+            } else {
+                print("No value found for that key.")
+            }
             print("TESTDTX: Web Request Successful!")
         }
         

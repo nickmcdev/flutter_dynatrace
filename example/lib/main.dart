@@ -170,16 +170,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       break;
 
       case 'Web Action': {
-        String url = "https://dog.ceo/api/breeds/image/random";
+        List<String> urls = ["https://dog.ceo/api/breed/husky/image/random", "https://dog.ceo/api/breed/labrador/image/random", "https://dog.ceo/api/breed/retriever/images/random", "https://dog.ceo/api/breed/sheepdog/images/random", "https://dog.ceo/api/breed/chow/images/random"];
         Dynatrace.enterAction(parentAction: actions[5], parentActionName: "Touch on " + options[3]);
         // This is used for web requests of application/json and will automatically tag and time the request and return of response body if you want to use it.
         // I will add more functionality to this in upcoming releases/updates
         // requestType can be "POST" or "GET" - if others are used, the web request will not occur
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: url, requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[1], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[2], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[3], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[4], requestType: "GET");
         Dynatrace.leaveAction(parentAction: actions[5]);
         changeText("Touch on " + options[3]);
 

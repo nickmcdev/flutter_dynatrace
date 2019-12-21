@@ -9,3 +9,6 @@
 
 ## 0.0.4
 * Doc :( Forgot to add Data collection level/crash report capture.
+
+## 0.0.5
+* Updated Web Request timing/tagging logic and doc.

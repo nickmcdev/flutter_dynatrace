@@ -12,3 +12,6 @@
 
 ## 0.0.5
 * Updated Web Request timing/tagging logic and doc.
+
+## 0.0.6
+* Updated logic for Parent and sub actions. Updated logic for Web requests. Added license.

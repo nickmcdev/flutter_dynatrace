@@ -41,12 +41,13 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let argsEnterAction = call.arguments as! [String: Any]
         let parentAction = argsEnterAction["enterParentAction"] as! String
         let parentActionName = argsEnterAction["enterParentActionName"]  as! String
-        self.parentActionList.append(DTXAction.enter(withName: parentActionName))
-        print("ActionId: \(self.parentActionId)")
-        self.parentActions[parentAction] = self.parentActionList[parentActionId]
-        print("Parent Action Id: \(parentActionId)")
-        self.parentActionId += 1
-        print("Parent Action Id: \(parentActionId)")
+//        self.parentActionList.append(DTXAction.enter(withName: parentActionName))
+//        print("ActionId: \(self.parentActionId)")
+//        self.parentActions[parentAction] = self.parentActionList[parentActionId]
+        self.parentActions[parentAction] = DTXAction.enter(withName: parentActionName)
+//        print("Parent Action Id: \(parentActionId)")
+//        self.parentActionId += 1
+//        print("Parent Action Id: \(parentActionId)")
         print(parentActionName)
         print(parentAction)
         
@@ -55,12 +56,13 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let subAction = argsEnterSubAction["enterSubAction"] as! String
         let subActionName = argsEnterSubAction["enterSubActionName"]  as! String
         let parentAction = argsEnterSubAction["enterSubActionParentAction"] as! String
-        self.subActionList.append(DTXAction.enter(withName: subActionName, parentAction: parentActions[parentAction]))
-        print("ActionId: \(self.subActionId)")
-        self.subActions[subAction] = self.subActionList[subActionId]
-        print("Sub Action Id: \(subActionId)")
-        self.subActionId += 1
-        print("Sub Action Id: \(subActionId)")
+//        self.subActionList.append(DTXAction.enter(withName: subActionName, parentAction: parentActions[parentAction]))
+//        print("ActionId: \(self.subActionId)")
+//        self.subActions[subAction] = self.subActionList[subActionId]
+        self.subActions[subAction] = DTXAction.enter(withName: subActionName, parentAction: parentActions[parentAction])
+//        print("Sub Action Id: \(subActionId)")
+//        self.subActionId += 1
+//        print("Sub Action Id: \(subActionId)")
         print(subActionName)
         print(subAction)
         
@@ -102,7 +104,7 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     case "webParentActionEnter":
             let argsEnterWebAction = call.arguments as! [String: Any]
             let urlFromFlutter = argsEnterWebAction["webParentActionUrl"] as! String
-            let webParentAction: Int = webParentActionId
+            //let webParentAction: Int = webParentActionId
             print("TESTDTX: URL: \(urlFromFlutter)")
             var xdyna: String?
             let url = URL(string: urlFromFlutter)
@@ -111,9 +113,9 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
                 xdyna = dynatraceHeaderValue
             }
             
-            print("TESTDTX: Web Action Id: \(webParentAction)")
-            self.webParentActionId += 1
-            print("TESTDTX: Web Action Id: \(webParentAction)")
+//            print("TESTDTX: Web Action Id: \(webParentAction)")
+//            self.webParentActionId += 1
+//            print("TESTDTX: Web Action Id: \(webParentAction)")
             if (url != nil) {
                 self.webParentActions[urlFromFlutter]?.start()
                 print(xdyna as Any)
@@ -152,14 +154,16 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
             var xdyna: String?
             let url = URL(string: urlFromFlutter)
             if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
-                self.webSubActionTimings.append(DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url))
-                self.webSubActions[urlFromFlutter] = self.webSubActionTimings[webSubAction]
+//                self.webSubActionTimings.append(DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url))
+//                self.webSubActions[urlFromFlutter] = self.webSubActionTimings[webSubAction]
+                self.webSubActions[urlFromFlutter] = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
+                
                 xdyna = dynatraceHeaderValue
             }
             
-            print("TESTDTX: Web Action Id: \(webSubAction)")
-            self.webSubActionId += 1
-            print("TESTDTX: Web Action Id: \(webSubAction)")
+//            print("TESTDTX: Web Action Id: \(webSubAction)")
+//            self.webSubActionId += 1
+//            print("TESTDTX: Web Action Id: \(webSubAction)")
             if (url != nil) {
                 self.webSubActions[urlFromFlutter]?.start()
                 print(xdyna as Any)

@@ -79,9 +79,10 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       String parentActionName = call.argument("enterParentActionName");
       Log.d("enterAction", "Parent Action: " + parentAction);
       Log.d("enterAction", "Parent Action name: " + parentActionName);
-      parentActionsList.add(Dynatrace.enterAction(parentActionName));
-      parentActionsMap.put(parentAction, parentActionsList.get(parentActionCount));
-      parentActionCount++;
+//      parentActionsList.add(Dynatrace.enterAction(parentActionName));
+//      parentActionsMap.put(parentAction, parentActionsList.get(parentActionCount));
+      parentActionsMap.put(parentAction, Dynatrace.enterAction(parentActionName));
+//      parentActionCount++;
       break;
 
     case "leaveAction":
@@ -95,12 +96,13 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       String parentActionSub = call.argument("enterSubActionParentAction");
       Log.d("enterSubAction", "Sub Action: " + subAction);
       Log.d("enterSubAction", "Sub Action name: " + subActionName);
-      subActionsList.add(Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
-      subActionsMap.put(subAction, subActionsList.get(subActionCount));
-      Log.d("enterSubAction", "subActionMap Value: " + subActionsList.get(subActionCount).toString());
-      Log.d("enterSubAction", "Sub Action Count: " + subActionCount);
-      subActionCount++;
-      Log.d("enterSubAction", "Sub Action Count: " + subActionCount);
+//      subActionsList.add(Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
+//      subActionsMap.put(subAction, subActionsList.get(subActionCount));
+      subActionsMap.put(subAction, Dynatrace.enterAction(subActionName, parentActionsMap.get(parentActionSub)));
+//      Log.d("enterSubAction", "subActionMap Value: " + subActionsList.get(subActionCount).toString());
+//      Log.d("enterSubAction", "Sub Action Count: " + subActionCount);
+//      subActionCount++;
+//      Log.d("enterSubAction", "Sub Action Count: " + subActionCount);
       break;
 
     case "leaveSubAction":
@@ -112,7 +114,7 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
     case "webParentActionEnter":
       String urlFromFlutter = call.argument("webParentActionUrl");
       String webParentAction = call.argument("webParentAction");
-      int webParentActionNum = webParentActionId;
+//      int webParentActionNum = webParentActionId;
       URL url = null;
       try {
         url = new URL(urlFromFlutter);
@@ -121,12 +123,13 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       }
 
       String requestTag = parentActionsMap.get(webParentAction).getRequestTag();
-      webParentActionTimings.add(Dynatrace.getWebRequestTiming(requestTag));
-      webParentActions.put(urlFromFlutter, webParentActionTimings.get(webParentActionNum));
+//      webParentActionTimings.add(Dynatrace.getWebRequestTiming(requestTag));
+//      webParentActions.put(urlFromFlutter, webParentActionTimings.get(webParentActionNum));
+      webParentActions.put(urlFromFlutter, Dynatrace.getWebRequestTiming(requestTag));
       if (url != null) {
         Log.d("DTXWeb", "URL: " + urlFromFlutter);
         webParentActions.get(urlFromFlutter).startWebRequestTiming();
-        webParentActionId++;
+//        webParentActionId++;
         result.success(requestTag);
       }
 
@@ -154,7 +157,7 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
     case "webSubActionEnter":
       String urlFromFlutterSub = call.argument("webSubActionUrl");
       String webSubAction = call.argument("webSubAction");
-      int webSubActionNum = webSubActionId;
+//      int webSubActionNum = webSubActionId;
       URL urlSub = null;
       try {
         urlSub = new URL(urlFromFlutterSub);
@@ -163,12 +166,13 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       }
 
       String requestTagSub = subActionsMap.get(webSubAction).getRequestTag();
-      webSubActionTimings.add(Dynatrace.getWebRequestTiming(requestTagSub));
-      webSubActions.put(urlFromFlutterSub, webSubActionTimings.get(webSubActionNum));
+//      webSubActionTimings.add(Dynatrace.getWebRequestTiming(requestTagSub));
+//      webSubActions.put(urlFromFlutterSub, webSubActionTimings.get(webSubActionNum));
+      webSubActions.put(urlFromFlutterSub, Dynatrace.getWebRequestTiming(requestTagSub));
       if (urlSub != null) {
         Log.d("DTXWeb", "URL: " + urlFromFlutterSub);
         webSubActions.get(urlFromFlutterSub).startWebRequestTiming();
-        webSubActionId++;
+//        webSubActionId++;
         result.success(requestTagSub);
       }
 

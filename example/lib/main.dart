@@ -137,8 +137,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         if (Platform.isIOS == true) {
           Dynatrace.startupWithInfoPlistSettings();
         } else if (Platform.isAndroid == true) {
-          String appId = "updateThisValue";
-          String beaconUrl = "updateThisValue";
+          String appId = "daf8fa7f-899a-41bd-8d5f-7a414010dea6";
+          String beaconUrl = "https://bf96722syz.bf.dynatrace.com/mbeacon";
           Dynatrace.startup(appId, beaconUrl, true, false, false, false);
           changeText("Touch on $options[0]");
         }

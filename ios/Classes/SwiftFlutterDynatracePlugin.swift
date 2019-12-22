@@ -5,17 +5,12 @@ import Dynatrace
 public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     
     var parentActions: [String: DTXAction] = [:]
-    
     var subActions: [String: DTXAction] = [:]
     
 //    // Web Request
     var webParentActions: [String: DTXWebRequestTiming] = [:]
-    
     var webSubActions: [String: DTXWebRequestTiming] = [:]
-    
-    var webAction: DTXAction?
     var wrStatusCode: Int = -1
-    var webrequestTiming: DTXWebRequestTiming?
 
 
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -45,36 +40,25 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     case "leaveAction":
         let argsLeaveAction = call.arguments as! [String: Any]
         let parentAction = argsLeaveAction["leaveParentAction"] as! String
-        parentActions[parentAction]?.leave()
         print(parentActions.keys)
-        if parentActions[parentAction] == nil {
+        if parentActions.keys.contains(parentAction) {
+            parentActions[parentAction]?.leave()
+            parentActions.removeValue(forKey: parentAction)
+            print("The value was removed from Parent Action dictionary.")
+        } else {
             print("No entry for action named \(parentAction)")
         }
         
     case "leaveSubAction":
         let argsLeaveAction = call.arguments as! [String: Any]
         let subAction = argsLeaveAction["leaveSubAction"] as! String
-        subActions[subAction]?.leave()
         print(subActions.keys)
-        if parentActions[subAction] == nil {
-            print("No entry for action named \(subAction)")
-        }
-        
-    case "webUserActionEnter":
-        let argsEnterWebAction = call.arguments as! [String: Any]
-        let urlFromFlutter = argsEnterWebAction["webUserActionUrl"] as! String
-        var xdyna: String?
-        let url = URL(string: urlFromFlutter)
-        self.webAction = DTXAction.enter(withName: "WebRequest: \(urlFromFlutter)")
-        if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
-            self.webrequestTiming = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
-            xdyna = dynatraceHeaderValue
-        }
-        if (url != nil) {
-            self.webrequestTiming?.start()
-            result(xdyna);
+        if subActions.keys.contains(subAction) {
+            subActions[subAction]?.leave()
+            subActions.removeValue(forKey: subAction)
+            print("The value was removed from Parent Action dictionary.")
         } else {
-            result("Not able to capture Web User Action as URL is nil");
+            print("No entry for action named \(subAction)")
         }
         
     case "webParentActionEnter":
@@ -100,19 +84,21 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let wrStatusCode = argsLeaveWebAction["webParentActionResponseCode"] as! Int
         let webParentActionLeaveUrl = argsLeaveWebAction["webParentActionLeaveUrl"] as! String
         if (wrStatusCode != 200) {
-            webParentActions[webParentActionLeaveUrl]?.stop("Failed request: \(wrStatusCode)")
-            if let value = webParentActions.removeValue(forKey: webParentActionLeaveUrl) {
-                print("The value \(value) was removed.")
+            if webParentActions.keys.contains(webParentActionLeaveUrl) {
+                webParentActions[webParentActionLeaveUrl]?.stop("Failed request: \(wrStatusCode)")
+                webParentActions.removeValue(forKey: webParentActionLeaveUrl)
+                print("The value was removed from Web Parent Action dictionary.")
             } else {
-                print("No value found for that key.")
+                print("No value found for that key in Web Parent Action dictionary.")
             }
             print("TESTDTX: Web Request Failed!")
         } else {
-            webParentActions[webParentActionLeaveUrl]?.stop("200")
-            if let value = webParentActions.removeValue(forKey: webParentActionLeaveUrl) {
-                print("The value \(value) was removed.")
+            if webParentActions.keys.contains(webParentActionLeaveUrl) {
+                webParentActions[webParentActionLeaveUrl]?.stop("200")
+                webParentActions.removeValue(forKey: webParentActionLeaveUrl)
+                print("The value was removed from Web Parent Action dictionary.")
             } else {
-                print("No value found for that key.")
+                print("No value found for that key in Web Parent Action dictionary.")
             }
             print("TESTDTX: Web Request Successful!")
         }
@@ -142,10 +128,22 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
         let wrStatusCode = argsLeaveWebSubAction["webSubActionResponseCode"] as! Int
         let webSubActionLeaveUrl = argsLeaveWebSubAction["webSubActionLeaveUrl"] as! String
         if (wrStatusCode != 200) {
-            webSubActions[webSubActionLeaveUrl]?.stop("Failed request: \(wrStatusCode)")
+            if webSubActions.keys.contains(webSubActionLeaveUrl) {
+                webSubActions[webSubActionLeaveUrl]?.stop("Failed request: \(wrStatusCode)")
+                webSubActions.removeValue(forKey: webSubActionLeaveUrl)
+                print("The value was removed from Web Sub Action dictionary.")
+            } else {
+                print("No value found for that key in Web Sub Action dictionary.")
+            }
             print("TESTDTX: Web Request Failed!")
         } else {
-            webSubActions[webSubActionLeaveUrl]?.stop("200")
+            if webSubActions.keys.contains(webSubActionLeaveUrl) {
+                webSubActions[webSubActionLeaveUrl]?.stop("200")
+                webSubActions.removeValue(forKey: webSubActionLeaveUrl)
+                print("The value was removed from Web Sub Action dictionary.")
+            } else {
+                print("No value found for that key in Web Sub Action dictionary.")
+            }
             print("TESTDTX: Web Request Successful!")
         }
         

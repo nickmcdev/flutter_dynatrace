@@ -5,22 +5,42 @@ import 'package:flutter/services.dart';
 import 'dart:io' show Platform;
 
 class Dynatrace {
-  static const _platform = const MethodChannel('dev.nickmc.flutter_dynatrace/dynatrace');
+  static const _platform =
+      const MethodChannel('dev.nickmc.flutter_dynatrace/dynatrace');
 
-  static Future enterAction({String parentAction, String parentActionName, String subAction, String subActionName}) async {
-    if (parentAction != null && parentActionName != null && subAction == null && subActionName == null) {
+  static Future enterAction(
+      {String parentAction,
+      String parentActionName,
+      String subAction,
+      String subActionName}) async {
+    if (parentAction != null &&
+        parentActionName != null &&
+        subAction == null &&
+        subActionName == null) {
       try {
-        debugPrint("Parent Action value: $parentAction, Parent Action name: $parentActionName");
-        await _platform.invokeMethod('enterAction', {"enterParentAction": parentAction, "enterParentActionName": parentActionName});
-        } on PlatformException catch (e) {
-      debugPrint("Failed to create User Action: '${e.message}'.");
-      } 
-    } else if (parentAction != null && parentActionName == null && subAction != null && subActionName != null) {
+        debugPrint(
+            "Parent Action value: $parentAction, Parent Action name: $parentActionName");
+        await _platform.invokeMethod('enterAction', {
+          "enterParentAction": parentAction,
+          "enterParentActionName": parentActionName
+        });
+      } on PlatformException catch (e) {
+        debugPrint("Failed to create User Action: '${e.message}'.");
+      }
+    } else if (parentAction != null &&
+        parentActionName == null &&
+        subAction != null &&
+        subActionName != null) {
       try {
-        debugPrint("Sub Action value: $subAction, Sub Action name: $subActionName");
-        await _platform.invokeMethod('subAction', {"enterSubAction": subAction, "enterSubActionName": subActionName, "enterSubActionParentAction": parentAction});
-        } on PlatformException catch (e) {
-      debugPrint("Failed to create User Action: '${e.message}'.");
+        debugPrint(
+            "Sub Action value: $subAction, Sub Action name: $subActionName");
+        await _platform.invokeMethod('subAction', {
+          "enterSubAction": subAction,
+          "enterSubActionName": subActionName,
+          "enterSubActionParentAction": parentAction
+        });
+      } on PlatformException catch (e) {
+        debugPrint("Failed to create User Action: '${e.message}'.");
       }
     } else {
       debugPrint("Wrong parameters used in function.");
@@ -30,190 +50,274 @@ class Dynatrace {
   static Future leaveAction({String parentAction, String subAction}) async {
     if (parentAction != null && subAction == null) {
       try {
-        await _platform.invokeMethod('leaveAction', {"leaveParentAction": parentAction});
-        } on PlatformException catch (e) {
-          debugPrint("Failed to leave Parent User Action: '${e.message}'.");
-        }
-      } else if (parentAction == null && subAction != null) {
-        try {
-          await _platform.invokeMethod('leaveSubAction', {"leaveSubAction": subAction});
-          } on PlatformException catch (e) {
-            debugPrint("Failed to leave Sub User Action: '${e.message}'.");
-        }
+        await _platform
+            .invokeMethod('leaveAction', {"leaveParentAction": parentAction});
+      } on PlatformException catch (e) {
+        debugPrint("Failed to leave Parent User Action: '${e.message}'.");
       }
+    } else if (parentAction == null && subAction != null) {
+      try {
+        await _platform
+            .invokeMethod('leaveSubAction', {"leaveSubAction": subAction});
+      } on PlatformException catch (e) {
+        debugPrint("Failed to leave Sub User Action: '${e.message}'.");
+      }
+    }
   }
 
-  static Future reportValue({String parentAction, String subAction, String key, String stringValue, int intValue, doubleValue}) async {
+  static Future reportValue(
+      {String parentAction,
+      String subAction,
+      String key,
+      String stringValue,
+      int intValue,
+      doubleValue}) async {
     if (parentAction != null && subAction == null && key != null) {
       if (stringValue != null && intValue == null && doubleValue == null) {
         try {
-          debugPrint("Parent Action value: $parentAction, Key: $key, String Value: $stringValue");
-          await _platform.invokeMethod('reportStringParent', {"pActionRS": parentAction, "pActionRSKey": key, "pActionRSValue": stringValue});
+          debugPrint(
+              "Parent Action value: $parentAction, Key: $key, String Value: $stringValue");
+          await _platform.invokeMethod('reportStringParent', {
+            "pActionRS": parentAction,
+            "pActionRSKey": key,
+            "pActionRSValue": stringValue
+          });
         } on PlatformException catch (e) {
-          debugPrint("Failed to reportValue String with Parent User Action: '${e.message}'.");
+          debugPrint(
+              "Failed to reportValue String with Parent User Action: '${e.message}'.");
         }
-      } else if (stringValue == null && intValue != null && doubleValue == null) {
+      } else if (stringValue == null &&
+          intValue != null &&
+          doubleValue == null) {
         try {
-          debugPrint("Parent Action value: $parentAction, Key: $key, Int Value: $intValue");
-          await _platform.invokeMethod('reportIntParent', {"pActionRI": parentAction, "pActionRIKey": key, "pActionRIValue": intValue});
+          debugPrint(
+              "Parent Action value: $parentAction, Key: $key, Int Value: $intValue");
+          await _platform.invokeMethod('reportIntParent', {
+            "pActionRI": parentAction,
+            "pActionRIKey": key,
+            "pActionRIValue": intValue
+          });
         } on PlatformException catch (e) {
-          debugPrint("Failed to reportValue Int with Parent User Action: '${e.message}'.");
+          debugPrint(
+              "Failed to reportValue Int with Parent User Action: '${e.message}'.");
         }
-      } else if (stringValue == null && intValue == null && doubleValue != null) {
+      } else if (stringValue == null &&
+          intValue == null &&
+          doubleValue != null) {
         try {
-          debugPrint("Parent Action value: $parentAction, Key: $key, Double Value: $stringValue");
-          await _platform.invokeMethod('reportDoubleParent', {"pActionRD": parentAction, "pActionRDKey": key, "pActionRDValue": doubleValue});
+          debugPrint(
+              "Parent Action value: $parentAction, Key: $key, Double Value: $stringValue");
+          await _platform.invokeMethod('reportDoubleParent', {
+            "pActionRD": parentAction,
+            "pActionRDKey": key,
+            "pActionRDValue": doubleValue
+          });
         } on PlatformException catch (e) {
-          debugPrint("Failed to reportValue Double with Parent User Action: '${e.message}'.");
+          debugPrint(
+              "Failed to reportValue Double with Parent User Action: '${e.message}'.");
         }
       } else {
-        debugPrint("Wrong parameters used. Please add proper values for parentAction/subAction, key and either stringValue/intValue/doubleValue");
+        debugPrint(
+            "Wrong parameters used. Please add proper values for parentAction/subAction, key and either stringValue/intValue/doubleValue");
       }
     } else if (parentAction == null && subAction != null && key != null) {
       if (stringValue != null && intValue == null && doubleValue == null) {
         try {
-          debugPrint("Sub Action value: $subAction, Key: $key, String Value: $stringValue");
-          await _platform.invokeMethod('reportStringSub', {"sActionRS": subAction, "sActionRSKey": key, "sActionRSValue": stringValue});
+          debugPrint(
+              "Sub Action value: $subAction, Key: $key, String Value: $stringValue");
+          await _platform.invokeMethod('reportStringSub', {
+            "sActionRS": subAction,
+            "sActionRSKey": key,
+            "sActionRSValue": stringValue
+          });
         } on PlatformException catch (e) {
-          debugPrint("Failed to reportValue String with Sub User Action: '${e.message}'.");
+          debugPrint(
+              "Failed to reportValue String with Sub User Action: '${e.message}'.");
         }
-      } else if (stringValue == null && intValue != null && doubleValue == null) {
+      } else if (stringValue == null &&
+          intValue != null &&
+          doubleValue == null) {
         try {
-          debugPrint("Sub Action value: $subAction, Key: $key, Int Value: $intValue");
-          await _platform.invokeMethod('reportIntSub', {"sActionRI": subAction, "sActionRIKey": key, "sActionRIValue": intValue});
+          debugPrint(
+              "Sub Action value: $subAction, Key: $key, Int Value: $intValue");
+          await _platform.invokeMethod('reportIntSub', {
+            "sActionRI": subAction,
+            "sActionRIKey": key,
+            "sActionRIValue": intValue
+          });
         } on PlatformException catch (e) {
-          debugPrint("Failed to reportValue Int with Sub User Action: '${e.message}'.");
+          debugPrint(
+              "Failed to reportValue Int with Sub User Action: '${e.message}'.");
         }
-      } else if (stringValue == null && intValue == null && doubleValue != null) {
+      } else if (stringValue == null &&
+          intValue == null &&
+          doubleValue != null) {
         try {
-          debugPrint("Sub Action value: $subAction, Key: $key, Double Value: $stringValue");
-          await _platform.invokeMethod('reportDoubleSub', {"sActionRD": subAction, "sActionRDKey": key, "sActionRDValue": doubleValue});
+          debugPrint(
+              "Sub Action value: $subAction, Key: $key, Double Value: $stringValue");
+          await _platform.invokeMethod('reportDoubleSub', {
+            "sActionRD": subAction,
+            "sActionRDKey": key,
+            "sActionRDValue": doubleValue
+          });
         } on PlatformException catch (e) {
-          debugPrint("Failed to reportValue Double with Sub User Action: '${e.message}'.");
+          debugPrint(
+              "Failed to reportValue Double with Sub User Action: '${e.message}'.");
         }
       } else {
-        debugPrint("Wrong parameters used. Please add proper values for parentAction/subAction, key and either stringValue/intValue/doubleValue");
+        debugPrint(
+            "Wrong parameters used. Please add proper values for parentAction/subAction, key and either stringValue/intValue/doubleValue");
       }
     }
   }
 
-  static Future reportEvent({String parentAction, String subAction, String event}) async {
+  static Future reportEvent(
+      {String parentAction, String subAction, String event}) async {
     if (parentAction != null && subAction == null && event != null) {
       try {
-          debugPrint("Parent Action value: $parentAction, Event: $event");
-          await _platform.invokeMethod('reportEventParent', {"pActionRE": parentAction, "pActionREValue": event});
-        } on PlatformException catch (e) {
-          debugPrint("Failed to reportEvent with Parent User Action: '${e.message}'.");
-        }
+        debugPrint("Parent Action value: $parentAction, Event: $event");
+        await _platform.invokeMethod('reportEventParent',
+            {"pActionRE": parentAction, "pActionREValue": event});
+      } on PlatformException catch (e) {
+        debugPrint(
+            "Failed to reportEvent with Parent User Action: '${e.message}'.");
+      }
     } else if (parentAction == null && subAction != null && event != null) {
       try {
-          debugPrint("Sub Action value: $subAction, Event: $event");
-          await _platform.invokeMethod('reportEventSub', {"sActionRE": subAction, "sActionREValue": event});
-        } on PlatformException catch (e) {
-          debugPrint("Failed to reportEvent with Sub User Action: '${e.message}'.");
-        }
+        debugPrint("Sub Action value: $subAction, Event: $event");
+        await _platform.invokeMethod('reportEventSub',
+            {"sActionRE": subAction, "sActionREValue": event});
+      } on PlatformException catch (e) {
+        debugPrint(
+            "Failed to reportEvent with Sub User Action: '${e.message}'.");
+      }
     } else {
-      debugPrint("Wrong parameters used. Please add proper values for parentAction/subAction and event");
+      debugPrint(
+          "Wrong parameters used. Please add proper values for parentAction/subAction and event");
     }
   }
 
-  static Future reportError({String parentAction, String subAction, String error}) async {
+  static Future reportError(
+      {String parentAction, String subAction, String error}) async {
     if (parentAction != null && subAction == null && error != null) {
       try {
-          debugPrint("Parent Action value: $parentAction, Event: $error");
-          await _platform.invokeMethod('reportErrorParent', {"pActionRErr": parentAction, "pActionRErrValue": error});
-        } on PlatformException catch (e) {
-          debugPrint("Failed to reportError with Parent User Action: '${e.message}'.");
-        }
+        debugPrint("Parent Action value: $parentAction, Event: $error");
+        await _platform.invokeMethod('reportErrorParent',
+            {"pActionRErr": parentAction, "pActionRErrValue": error});
+      } on PlatformException catch (e) {
+        debugPrint(
+            "Failed to reportError with Parent User Action: '${e.message}'.");
+      }
     } else if (parentAction == null && subAction != null && error != null) {
       try {
-          debugPrint("Sub Action value: $subAction, Error: $error");
-          await _platform.invokeMethod('reportErrorSub', {"sActionRErr": subAction, "sActionRErrValue": error});
-        } on PlatformException catch (e) {
-          debugPrint("Failed to reportError with Sub User Action: '${e.message}'.");
-        }
+        debugPrint("Sub Action value: $subAction, Error: $error");
+        await _platform.invokeMethod('reportErrorSub',
+            {"sActionRErr": subAction, "sActionRErrValue": error});
+      } on PlatformException catch (e) {
+        debugPrint(
+            "Failed to reportError with Sub User Action: '${e.message}'.");
+      }
     } else {
-      debugPrint("Wrong parameters used. Please add proper values for parentAction/subAction and error");
+      debugPrint(
+          "Wrong parameters used. Please add proper values for parentAction/subAction and error");
     }
   }
-    
 
-  static Future<String> dynaWebRequest({String parentAction, String subAction, String url, String requestType}) async {
+  static Future<String> dynaWebRequest(
+      {String parentAction,
+      String subAction,
+      String url,
+      String requestType}) async {
     final String tagHeaderName = "x-dynatrace";
     int responseCode;
     String responseBody;
     String requestTag;
-    
+
     if (requestType == "GET" && parentAction != null && subAction == null) {
       try {
         requestTag = await webAction(url, parentAction: parentAction);
         debugPrint("x-dynatrace value = " + requestTag.toString());
-        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
+        var response = await http
+            .get(Uri.encodeFull(url), headers: {tagHeaderName: requestTag});
         responseCode = response.statusCode;
-        leaveWebUserAction(parentAction: parentAction, url: url, responseCode: responseCode);
+        leaveWebUserAction(
+            parentAction: parentAction, url: url, responseCode: responseCode);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
       } catch (e) {
         debugPrint("Unable to make web request: $e");
       }
-
-
-    } else if (requestType == "GET" && parentAction == null && subAction != null) {
+    } else if (requestType == "GET" &&
+        parentAction == null &&
+        subAction != null) {
       try {
         requestTag = await webAction(url, subAction: subAction);
         debugPrint("x-dynatrace value = " + requestTag.toString());
-        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
+        var response = await http
+            .get(Uri.encodeFull(url), headers: {tagHeaderName: requestTag});
         responseCode = response.statusCode;
-        leaveWebUserAction(subAction: subAction, url: url, responseCode: responseCode);
+        leaveWebUserAction(
+            subAction: subAction, url: url, responseCode: responseCode);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
       } catch (e) {
         debugPrint("Unable to make web request: $e");
       }
-    } else if (requestType == "POST" && parentAction != null && subAction == null) {
+    } else if (requestType == "POST" &&
+        parentAction != null &&
+        subAction == null) {
       try {
         requestTag = await webAction(url, parentAction: parentAction);
         debugPrint("x-dynatrace value = " + requestTag.toString());
-        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
+        var response = await http
+            .get(Uri.encodeFull(url), headers: {tagHeaderName: requestTag});
         responseCode = response.statusCode;
-        leaveWebUserAction(parentAction: parentAction, url: url, responseCode: responseCode);
+        leaveWebUserAction(
+            parentAction: parentAction, url: url, responseCode: responseCode);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
       } catch (e) {
         debugPrint("Unable to make web request: $e");
       }
-    } else if (requestType == "POST" && parentAction == null && subAction != null) {
+    } else if (requestType == "POST" &&
+        parentAction == null &&
+        subAction != null) {
       try {
         requestTag = await webAction(url, subAction: subAction);
         debugPrint("x-dynatrace value = " + requestTag.toString());
-        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
+        var response = await http
+            .get(Uri.encodeFull(url), headers: {tagHeaderName: requestTag});
         responseCode = response.statusCode;
-        leaveWebUserAction(subAction: subAction, url: url, responseCode: responseCode);
+        leaveWebUserAction(
+            subAction: subAction, url: url, responseCode: responseCode);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
       } catch (e) {
         debugPrint("Unable to make web request: $e");
       }
-    } 
-    
+    }
+
     return responseBody;
   }
 
-  static Future<String> webAction(String url, {String parentAction, String subAction}) async {
+  static Future<String> webAction(String url,
+      {String parentAction, String subAction}) async {
     String result;
     if (parentAction != null && subAction == null) {
       try {
-        result = await _platform.invokeMethod('webParentActionEnter', {"webParentAction": parentAction, "webParentActionUrl": url});
+        result = await _platform.invokeMethod('webParentActionEnter',
+            {"webParentAction": parentAction, "webParentActionUrl": url});
       } on PlatformException catch (e) {
         debugPrint("Failed to create Parent Web User Action: '${e.message}'.");
       }
     } else if (parentAction == null && subAction != null) {
       try {
-        result = await _platform.invokeMethod('webSubActionEnter', {"webSubAction": subAction, "webSubActionUrl": url});
+        result = await _platform.invokeMethod('webSubActionEnter',
+            {"webSubAction": subAction, "webSubActionUrl": url});
       } on PlatformException catch (e) {
         debugPrint("Failed to create Sub Web User Action: '${e.message}'.");
       }
@@ -221,22 +325,32 @@ class Dynatrace {
     return result;
   }
 
-  static Future<void> leaveWebUserAction({String parentAction, String subAction, String url, int responseCode}) async {
-    if (parentAction != null && subAction == null) { 
+  static Future<void> leaveWebUserAction(
+      {String parentAction,
+      String subAction,
+      String url,
+      int responseCode}) async {
+    if (parentAction != null && subAction == null) {
       try {
-        _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveUrl": url, "webParentActionResponseCode": responseCode});
+        _platform.invokeMethod('webParentActionResponse', {
+          "webParentActionLeaveUrl": url,
+          "webParentActionResponseCode": responseCode
+        });
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Parent Web User Action: '${e.message}'.");
       }
     } else if (parentAction == null && subAction != null) {
       try {
-        _platform.invokeMethod('webSubActionResponse', {"webSubActionLeave": subAction, "webSubActionLeaveUrl": url, "webSubActionResponseCode": responseCode});
+        _platform.invokeMethod('webSubActionResponse', {
+          "webSubActionLeave": subAction,
+          "webSubActionLeaveUrl": url,
+          "webSubActionResponseCode": responseCode
+        });
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Sub Web User Action: '${e.message}'.");
       }
     }
   }
-
 
   static Future flushEvents() async {
     try {
@@ -256,7 +370,7 @@ class Dynatrace {
 
   static Future identifyUser(userTag) async {
     try {
-      await _platform.invokeMethod('identifyUser', {"userTag":userTag});
+      await _platform.invokeMethod('identifyUser', {"userTag": userTag});
     } on PlatformException catch (e) {
       debugPrint("Failed to trigger identifyUser SDK call: '${e.message}'.");
     }
@@ -272,8 +386,12 @@ class Dynatrace {
 
   static Future setDataCollectionLevel(String level) async {
     int collLvl;
-    if (level == "OFF" || level == "off" || level == "PERFORMANCE" || level == "performance" || level == "USER_BEHAVIOR" || level == "user_behavior") {
-
+    if (level == "OFF" ||
+        level == "off" ||
+        level == "PERFORMANCE" ||
+        level == "performance" ||
+        level == "USER_BEHAVIOR" ||
+        level == "user_behavior") {
       if (level == "OFF" || level == "off") {
         collLvl = 0;
       } else if (level == "PERFORMANCE" || level == "performance") {
@@ -282,20 +400,25 @@ class Dynatrace {
         collLvl = 2;
       }
       try {
-        await _platform.invokeMethod('setDataCollectionLevel', {"dataCollectionLevel":collLvl});
+        await _platform.invokeMethod(
+            'setDataCollectionLevel', {"dataCollectionLevel": collLvl});
       } on PlatformException catch (e) {
-        debugPrint("Failed to trigger setDataCollectionLevel SDK call: '${e.message}'.");
+        debugPrint(
+            "Failed to trigger setDataCollectionLevel SDK call: '${e.message}'.");
       }
     } else {
-      debugPrint("Wrong value for DataCollectionLevel. Please try OFF, PERFORMANCE or USER_BEHAVIOR");
+      debugPrint(
+          "Wrong value for DataCollectionLevel. Please try OFF, PERFORMANCE or USER_BEHAVIOR");
     }
   }
 
   static Future setCrashReportingOptedIn(bool reportCrashes) async {
     try {
-      await _platform.invokeMethod('setCrashReportingOptedIn', {"setCrashReportingOptedIn":reportCrashes});
+      await _platform.invokeMethod('setCrashReportingOptedIn',
+          {"setCrashReportingOptedIn": reportCrashes});
     } on PlatformException catch (e) {
-      debugPrint("Failed to set crash reporting capture status: '${e.message}'.");
+      debugPrint(
+          "Failed to set crash reporting capture status: '${e.message}'.");
     }
   }
 
@@ -328,14 +451,25 @@ class Dynatrace {
     try {
       result = await _platform.invokeMethod('isCrashReportingOptedIn');
     } on PlatformException catch (e) {
-      debugPrint("Failed to get crash reporting capture status: '${e.message}'.");
+      debugPrint(
+          "Failed to get crash reporting capture status: '${e.message}'.");
     }
     return result;
   }
 
-  static Future startup(String appId, String beaconUrl, bool withDebugLogging, bool certValidation, bool crashReporting, bool optIn) async {
+  static Future startup(String appId, String beaconUrl, bool withDebugLogging,
+      bool certValidation, bool crashReporting, bool optIn) async {
     try {
-      await _platform.invokeMethod('startAndroidAgent', {"startupAgentParams": [appId, beaconUrl, withDebugLogging.toString(), certValidation.toString(), crashReporting.toString(), optIn.toString()]});
+      await _platform.invokeMethod('startAndroidAgent', {
+        "startupAgentParams": [
+          appId,
+          beaconUrl,
+          withDebugLogging.toString(),
+          certValidation.toString(),
+          crashReporting.toString(),
+          optIn.toString()
+        ]
+      });
     } on PlatformException catch (e) {
       debugPrint("Failed to start Android Agent: '${e.message}'.");
     }
@@ -348,8 +482,4 @@ class Dynatrace {
       debugPrint("Failed to start iOS Agent: '${e.message}'.");
     }
   }
-
 }
-
-
-

@@ -71,15 +71,15 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       String parentActionName = call.argument("enterParentActionName");
       Log.d("enterAction", "Parent Action: " + parentAction);
       Log.d("enterAction", "Parent Action name: " + parentActionName);
-//      parentActionsList.add(Dynatrace.enterAction(parentActionName));
-//      parentActionsMap.put(parentAction, parentActionsList.get(parentActionCount));
       parentActionsMap.put(parentAction, Dynatrace.enterAction(parentActionName));
-//      parentActionCount++;
       break;
 
     case "leaveAction":
       String parentActionLeave = call.argument("leaveParentAction");
-      parentActionsMap.get(parentActionLeave).leaveAction();
+      if (parentActionsMap.containsKey(parentActionLeave)) {
+        parentActionsMap.get(parentActionLeave).leaveAction();
+        parentActionsMap.remove(parentActionLeave);
+      }
       break;
 
     case "subAction":
@@ -94,7 +94,10 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
     case "leaveSubAction":
       String subActionLeave = call.argument("leaveSubAction");
       Log.d("leaveSubAction", "Sub Action: " + subActionLeave);
-      subActionsMap.get(subActionLeave).leaveAction();
+      if (subActionsMap.containsKey(subActionLeave)) {
+        subActionsMap.get(subActionLeave).leaveAction();
+        subActionsMap.remove(subActionLeave);
+      }
       break;
 
     case "webParentActionEnter":
@@ -112,7 +115,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       if (url != null) {
         Log.d("DTXWeb", "URL: " + urlFromFlutter);
         webParentActions.get(urlFromFlutter).startWebRequestTiming();
-//        webParentActionId++;
         result.success(requestTag);
       }
 
@@ -124,13 +126,19 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
 
       if (wrStatusCodeParent != 200) {
         try {
-          webParentActions.get(webParentActionLeaveUrl).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "Failed request.");
+          if (webParentActions.containsKey(webParentActionLeaveUrl)) {
+            webParentActions.get(webParentActionLeaveUrl).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "Failed request.");
+            webParentActions.remove(webParentActionLeaveUrl);
+          }
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }
       } else if (wrStatusCodeParent == 200) {
         try {
-          webParentActions.get(webParentActionLeaveUrl).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "OK");
+          if (webParentActions.containsKey(webParentActionLeaveUrl)) {
+            webParentActions.get(webParentActionLeaveUrl).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "OK");
+            webParentActions.remove(webParentActionLeaveUrl);
+          }
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }
@@ -163,13 +171,19 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
 
       if (wrStatusCodeSub != 200) {
         try {
-          webSubActions.get(webSubActionLeaveUrl).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "Failed request.");
+          if (webSubActions.containsKey(webSubActionLeaveUrl)) {
+            webSubActions.get(webSubActionLeaveUrl).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "Failed request.");
+            webSubActions.remove(webSubActionLeaveUrl);
+          }
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }
       } else if (wrStatusCodeSub == 200) {
         try {
-          webSubActions.get(webSubActionLeaveUrl).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "OK");
+          if (webSubActions.containsKey(webSubActionLeaveUrl)) {
+            webSubActions.get(webSubActionLeaveUrl).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "OK");
+            webSubActions.remove(webSubActionLeaveUrl);
+          }
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }

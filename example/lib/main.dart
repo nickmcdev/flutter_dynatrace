@@ -177,16 +177,26 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         // I will add more functionality to this in upcoming releases/updates
         // requestType can be "POST" or "GET" - if others are used, the web request will not occur
         Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[1], requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[2], requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[3], requestType: "GET");
-        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[4], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
+        Dynatrace.dynaWebRequest(parentAction: actions[5], url: urls[0], requestType: "GET");
 
-        Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[0], requestType: "GET");
-        Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[1], requestType: "GET");
-        Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[2], requestType: "GET");
-        Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[3], requestType: "GET");
-        Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[4], requestType: "GET");
+        // Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[0], requestType: "GET");
+        // Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[1], requestType: "GET");
+        // Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[2], requestType: "GET");
+        // Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[3], requestType: "GET");
+        // Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[4], requestType: "GET");
         Dynatrace.leaveAction(subAction: "testSub");
         Dynatrace.leaveAction(parentAction: actions[5]);
         changeText("Touch on " + options[3]);

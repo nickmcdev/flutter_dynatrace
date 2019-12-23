@@ -9,8 +9,10 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
     
 //    // Web Request
     var webParentActions: [String: DTXWebRequestTiming] = [:]
+    var webParentActionsTest: [String: DTXWebRequestTiming] = [:]
     var webSubActions: [String: DTXWebRequestTiming] = [:]
     var wrStatusCode: Int = -1
+    var wrParentWRNum: Int = 0
 
 
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -288,8 +290,78 @@ public class SwiftFlutterDynatracePlugin: NSObject, FlutterPlugin {
             result("PERFORMANCE")
         }
         
+        
+        
+        
+        
+        
+        
+    case "webParentActionEnterTest":
+        let argsEnterWebAction = call.arguments as! [String: Any]
+        let urlFromFlutter = argsEnterWebAction["webParentActionUrl"] as! String
+        var urlInfo = [String]()
+        let urlTimeMil = Date().currentTimeMillis()
+        var urlTimeMilStr = ("\(urlTimeMil)")
+        if webParentActionsTest.keys.contains(urlTimeMilStr) {
+            urlTimeMilStr = ("\(urlTimeMilStr).duplicate")
+        }
+        urlInfo.append(urlTimeMilStr)
+        let url = URL(string: urlFromFlutter)
+        if let dynatraceHeaderValue = Dynatrace.getRequestTagValue(for: url) {
+            self.webParentActionsTest[urlTimeMilStr] = DTXWebRequestTiming.getDTXWebRequestTiming(dynatraceHeaderValue, request: url)
+            urlInfo.append(dynatraceHeaderValue)
+            //urlInfo["urlTime"] = urlTimeMil
+            //xdyna = dynatraceHeaderValue
+        }
+        
+        if (url != nil) {
+            self.webParentActionsTest[urlTimeMilStr]?.start()
+            print(urlInfo[0])
+            print(urlInfo[1] as Any)
+            result(urlInfo)
+            urlInfo.removeAll()
+        } else {
+            result("Not able to capture Web User Action as URL is nil");
+            urlInfo.removeAll()
+        }
+        
+    case "webParentActionResponseTest":
+        let argsLeaveWebAction = call.arguments as! [String: Any]
+        let wrStatusCode = argsLeaveWebAction["webParentActionResponseCode"] as! Int
+        let webParentActionLeaveTime = argsLeaveWebAction["webParentActionLeaveTime"] as! String
+        print("URL Status Code: \(wrStatusCode)")
+        print("URL Timing: \(webParentActionLeaveTime)")
+        if (wrStatusCode != 200) {
+            if webParentActionsTest.keys.contains(webParentActionLeaveTime) {
+                webParentActionsTest[webParentActionLeaveTime]?.stop("Failed request: \(wrStatusCode)")
+                webParentActionsTest.removeValue(forKey: webParentActionLeaveTime)
+                print("The value was removed from Web Parent Action dictionary.")
+            } else {
+                print("No value found for that key in Web Parent Action dictionary.")
+            }
+            print("TESTDTX: Web Request Failed!")
+        } else {
+            if webParentActionsTest.keys.contains(webParentActionLeaveTime) {
+                webParentActionsTest[webParentActionLeaveTime]?.stop("200")
+                webParentActionsTest.removeValue(forKey: webParentActionLeaveTime)
+                print("The value was removed from Web Parent Action dictionary.")
+            } else {
+                print("No value found for that key in Web Parent Action dictionary.")
+            }
+            print("TESTDTX: Web Request Successful!")
+        }
+        
+        
     default:
         result(FlutterMethodNotImplemented)
     }
   }
+    
+}
+
+// Get current time in milliseconds
+extension Date {
+    func currentTimeMillis() -> Int64 {
+        return Int64(self.timeIntervalSince1970 * 1000)
+    }
 }

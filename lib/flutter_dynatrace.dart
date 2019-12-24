@@ -207,7 +207,7 @@ class Dynatrace {
     var result = new List();
     if (parentAction != null && subAction == null) {
       try {
-        result = await _platform.invokeMethod('webParentActionEnterTest', {"webParentAction": parentAction, "webParentActionUrl": url});
+        result = await _platform.invokeMethod('webParentActionEnter', {"webParentAction": parentAction, "webParentActionUrl": url});
       } on PlatformException catch (e) {
         debugPrint("Failed to create Parent Web User Action: '${e.message}'.");
       }
@@ -221,13 +221,12 @@ class Dynatrace {
     return result;
   }
 
-  // static Future<void> leaveWebUserAction({String parentAction, String subAction, String url, int responseCode}) async {
-    // webParentActionLeaveTime
-    static Future<void> leaveWebUserAction({String parentAction, String subAction, String urlTime, int responseCode}) async {
+  
+  static Future<void> leaveWebUserAction({String parentAction, String subAction, String urlTime, int responseCode}) async {
     if (parentAction != null && subAction == null) { 
       try {
         // _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveUrl": url, "webParentActionResponseCode": responseCode});
-        _platform.invokeMethod('webParentActionResponseTest', {"webParentActionLeaveTime": urlTime, "webParentActionResponseCode": responseCode});
+        _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveTime": urlTime, "webParentActionResponseCode": responseCode});
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Parent Web User Action: '${e.message}'.");
       }
@@ -257,7 +256,7 @@ class Dynatrace {
         urlTime = urlResults[0];
         debugPrint("x-dynatrace = " + xDyna);
         debugPrint("URL time = " + urlTime);
-        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:xDyna});
+        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
         responseCode = response.statusCode;
         leaveWebUserAction(parentAction: parentAction, urlTime: urlTime, responseCode: responseCode);
         responseBody = response.body;
@@ -268,11 +267,13 @@ class Dynatrace {
       }
     } else if (requestType == "GET" && parentAction == null && subAction != null) {
       try {
-        urlResults = await webAction(url, parentAction: parentAction);
+        urlResults = await webAction(url, subAction: subAction);
+        debugPrint("List length = $urlResults");
         xDyna = urlResults[1];
         urlTime = urlResults[0];
-        urlResults.clear();
-        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:xDyna});
+        debugPrint("x-dynatrace = " + xDyna);
+        debugPrint("URL time = " + urlTime);
+        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
         responseCode = response.statusCode;
         leaveWebUserAction(subAction: subAction, urlTime: urlTime, responseCode: responseCode);
         responseBody = response.body;
@@ -281,32 +282,36 @@ class Dynatrace {
       } catch (e) {
         debugPrint("Unable to make web request: $e");
       }
-    // } else if (requestType == "POST" && parentAction != null && subAction == null) {
-    //   try {
-    //     requestTag = await webAction(url, parentAction: parentAction);
-    //     debugPrint("x-dynatrace value = " + requestTag.toString());
-    //     var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
-    //     responseCode = response.statusCode;
-    //     leaveWebUserAction(parentAction: parentAction, url: url, responseCode: responseCode);
-    //     responseBody = response.body;
-    //     debugPrint("Response Status Code: " + responseCode.toString());
-    //     debugPrint("Response Status Body: " + responseBody.toString());
-    //   } catch (e) {
-    //     debugPrint("Unable to make web request: $e");
-    //   }
-    // } else if (requestType == "POST" && parentAction == null && subAction != null) {
-    //   try {
-    //     requestTag = await webAction(url, subAction: subAction);
-    //     debugPrint("x-dynatrace value = " + requestTag.toString());
-    //     var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
-    //     responseCode = response.statusCode;
-    //     leaveWebUserAction(subAction: subAction, url: url, responseCode: responseCode);
-    //     responseBody = response.body;
-    //     debugPrint("Response Status Code: " + responseCode.toString());
-    //     debugPrint("Response Status Body: " + responseBody.toString());
-    //   } catch (e) {
-    //     debugPrint("Unable to make web request: $e");
-    //   }
+    } else if (requestType == "POST" && parentAction != null && subAction == null) {
+      try {
+        urlResults = await webAction(url, parentAction: parentAction);
+        debugPrint("List length = $urlResults");
+        xDyna = urlResults[1];
+        urlTime = urlResults[0];
+        var response = await http.post(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
+        responseCode = response.statusCode;
+        leaveWebUserAction(parentAction: parentAction, urlTime: urlTime, responseCode: responseCode);
+        responseBody = response.body;
+        debugPrint("Response Status Code: " + responseCode.toString());
+        debugPrint("Response Status Body: " + responseBody.toString());
+      } catch (e) {
+        debugPrint("Unable to make web request: $e");
+      }
+    } else if (requestType == "POST" && parentAction == null && subAction != null) {
+      try {
+        urlResults = await webAction(url, subAction: subAction);
+        debugPrint("List length = $urlResults");
+        xDyna = urlResults[1];
+        urlTime = urlResults[0];
+        var response = await http.post(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
+        responseCode = response.statusCode;
+        leaveWebUserAction(subAction: subAction, urlTime: urlTime, responseCode: responseCode);
+        responseBody = response.body;
+        debugPrint("Response Status Code: " + responseCode.toString());
+        debugPrint("Response Status Body: " + responseBody.toString());
+      } catch (e) {
+        debugPrint("Unable to make web request: $e");
+      }
     } 
     
     return responseBody;

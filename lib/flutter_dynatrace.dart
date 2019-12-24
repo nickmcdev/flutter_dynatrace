@@ -136,74 +136,8 @@ class Dynatrace {
       debugPrint("Wrong parameters used. Please add proper values for parentAction/subAction and error");
     }
   }
-    
-  // static Future<String> dynaWebRequest({String parentAction, String subAction, String url, String requestType}) async {
-  //   final String tagHeaderName = "x-dynatrace";
-  //   int responseCode;
-  //   String responseBody;
-  //   String requestTag;
-    
-  //   if (requestType == "GET" && parentAction != null && subAction == null) {
-  //     try {
-  //       requestTag = await webAction(url, parentAction: parentAction);
-  //       debugPrint("x-dynatrace value = " + requestTag.toString());
-  //       var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
-  //       responseCode = response.statusCode;
-  //       leaveWebUserAction(parentAction: parentAction, url: url, responseCode: responseCode);
-  //       responseBody = response.body;
-  //       debugPrint("Response Status Code: " + responseCode.toString());
-  //       debugPrint("Response Status Body: " + responseBody.toString());
-  //     } catch (e) {
-  //       debugPrint("Unable to make web request: $e");
-  //     }
-
-
-  //   } else if (requestType == "GET" && parentAction == null && subAction != null) {
-  //     try {
-  //       requestTag = await webAction(url, subAction: subAction);
-  //       debugPrint("x-dynatrace value = " + requestTag.toString());
-  //       var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
-  //       responseCode = response.statusCode;
-  //       leaveWebUserAction(subAction: subAction, url: url, responseCode: responseCode);
-  //       responseBody = response.body;
-  //       debugPrint("Response Status Code: " + responseCode.toString());
-  //       debugPrint("Response Status Body: " + responseBody.toString());
-  //     } catch (e) {
-  //       debugPrint("Unable to make web request: $e");
-  //     }
-  //   } else if (requestType == "POST" && parentAction != null && subAction == null) {
-  //     try {
-  //       requestTag = await webAction(url, parentAction: parentAction);
-  //       debugPrint("x-dynatrace value = " + requestTag.toString());
-  //       var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
-  //       responseCode = response.statusCode;
-  //       leaveWebUserAction(parentAction: parentAction, url: url, responseCode: responseCode);
-  //       responseBody = response.body;
-  //       debugPrint("Response Status Code: " + responseCode.toString());
-  //       debugPrint("Response Status Body: " + responseBody.toString());
-  //     } catch (e) {
-  //       debugPrint("Unable to make web request: $e");
-  //     }
-  //   } else if (requestType == "POST" && parentAction == null && subAction != null) {
-  //     try {
-  //       requestTag = await webAction(url, subAction: subAction);
-  //       debugPrint("x-dynatrace value = " + requestTag.toString());
-  //       var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName:requestTag});
-  //       responseCode = response.statusCode;
-  //       leaveWebUserAction(subAction: subAction, url: url, responseCode: responseCode);
-  //       responseBody = response.body;
-  //       debugPrint("Response Status Code: " + responseCode.toString());
-  //       debugPrint("Response Status Body: " + responseBody.toString());
-  //     } catch (e) {
-  //       debugPrint("Unable to make web request: $e");
-  //     }
-  //   } 
-    
-  //   return responseBody;
-  // }
 
   static Future<List<dynamic>> webAction(String url, {String parentAction, String subAction}) async {
-    // String result;
     var result = new List();
     if (parentAction != null && subAction == null) {
       try {
@@ -225,14 +159,12 @@ class Dynatrace {
   static Future<void> leaveWebUserAction({String parentAction, String subAction, String urlTime, int responseCode}) async {
     if (parentAction != null && subAction == null) { 
       try {
-        // _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveUrl": url, "webParentActionResponseCode": responseCode});
         _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveTime": urlTime, "webParentActionResponseCode": responseCode});
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Parent Web User Action: '${e.message}'.");
       }
     } else if (parentAction == null && subAction != null) {
       try {
-        // _platform.invokeMethod('webSubActionResponse', {"webSubActionLeave": subAction, "webSubActionLeaveUrl": url, "webSubActionResponseCode": responseCode});
         _platform.invokeMethod('webSubActionResponse', {"webSubActionLeave": subAction, "webSubActionLeaveTime": urlTime, "webSubActionResponseCode": responseCode});
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Sub Web User Action: '${e.message}'.");

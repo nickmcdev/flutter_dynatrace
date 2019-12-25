@@ -156,16 +156,16 @@ class Dynatrace {
   }
 
   
-  static Future<void> leaveWebUserAction({String parentAction, String subAction, String urlTime, int responseCode}) async {
+  static Future<void> leaveWebUserAction({String parentAction, String subAction, String urlTime, int responseCode, String url}) async {
     if (parentAction != null && subAction == null) { 
       try {
-        _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveTime": urlTime, "webParentActionResponseCode": responseCode});
+        _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveTime": urlTime, "webParentActionResponseCode": responseCode, "webParentActionLeaveUrl": url});
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Parent Web User Action: '${e.message}'.");
       }
     } else if (parentAction == null && subAction != null) {
       try {
-        _platform.invokeMethod('webSubActionResponse', {"webSubActionLeave": subAction, "webSubActionLeaveTime": urlTime, "webSubActionResponseCode": responseCode});
+        _platform.invokeMethod('webSubActionResponse', {"webSubActionLeave": subAction, "webSubActionLeaveTime": urlTime, "webSubActionResponseCode": responseCode, "webSubActionLeaveUrl": url});
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Sub Web User Action: '${e.message}'.");
       }
@@ -190,7 +190,7 @@ class Dynatrace {
         debugPrint("URL time = " + urlTime);
         var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
         responseCode = response.statusCode;
-        leaveWebUserAction(parentAction: parentAction, urlTime: urlTime, responseCode: responseCode);
+        leaveWebUserAction(parentAction: parentAction, urlTime: urlTime, responseCode: responseCode, url: url);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
@@ -207,7 +207,7 @@ class Dynatrace {
         debugPrint("URL time = " + urlTime);
         var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
         responseCode = response.statusCode;
-        leaveWebUserAction(subAction: subAction, urlTime: urlTime, responseCode: responseCode);
+        leaveWebUserAction(subAction: subAction, urlTime: urlTime, responseCode: responseCode, url: url);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
@@ -222,7 +222,7 @@ class Dynatrace {
         urlTime = urlResults[0];
         var response = await http.post(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
         responseCode = response.statusCode;
-        leaveWebUserAction(parentAction: parentAction, urlTime: urlTime, responseCode: responseCode);
+        leaveWebUserAction(parentAction: parentAction, urlTime: urlTime, responseCode: responseCode, url: url);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
@@ -237,7 +237,7 @@ class Dynatrace {
         urlTime = urlResults[0];
         var response = await http.post(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
         responseCode = response.statusCode;
-        leaveWebUserAction(subAction: subAction, urlTime: urlTime, responseCode: responseCode);
+        leaveWebUserAction(subAction: subAction, urlTime: urlTime, responseCode: responseCode, url: url);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());

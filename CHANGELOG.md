@@ -15,3 +15,6 @@
 
 ## 0.0.6
 * Updated logic for Parent and sub actions. Updated logic for Web requests. Added license.
+
+## 0.0.6
+* Updated logic for web requests for both iOS and Android.

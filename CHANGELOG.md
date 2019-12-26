@@ -18,3 +18,6 @@
 
 ## 0.0.7
 * Updated logic for web requests for both iOS and Android.
+
+## 0.0.8
+* Removed extra code from previous web request logic.

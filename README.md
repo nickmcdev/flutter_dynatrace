@@ -14,6 +14,17 @@ Add the code snippet from the WebUI to your Root build.gradle file:
 [Link to the official Dynatrace doc on implementing the above](https://www.dynatrace.com/support/help/shortlink/dynatrace-android-gradle-plugin-first-steps)
 
 ### iOS:
+
+{{#callout}}
+**IMPORTANT:** If your project uses the default Objective-C and **NOT** Swift as the iOS language used, you will **need** to create a .swift file and create a bridging header as this plugin uses swift and not Objective-C. Here is a stackoverflow post relating to this:
+https://stackoverflow.com/questions/50096025/it-gives-errors-when-using-swift-static-library-with-objective-c-project/50495316#50495316
+{{/callout}}
+
+Open up the **Runner** project in Xcode and create a new file in the **Runner** folder and create the bridging header when Xcode prompts this. You should see the following result (or something similar of course):
+![Bridging Header](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/bridgingHeader.png) 
+
+---
+
 Go to your project in terminal and run:
 pod install
 ![pod install command in terminal](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/podInstall.png)
@@ -133,6 +144,58 @@ Dynatrace.leaveAction(parentAction: actions[5]);
 ![Web Action](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webAction.png)
 
 ---
+
+### Web Action - Option 2 (Needs to be inside of a Parent or Sub Action):
+
+**Dynatrace.enterWebUserAction();**
+Required parameters:
+- parentAction **OR** subAction
+- url
+
+This future returns a string that includes the **x-dynatrace** header that you need to add as a header value to your http request. 
+
+**Dynatrace.leaveWebUserAction();**
+Required parameters:
+- parentAction **OR** subAction
+- url
+- dynaHeader 
+- responseCode
+
+**Note:** You will need to use the return value of the future API call **Dynatrace.enterWebUserAction()** as the value for **dynaHeader**,
+
+````
+final String dynaHeaderKey = "x-dynatrace";
+// or you can use the following API call which will always be x-dynatrace:
+final String dynaHeaderKey2 = Dynatrace.getRequestTagHeader();
+
+// enter parent user action
+Dynatrace.enterAction(parentAction: actions[13], parentActionName: "Touch on Web Action - Option 2");
+// enter sub action
+Dynatrace.enterAction(parentAction: actions[13], subAction: actions[14], subActionName: "Sub Web Action - Option 2");
+    
+    // enter parent web action
+String dynaHeaderValue = await Dynatrace.enterWebUserAction(url: url, parentAction: actions[13]);
+var response = await http.get(Uri.encodeFull(url), headers: {dynaHeaderKey: dynaHeaderValue});
+
+    // enter sub web action
+String dynaHeaderValueSub = await Dynatrace.enterWebUserAction(url: url, subAction: actions[14]);
+var responseSub = await http.get(Uri.encodeFull(url), headers: {dynaHeaderKey: dynaHeaderValueSub});
+    // leave parent web action
+Dynatrace.leaveWebUserAction(parentAction: actions[13], url: url, dynaHeader: dynaHeaderValue, responseCode: response.statusCode);
+
+    // leave sub web action
+Dynatrace.leaveWebUserAction(subAction: actions[14], url: url, dynaHeader: dynaHeaderValueSub, responseCode: responseSub.statusCode);
+// leave sub user action
+Dynatrace.leaveAction(subAction: actions[14]);
+
+// leave parent user action
+Dynatrace.leaveAction(parentAction: actions[13]);
+````
+
+**Result:**
+![Web Action 2 - Android](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webAction2Android.png)
+![Web Action 2 - iOS](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/webAction2iOS.png)
+
 
 ### Web Action with reportValue - String:
 

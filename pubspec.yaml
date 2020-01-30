@@ -1,6 +1,6 @@
 name: flutter_dynatrace
 description: Dynatrace mobile agent integration with Flutter! You can use manual instrumentation to capture data/metrics to get visibility and a bette understanding of how your app is performing.
-version: 0.0.8
+version: 0.0.9
 homepage: https://github.com/nickmcdev/flutter_dynatrace
 
 environment:

@@ -21,3 +21,6 @@
 
 ## 0.0.8
 * Removed extra code from previous web request logic.
+
+## 0.0.9
+* Revamped and added a new option for tagging/timing web requests for any type of http request. Updated doc with issues relating to Obj-C based flutter apps.

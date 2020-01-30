@@ -101,13 +101,71 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
       }
       break;
 
+    // case "webParentActionEnter":
+    //   String urlFromFlutter = call.argument("webParentActionUrl");
+    //   String webParentAction = call.argument("webParentAction");
+    //   ArrayList<String> urlInfo = new ArrayList<String>();
+    //   Date date = new Date();
+    //   long urlTimeMil = date.getTime();
+    //   String urlTimeMilStr = String.valueOf(urlTimeMil);
+    //   URL url = null;
+    //   try {
+    //     url = new URL(urlFromFlutter);
+    //   } catch (MalformedURLException e) {
+    //     e.printStackTrace();
+    //   }
+
+    //   if (webParentActions.containsKey(urlTimeMilStr)) {
+    //     urlTimeMilStr = urlTimeMilStr + "_1";
+    //   } else if (webParentActions.containsKey(urlTimeMilStr + "_1")) {
+    //     urlTimeMilStr = urlTimeMilStr + "_2";
+    //   }
+
+    //   urlInfo.add(urlTimeMilStr);
+    //   String requestTag = parentActionsMap.get(webParentAction).getRequestTag();
+    //   webParentActions.put(urlTimeMilStr, Dynatrace.getWebRequestTiming(requestTag));
+    //   urlInfo.add(requestTag);
+    //   if (url != null) {
+    //     Log.d("DTXWeb", "URL: " + urlFromFlutter);
+    //     webParentActions.get(urlTimeMilStr).startWebRequestTiming();
+    //     result.success(urlInfo);
+    //     urlInfo.clear();
+    //   } else {
+    //     result.success("Not able to capture Web User Action as URL is null");
+    //     urlInfo.clear();
+    //   }
+
+    //   break;
+
+    // case "webParentActionResponse":
+    //   String webParentActionLeaveUrl = call.argument("webParentActionLeaveUrl");
+    //   String webParentActionLeaveTime = call.argument("webParentActionLeaveTime");
+    //   int wrStatusCodeParent = call.argument("webParentActionResponseCode");
+
+    //   if (wrStatusCodeParent != 200) {
+    //     try {
+    //       if (webParentActions.containsKey(webParentActionLeaveTime)) {
+    //         webParentActions.get(webParentActionLeaveTime).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "Failed request.");
+    //         webParentActions.remove(webParentActionLeaveTime);
+    //       }
+    //     } catch (MalformedURLException e) {
+    //       e.printStackTrace();
+    //     }
+    //   } else if (wrStatusCodeParent == 200) {
+    //     try {
+    //       if (webParentActions.containsKey(webParentActionLeaveTime)) {
+    //         webParentActions.get(webParentActionLeaveTime).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "OK");
+    //         webParentActions.remove(webParentActionLeaveTime);
+    //       }
+    //     } catch (MalformedURLException e) {
+    //       e.printStackTrace();
+    //     }
+    //   }
+    //   break;
+
     case "webParentActionEnter":
       String urlFromFlutter = call.argument("webParentActionUrl");
       String webParentAction = call.argument("webParentAction");
-      ArrayList<String> urlInfo = new ArrayList<String>();
-      Date date = new Date();
-      long urlTimeMil = date.getTime();
-      String urlTimeMilStr = String.valueOf(urlTimeMil);
       URL url = null;
       try {
         url = new URL(urlFromFlutter);
@@ -115,47 +173,42 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
         e.printStackTrace();
       }
 
-      if (webParentActions.containsKey(urlTimeMilStr)) {
-        urlTimeMilStr = urlTimeMilStr + "_1";
-      } else if (webParentActions.containsKey(urlTimeMilStr + "_1")) {
-        urlTimeMilStr = urlTimeMilStr + "_2";
-      }
-
-      urlInfo.add(urlTimeMilStr);
       String requestTag = parentActionsMap.get(webParentAction).getRequestTag();
-      webParentActions.put(urlTimeMilStr, Dynatrace.getWebRequestTiming(requestTag));
-      urlInfo.add(requestTag);
+      webParentActions.put(requestTag, Dynatrace.getWebRequestTiming(requestTag));
       if (url != null) {
         Log.d("DTXWeb", "URL: " + urlFromFlutter);
-        webParentActions.get(urlTimeMilStr).startWebRequestTiming();
-        result.success(urlInfo);
-        urlInfo.clear();
+        Log.d("DTXWeb", "x-dynatrace: " + requestTag);
+        webParentActions.get(requestTag).startWebRequestTiming();
+        result.success(requestTag);
       } else {
         result.success("Not able to capture Web User Action as URL is null");
-        urlInfo.clear();
       }
 
       break;
 
     case "webParentActionResponse":
       String webParentActionLeaveUrl = call.argument("webParentActionLeaveUrl");
-      String webParentActionLeaveTime = call.argument("webParentActionLeaveTime");
+      String webParentActionLeaveTag = call.argument("webParentActionLeaveTag");
       int wrStatusCodeParent = call.argument("webParentActionResponseCode");
 
       if (wrStatusCodeParent != 200) {
         try {
-          if (webParentActions.containsKey(webParentActionLeaveTime)) {
-            webParentActions.get(webParentActionLeaveTime).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "Failed request.");
-            webParentActions.remove(webParentActionLeaveTime);
+          if (webParentActions.containsKey(webParentActionLeaveTag)) {
+            Log.d("DTXWeb", "URL: " + webParentActionLeaveUrl);
+            Log.d("DTXWeb", "x-dynatrace: " + webParentActionLeaveTag);
+            webParentActions.get(webParentActionLeaveTag).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "Failed request.");
+            webParentActions.remove(webParentActionLeaveTag);
           }
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }
       } else if (wrStatusCodeParent == 200) {
         try {
-          if (webParentActions.containsKey(webParentActionLeaveTime)) {
-            webParentActions.get(webParentActionLeaveTime).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "OK");
-            webParentActions.remove(webParentActionLeaveTime);
+          if (webParentActions.containsKey(webParentActionLeaveTag)) {
+            Log.d("DTXWeb", "URL: " + webParentActionLeaveUrl);
+            Log.d("DTXWeb", "x-dynatrace: " + webParentActionLeaveTag);
+            webParentActions.get(webParentActionLeaveTag).stopWebRequestTiming(webParentActionLeaveUrl, wrStatusCodeParent, "OK");
+            webParentActions.remove(webParentActionLeaveTag);
           }
         } catch (MalformedURLException e) {
           e.printStackTrace();
@@ -166,10 +219,6 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
     case "webSubActionEnter":
       String urlFromFlutterSub = call.argument("webSubActionUrl");
       String webSubAction = call.argument("webSubAction");
-      ArrayList<String> urlInfoSub = new ArrayList<String>();
-      Date dateSub = new Date();
-      long urlTimeMilSub = dateSub.getTime();
-      String urlTimeMilStrSub = String.valueOf(urlTimeMilSub);
       URL urlSub = null;
       try {
         urlSub = new URL(urlFromFlutterSub);
@@ -177,47 +226,42 @@ public class FlutterDynatracePlugin implements MethodCallHandler {
         e.printStackTrace();
       }
 
-      if (webSubActions.containsKey(urlTimeMilStrSub)) {
-        urlTimeMilStrSub = urlTimeMilStrSub + "_1";
-      } else if (webSubActions.containsKey(urlTimeMilStrSub + "_1")) {
-        urlTimeMilStrSub = urlTimeMilStrSub + "_2";
-      }
-
-      urlInfoSub.add(urlTimeMilStrSub);
       String requestTagSub = subActionsMap.get(webSubAction).getRequestTag();
-      webSubActions.put(urlTimeMilStrSub, Dynatrace.getWebRequestTiming(requestTagSub));
-      urlInfoSub.add(requestTagSub);
+      webSubActions.put(requestTagSub, Dynatrace.getWebRequestTiming(requestTagSub));
       if (urlSub != null) {
         Log.d("DTXWeb", "URL: " + urlFromFlutterSub);
-        webSubActions.get(urlTimeMilStrSub).startWebRequestTiming();
-        result.success(urlInfoSub);
-        urlInfoSub.clear();
+        Log.d("DTXWeb", "x-dynatrace: " + requestTagSub);
+        webSubActions.get(requestTagSub).startWebRequestTiming();
+        result.success(requestTagSub);
       } else {
         result.success("Not able to capture Web User Action as URL is null");
-        urlInfoSub.clear();
       }
 
       break;
 
     case "webSubActionResponse":
       String webSubActionLeaveUrl = call.argument("webSubActionLeaveUrl");
-      String webSubActionLeaveTime = call.argument("webSubActionLeaveTime");
+      String webSubActionLeaveTag = call.argument("webSubActionLeaveTag");
       int wrStatusCodeSub = call.argument("webSubActionResponseCode");
 
       if (wrStatusCodeSub != 200) {
         try {
-          if (webSubActions.containsKey(webSubActionLeaveTime)) {
-            webSubActions.get(webSubActionLeaveTime).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "Failed request.");
-            webSubActions.remove(webSubActionLeaveTime);
+          if (webSubActions.containsKey(webSubActionLeaveTag)) {
+            Log.d("DTXWeb", "URL: " + webSubActionLeaveUrl);
+            Log.d("DTXWeb", "x-dynatrace: " + webSubActionLeaveTag);
+            webSubActions.get(webSubActionLeaveTag).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "Failed request.");
+            webSubActions.remove(webSubActionLeaveTag);
           }
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }
       } else if (wrStatusCodeSub == 200) {
         try {
-          if (webSubActions.containsKey(webSubActionLeaveTime)) {
-            webSubActions.get(webSubActionLeaveTime).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "OK");
-            webSubActions.remove(webSubActionLeaveTime);
+          if (webSubActions.containsKey(webSubActionLeaveTag)) {
+            Log.d("DTXWeb", "URL: " + webSubActionLeaveUrl);
+            Log.d("DTXWeb", "x-dynatrace: " + webSubActionLeaveTag);
+            webSubActions.get(webSubActionLeaveTag).stopWebRequestTiming(webSubActionLeaveUrl, wrStatusCodeSub, "OK");
+            webSubActions.remove(webSubActionLeaveTag);
           }
         } catch (MalformedURLException e) {
           e.printStackTrace();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_dynatrace/flutter_dynatrace.dart';
+import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 import 'dart:convert';
 
@@ -34,6 +35,7 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String urlTest2 = "http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json";
 
   String textWidgetStr = 'Nothing triggered yet!';
  
@@ -78,9 +80,36 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     changeText("Touch on " + options[4]);
   }
 
+  webAction2(String url) async {
+    final String dynaHeaderKey = "x-dynatrace";
+    // enter parent user action
+    Dynatrace.enterAction(parentAction: actions[13], parentActionName: "Touch on Web Action - Option 2");
+    // enter sub action
+    Dynatrace.enterAction(parentAction: actions[13], subAction: actions[14], subActionName: "Sub Web Action - Option 2");
+    
+        // enter parent web action
+    String dynaHeaderValue = await Dynatrace.enterWebUserAction(url: url, parentAction: actions[13]);
+    var response = await http.get(Uri.encodeFull(url), headers: {dynaHeaderKey: dynaHeaderValue});
+
+        // enter sub web action
+    String dynaHeaderValueSub = await Dynatrace.enterWebUserAction(url: url, subAction: actions[14]);
+    var responseSub = await http.get(Uri.encodeFull(url), headers: {dynaHeaderKey: dynaHeaderValueSub});
+        // leave parent web action
+    Dynatrace.leaveWebUserAction(parentAction: actions[13], url: url, dynaHeader: dynaHeaderValue, responseCode: response.statusCode);
+
+        // leave sub web action
+    Dynatrace.leaveWebUserAction(subAction: actions[14], url: url, dynaHeader: dynaHeaderValueSub, responseCode: responseSub.statusCode);
+    // leave sub user action
+    Dynatrace.leaveAction(subAction: actions[14]);
+
+    // leave parent user action
+    Dynatrace.leaveAction(parentAction: actions[13]);
+    changeText("Touch on " + options[23]);
+  }
+
   String dropdownValue = 'Start Agent';
-  static const List<String> options = ['Start Agent', 'Single Action', 'Sub Action', 'Web Action', 'Web Action + reportString', 'Action with reportString', 'Action with reportInt', 'Action with reportDouble', 'Action with reportEvent', 'Action with reportError', 'Action with reportValues', 'Flush data', 'Tag user', 'End Session', 'Shutdown Agent', 'Collection level: OFF', 'Collection level: PERFORMANCE', 'Collection level: USER_BEHAVIOR', 'setCrashReportingOptedIn: true', 'setCrashReportingOptedIn: false', 'getDataCollectionLevel', 'getCaptureStatus', 'isCrashReportingOptedIn'];
-  static const List<String> actions = ['singleAction', 'parentSubAction', 'subAction', 'subAction2', 'subAction3', 'webAction', 'webActionString', 'reportString', 'reportInt', 'reportDouble', 'reportError', 'reportEvent', 'reportValues'];
+  static const List<String> options = ['Start Agent', 'Single Action', 'Sub Action', 'Web Action', 'Web Action + reportString', 'Action with reportString', 'Action with reportInt', 'Action with reportDouble', 'Action with reportEvent', 'Action with reportError', 'Action with reportValues', 'Flush data', 'Tag user', 'End Session', 'Shutdown Agent', 'Collection level: OFF', 'Collection level: PERFORMANCE', 'Collection level: USER_BEHAVIOR', 'setCrashReportingOptedIn: true', 'setCrashReportingOptedIn: false', 'getDataCollectionLevel', 'getCaptureStatus', 'isCrashReportingOptedIn', 'Web Action - Option 2'];
+  static const List<String> actions = ['singleAction', 'parentSubAction', 'subAction', 'subAction2', 'subAction3', 'webAction', 'webActionString', 'reportString', 'reportInt', 'reportDouble', 'reportError', 'reportEvent', 'reportValues', 'webAction2', 'webAction2Sub'];
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +178,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         // do something
         Dynatrace.leaveAction(parentAction: actions[0]);
         changeText("Touch on $options[1]");
+
+        String xdynatrace = Dynatrace.getRequestTagHeader();
+        debugPrint(xdynatrace);
       }
       break;
 
@@ -187,6 +219,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[0], requestType: "GET");
         Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[0], requestType: "GET");
         Dynatrace.dynaWebRequest(subAction: "testSub", url: urls[0], requestType: "GET");
+
+        
+
+
         Dynatrace.leaveAction(subAction: "testSub");
         Dynatrace.leaveAction(parentAction: actions[5]);
         changeText("Touch on " + options[3]);
@@ -196,7 +232,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
       case 'Web Action + reportString': {
         reportValueStringAndWebAction();
-        }
+        
+      }
       break;
 
       case 'Action with reportString': {
@@ -273,6 +310,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       break;
 
       case 'Tag user': {
+        
         Dynatrace.identifyUser("flutter@dynatrace.com");
         changeText("Touch on $options[12]");
       }
@@ -336,6 +374,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       case 'isCrashReportingOptedIn': {
         crashReportCapture();
         changeText("Touch on $options[22]");
+      }
+      break;
+
+      case 'Web Action - Option 2': {
+        String url = "https://dog.ceo/api/breeds/image/random";
+        webAction2("http://nickmcapache1.dtwlab.dynatrace.org:81/json/nick.json");
+        changeText("Touch on $options[23]");
       }
       break;
 

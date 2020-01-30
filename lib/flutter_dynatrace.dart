@@ -137,8 +137,43 @@ class Dynatrace {
     }
   }
 
-  static Future<List<dynamic>> webAction(String url, {String parentAction, String subAction}) async {
-    var result = new List();
+  // static Future<List<dynamic>> enterWebUserAction(String url, {String parentAction, String subAction}) async {
+  //   var result = new List();
+  //   if (parentAction != null && subAction == null) {
+  //     try {
+  //       result = await _platform.invokeMethod('webParentActionEnter', {"webParentAction": parentAction, "webParentActionUrl": url});
+  //     } on PlatformException catch (e) {
+  //       debugPrint("Failed to create Parent Web User Action: '${e.message}'.");
+  //     }
+  //   } else if (parentAction == null && subAction != null) {
+  //     try {
+  //       result = await _platform.invokeMethod('webSubActionEnter', {"webSubAction": subAction, "webSubActionUrl": url});
+  //     } on PlatformException catch (e) {
+  //       debugPrint("Failed to create Sub Web User Action: '${e.message}'.");
+  //     }
+  //   }
+  //   return result;
+  // }
+
+  
+  // static Future<void> leaveWebUserAction({String parentAction, String subAction, String urlTime, int responseCode, String url}) async {
+  //   if (parentAction != null && subAction == null) { 
+  //     try {
+  //       _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveTime": urlTime, "webParentActionResponseCode": responseCode, "webParentActionLeaveUrl": url});
+  //     } on PlatformException catch (e) {
+  //       debugPrint("Failed to leave Parent Web User Action: '${e.message}'.");
+  //     }
+  //   } else if (parentAction == null && subAction != null) {
+  //     try {
+  //       _platform.invokeMethod('webSubActionResponse', {"webSubActionLeave": subAction, "webSubActionLeaveTime": urlTime, "webSubActionResponseCode": responseCode, "webSubActionLeaveUrl": url});
+  //     } on PlatformException catch (e) {
+  //       debugPrint("Failed to leave Sub Web User Action: '${e.message}'.");
+  //     }
+  //   }
+  // }
+
+  static Future<String> enterWebUserAction({String parentAction, String subAction, String url}) async {
+    String result;
     if (parentAction != null && subAction == null) {
       try {
         result = await _platform.invokeMethod('webParentActionEnter', {"webParentAction": parentAction, "webParentActionUrl": url});
@@ -156,16 +191,16 @@ class Dynatrace {
   }
 
   
-  static Future<void> leaveWebUserAction({String parentAction, String subAction, String urlTime, int responseCode, String url}) async {
+  static Future<void> leaveWebUserAction({String parentAction, String subAction, String dynaHeader, int responseCode, String url}) async {
     if (parentAction != null && subAction == null) { 
       try {
-        _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveTime": urlTime, "webParentActionResponseCode": responseCode, "webParentActionLeaveUrl": url});
+        _platform.invokeMethod('webParentActionResponse', {"webParentActionLeaveTag": dynaHeader, "webParentActionResponseCode": responseCode, "webParentActionLeaveUrl": url});
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Parent Web User Action: '${e.message}'.");
       }
     } else if (parentAction == null && subAction != null) {
       try {
-        _platform.invokeMethod('webSubActionResponse', {"webSubActionLeave": subAction, "webSubActionLeaveTime": urlTime, "webSubActionResponseCode": responseCode, "webSubActionLeaveUrl": url});
+        _platform.invokeMethod('webSubActionResponse', {"webSubActionLeaveTag": dynaHeader, "webSubActionResponseCode": responseCode, "webSubActionLeaveUrl": url});
       } on PlatformException catch (e) {
         debugPrint("Failed to leave Sub Web User Action: '${e.message}'.");
       }
@@ -176,21 +211,15 @@ class Dynatrace {
     final String tagHeaderName = "x-dynatrace";
     int responseCode;
     String responseBody;
-    String xDyna;
-    String urlTime;
-    var urlResults = new List();
+    String dynaHeader;
     
     if (requestType == "GET" && parentAction != null && subAction == null) {
       try {
-        urlResults = await webAction(url, parentAction: parentAction);
-        debugPrint("List length = $urlResults");
-        xDyna = urlResults[1];
-        urlTime = urlResults[0];
-        debugPrint("x-dynatrace = " + xDyna);
-        debugPrint("URL time = " + urlTime);
-        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
+        dynaHeader = await enterWebUserAction(parentAction: parentAction, url: url);
+        debugPrint("x-dynatrace = " + dynaHeader);
+        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName: dynaHeader});
         responseCode = response.statusCode;
-        leaveWebUserAction(parentAction: parentAction, urlTime: urlTime, responseCode: responseCode, url: url);
+        leaveWebUserAction(parentAction: parentAction, dynaHeader: dynaHeader, responseCode: responseCode, url: url);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
@@ -199,15 +228,11 @@ class Dynatrace {
       }
     } else if (requestType == "GET" && parentAction == null && subAction != null) {
       try {
-        urlResults = await webAction(url, subAction: subAction);
-        debugPrint("List length = $urlResults");
-        xDyna = urlResults[1];
-        urlTime = urlResults[0];
-        debugPrint("x-dynatrace = " + xDyna);
-        debugPrint("URL time = " + urlTime);
-        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
+        dynaHeader = await enterWebUserAction(subAction: subAction, url: url);
+        debugPrint("x-dynatrace = " + dynaHeader);
+        var response = await http.get(Uri.encodeFull(url), headers: {tagHeaderName: dynaHeader});
         responseCode = response.statusCode;
-        leaveWebUserAction(subAction: subAction, urlTime: urlTime, responseCode: responseCode, url: url);
+        leaveWebUserAction(subAction: subAction, dynaHeader: dynaHeader, responseCode: responseCode, url: url);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
@@ -216,13 +241,10 @@ class Dynatrace {
       }
     } else if (requestType == "POST" && parentAction != null && subAction == null) {
       try {
-        urlResults = await webAction(url, parentAction: parentAction);
-        debugPrint("List length = $urlResults");
-        xDyna = urlResults[1];
-        urlTime = urlResults[0];
-        var response = await http.post(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
+        dynaHeader = await enterWebUserAction(parentAction: parentAction, url: url);
+        var response = await http.post(Uri.encodeFull(url), headers: {tagHeaderName: dynaHeader});
         responseCode = response.statusCode;
-        leaveWebUserAction(parentAction: parentAction, urlTime: urlTime, responseCode: responseCode, url: url);
+        leaveWebUserAction(parentAction: parentAction, dynaHeader: dynaHeader, responseCode: responseCode, url: url);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
@@ -231,13 +253,10 @@ class Dynatrace {
       }
     } else if (requestType == "POST" && parentAction == null && subAction != null) {
       try {
-        urlResults = await webAction(url, subAction: subAction);
-        debugPrint("List length = $urlResults");
-        xDyna = urlResults[1];
-        urlTime = urlResults[0];
-        var response = await http.post(Uri.encodeFull(url), headers: {tagHeaderName: xDyna});
+        dynaHeader = await enterWebUserAction(subAction: subAction, url: url);
+        var response = await http.post(Uri.encodeFull(url), headers: {tagHeaderName: dynaHeader});
         responseCode = response.statusCode;
-        leaveWebUserAction(subAction: subAction, urlTime: urlTime, responseCode: responseCode, url: url);
+        leaveWebUserAction(subAction: subAction, dynaHeader: dynaHeader, responseCode: responseCode, url: url);
         responseBody = response.body;
         debugPrint("Response Status Code: " + responseCode.toString());
         debugPrint("Response Status Body: " + responseBody.toString());
@@ -281,6 +300,23 @@ class Dynatrace {
       debugPrint("Failed to trigger shutdown SDK call: '${e.message}'.");
     }
   }
+
+  static Future<String> getRequestTag(String url) async {
+    String result;
+    try {
+      result = await _platform.invokeMethod('getRequestTag');
+    } on PlatformException catch (e) {
+      debugPrint("Failed to get x-dynatrace request tag: '${e.message}'.");
+    }
+    return result;
+  }
+
+  static String getRequestTagHeader() {
+    String result = "x-dynatrace";
+    return result;
+  }
+
+
 
   static Future setDataCollectionLevel(String level) async {
     int collLvl;
@@ -344,6 +380,7 @@ class Dynatrace {
     }
     return result;
   }
+  
 
   static Future startup(String appId, String beaconUrl, bool withDebugLogging, bool certValidation, bool crashReporting, bool optIn) async {
     try {

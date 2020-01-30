@@ -15,10 +15,8 @@ Add the code snippet from the WebUI to your Root build.gradle file:
 
 ### iOS:
 
-{{#callout}}
 **IMPORTANT:** If your project uses the default Objective-C and **NOT** Swift as the iOS language used, you will **need** to create a .swift file and create a bridging header as this plugin uses swift and not Objective-C. Here is a stackoverflow post relating to this:
 https://stackoverflow.com/questions/50096025/it-gives-errors-when-using-swift-static-library-with-objective-c-project/50495316#50495316
-{{/callout}}
 
 Open up the **Runner** project in Xcode and create a new file in the **Runner** folder and create the bridging header when Xcode prompts this. You should see the following result (or something similar of course):
 ![Bridging Header](https://github.com/nickmcdev/flutter_dynatrace/blob/master/example/doc/bridgingHeader.png) 
